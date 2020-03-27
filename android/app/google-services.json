@@ -1,0 +1,107 @@
+{
+  "project_info": {
+    "project_number": "592280217867",
+    "firebase_url": "https://mobile-coco.firebaseio.com",
+    "project_id": "mobile-coco",
+    "storage_bucket": "mobile-coco.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:592280217867:android:7c1c6ad4297912c3",
+        "android_client_info": {
+          "package_name": "com.example.ngen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "592280217867-i4v2nilb2egdg5sacmfh1orgchp1h0gf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ngen",
+            "certificate_hash": "134e0fec6585993213f2d154ca7193d71d755044"
+          }
+        },
+        {
+          "client_id": "592280217867-lmrque82s41d053ihk4vek7vmvupleo9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBc_0vEBiNdifadetaoHO4vCHDbyNWzlsA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "592280217867-lmrque82s41d053ihk4vek7vmvupleo9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "592280217867-o54emcuousc9u4319fotci2fkq93e3vl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.myway.morRelease"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:592280217867:android:04ef6277012d24de",
+        "android_client_info": {
+          "package_name": "com.myway.mor_release"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "592280217867-0ei5822noepjvsi1ulgkrmam53fpvuu1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.myway.mor_release",
+            "certificate_hash": "38f89513487817b991f399b6ff96147dc33e9462"
+          }
+        },
+        {
+          "client_id": "592280217867-bsnmhsigqv9fa2dja4hp2n2igovsscm5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.myway.mor_release",
+            "certificate_hash": "ca03271f04b32ac51d6eb4fd957738f4fcde26c7"
+          }
+        },
+        {
+          "client_id": "592280217867-lmrque82s41d053ihk4vek7vmvupleo9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBc_0vEBiNdifadetaoHO4vCHDbyNWzlsA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "592280217867-lmrque82s41d053ihk4vek7vmvupleo9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "592280217867-o54emcuousc9u4319fotci2fkq93e3vl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.myway.morRelease"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

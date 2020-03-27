@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>592280217867-o54emcuousc9u4319fotci2fkq93e3vl.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.592280217867-o54emcuousc9u4319fotci2fkq93e3vl</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>592280217867-t7ragt3kuf8eca0j1hf8d6d3o00oet1n.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDnXQ2yq2fF13KQoVW_EN-vNf5ytBWM09g</string>
+	<key>GCM_SENDER_ID</key>
+	<string>592280217867</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.myway.morRelease</string>
+	<key>PROJECT_ID</key>
+	<string>mobile-coco</string>
+	<key>STORAGE_BUCKET</key>
+	<string>mobile-coco.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:592280217867:ios:981aca4c2429b5e7</string>
+	<key>DATABASE_URL</key>
+	<string>https://mobile-coco.firebaseio.com</string>
+</dict>
+</plist>
