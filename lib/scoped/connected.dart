@@ -1075,8 +1075,10 @@ class MainModel extends Model {
   }
 
   void bpValidPercent() async {
-    var _wPromo = await getWeeklyPromo(orderBp());
-    var _exPromo = getExPromo(orderBp());
+    double _wPromo = 0;
+    _wPromo = await getWeeklyPromo(orderBp());
+    double _exPromo = 0;
+    _exPromo = getExPromo(orderBp());
     print('$_wPromo / $_exPromo');
   }
 

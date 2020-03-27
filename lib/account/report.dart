@@ -97,7 +97,7 @@ class _Report extends State<Report> {
   }
 
   Future<Member> memberReportSummary(String distrid) async {
-    // isloading(true);
+    isloading(true);
     http.Response response = await http.get(
         'http://mywayegypt-api.azurewebsites.net/api/distrrepsummary/$distrid');
     if (response.statusCode == 200) {
