@@ -27,6 +27,7 @@ class Lock {
       this.pdfUrl,
       this.maxLimited,
       this.limitedItem,
+      this.exItems,
       this.bankInfo});
 
   Lock.fromSnapshot(DataSnapshot snapshot)
@@ -35,13 +36,13 @@ class Lock {
         lockCart = snapshot.value['lockCart'],
         adminFee = snapshot.value['adminFee'],
         bannerUrl = snapshot.value['bannerUrl'],
-        catCode = snapshot.value['catCode'],
+        catCode = snapshot.value['catCode'] ?? '',
         version = snapshot.value['version'],
         safetyStock = snapshot.value['safetyStock'],
         maxOrder = snapshot.value['maxOrder'],
         maxLimited = snapshot.value['maxLimited'],
         pdfUrl = snapshot.value['pdfUrl'] ?? '',
         limitedItem = snapshot.value['limtedItem'] ?? [],
-        exItems = snapshot.value['exlusiveList'] ?? [],
+        exItems = snapshot.value['exclusiveList'] ?? [],
         bankInfo = snapshot.value['bankInfo'] ?? '';
 }

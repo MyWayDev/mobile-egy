@@ -86,8 +86,8 @@ class _IconBar extends State<IconBar> {
                 icon: Icon(Icons.info_outline),
                 iconSize: 30.0,
                 color: Colors.blueAccent,
-                onPressed: () {
-                  model.getWeeklyPromo();
+                onPressed: () async {
+                  model.bpValidPercent();
                 },
                 // onPressed: () {
                 //   Navigator.push(

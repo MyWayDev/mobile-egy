@@ -1074,8 +1074,28 @@ class MainModel extends Model {
     return _bp;
   }
 
-  Future<int> getWeeklyPromo() async {
-    int promoItemBpTotal;
+  void bpValidPercent() async {
+    var _wPromo = await getWeeklyPromo(orderBp());
+    var _exPromo = getExPromo(orderBp());
+    print('$_wPromo / $_exPromo');
+  }
+
+  double getExPromo(int totalBp) {
+    int exPromoItemBpTotal = 0;
+    List<ItemOrder> exList = [];
+    for (var i in settings.exItems) {
+      itemorderlist
+          .forEach((f) => i.toString() == f.itemId ? exList.add(f) : null);
+    }
+    for (ItemOrder i in exList) {
+      exPromoItemBpTotal += i.bp * i.qty;
+    }
+    ;
+    return exPromoItemBpTotal * 100 / totalBp;
+  }
+
+  Future<double> getWeeklyPromo(int totalBp) async {
+    int promoItemBpTotal = 0;
     DataSnapshot snapshot =
         await database.reference().child('$path/gifts/en-US/').once();
     Map<dynamic, dynamic> giftsList = snapshot.value;
@@ -1083,14 +1103,12 @@ class MainModel extends Model {
     List<Gift> gifts = list.map((f) => Gift.fbList(f)).toList();
     String promoItem = gifts[0].items.first.toString();
 
-    itemorderlist.forEach((f) => print('order items=>${f.itemId}'));
     for (ItemOrder item in itemorderlist) {
       if (item.itemId == promoItem) {
         promoItemBpTotal = item.bp * item.qty;
       }
     }
-    return promoItemBpTotal;
-    // print(_iO.bp);
+    return promoItemBpTotal * 100 / totalBp;
   }
 
   Future<OrderMsg> orderBalanceCheck(String shipmentId, double courierfee,
