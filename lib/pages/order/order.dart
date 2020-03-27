@@ -602,7 +602,7 @@ Widget _orderExp(BuildContext context, MainModel model, NumberFormat formatter,
                                         ]),
                                     Center(
                                         child: Text(
-                                      'Total Barang',
+                                      'إجمالي القطع',
                                       style: TextStyle(
                                           color: Colors.grey,
                                           // fontWeight: FontWeight.bold,
@@ -998,15 +998,15 @@ class _NodeDialogeState extends State<NodeDialoge> {
                   color: Colors.black87,
                 ),
                 decoration: InputDecoration(
-                  hintText: 'Masukkan ID member',
+                  hintText: 'أدخل رقم العضو',
                   hintStyle: TextStyle(color: Colors.grey[400]),
                 ),
                 keyboardType: TextInputType.number,
                 validator: (value) => value.isEmpty
-                    ? 'Code is Empty !!'
+                    ? 'كود المنتج فارغ !!'
                     : RegExp('[0-9]').hasMatch(value)
                         ? null
-                        : 'invalid code !!',
+                        : 'كود المنتج غير صحيح !!',
                 onSaved: (String value) {
                   _orderFormData['id'] = value.padLeft(8, '0');
                 },

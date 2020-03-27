@@ -170,9 +170,9 @@ class _SaveDialog extends State<SaveDialog> {
                                               showReview(context, msg.soid,
                                                   msg.amt, msg.error);
                                               model.isTypeing = false;
-                                              PaymentInfo(model)
-                                                  .flushAction(context)
-                                                  .show(context);
+                                              // PaymentInfo(model)
+                                              //     .flushAction(context)
+                                              //     .show(context);
                                             } else {
                                               isLoading(false, model);
                                             }

@@ -623,10 +623,10 @@ class _NewMemberPage extends State<NewMemberPage> {
 
                                   _newMemberFormKey.currentState.reset();
 
-                                  PaymentInfo(model)
-                                      .flushAction(context)
-                                      .show(context);
-                                  ;
+                                  // PaymentInfo(model)
+                                  //     .flushAction(context)
+                                  //     .show(context);
+                                  
                                 }
 
                                 //  s

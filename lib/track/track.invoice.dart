@@ -286,7 +286,7 @@ class _TrackInvoice extends State<TrackInvoice> {
             progressIndicator: LinearProgressIndicator(),
             child: Column(
               children: <Widget>[
-                CustomAppBar("Pelacan tagihan terbayar"),
+                CustomAppBar("الفواتير"),
                 Container(),
                 Expanded(
                   child: ListView.builder(

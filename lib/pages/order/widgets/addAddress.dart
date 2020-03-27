@@ -124,15 +124,16 @@ class _AddRegionState extends State<AddRegion> {
         // crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Text(
-            'Tambahkan Alamat',
+            'أضف العنوان',
             softWrap: true,
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           SearchableDropdown(
             hint: Center(
               child: Text(
-                'Pilih Kota',
+                'المحافظة',
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
               ),
             ),
             icon: Icon(
@@ -207,7 +208,7 @@ class _AddAddressState extends State<AddAddress> {
   String selectedArea;
   var areaSplit;
   bool _async = false;
-  String errorText = 'Entri yang diperlukan';
+  String errorText = 'لا يترك خاليا';
   void isAsync(bool l) {
     setState(() {
       _async = l;
@@ -241,7 +242,7 @@ class _AddAddressState extends State<AddAddress> {
               isExpanded: true,
               hint: Center(
                 child: Text(
-                  'Pilih Kecamatan',
+                  'حدد المنطقة',
                   softWrap: true,
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
@@ -277,7 +278,7 @@ class _AddAddressState extends State<AddAddress> {
                       maxLines: 3,
                       attribute: "comment",
                       decoration: InputDecoration(
-                        labelText: "Detail Alamat",
+                        labelText: "تفاصيل العنوان",
                         /*  border: OutlineInputBorder(
                         gapPadding: 20,
                         borderSide: BorderSide(color: Colors.red),
@@ -387,7 +388,7 @@ class _AddAddressState extends State<AddAddress> {
                     Column(
                       children: <Widget>[
                         Text(
-                          ' penambahan Alamat $msg ',
+                          ' إضافة العنوان $msg ',
                           style: TextStyle(
                               fontSize: 16.0,
                               color: Colors.grey,
@@ -398,7 +399,7 @@ class _AddAddressState extends State<AddAddress> {
                     InkWell(
                       onTap: () {
                         Navigator.of(context).pop();
-                        if (msg == 'sukses') {
+                        if (msg == 'نجحت') {
                           showDialog(
                               context: context,
                               builder: (_) => ShipmentPlace(
@@ -425,7 +426,7 @@ class _AddAddressState extends State<AddAddress> {
             );
           });
     } else {
-      msg = 'gagal';
+      msg = 'فشلت';
       isAsync(false);
       showDialog(
           context: context,
@@ -444,7 +445,7 @@ class _AddAddressState extends State<AddAddress> {
                     Column(
                       children: <Widget>[
                         Text(
-                          ' penambahan Alamat $msg ',
+                          ' إضافة العنوان $msg ',
                           style: TextStyle(
                               fontSize: 16.0,
                               color: Colors.grey,

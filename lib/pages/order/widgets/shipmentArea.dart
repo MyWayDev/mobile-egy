@@ -142,7 +142,7 @@ class _ShipmentAreaState extends State<ShipmentPlace>
                 title: ListTile(
                     contentPadding: EdgeInsets.all(10),
                     leading: Text(
-                      'Pilih Area Pengiriman',
+                      'نقطة التوزيع',
                       style: TextStyle(fontSize: 14),
                     ),
                     trailing: Column(
@@ -181,7 +181,7 @@ class _ShipmentAreaState extends State<ShipmentPlace>
                               ),
                               attribute: "Point",
                               decoration: InputDecoration(
-                                  labelText: "Titik Distribusi"),
+                                  labelText: "حدد منطقة الشحن"),
                               initialValue: distrPoints[0].id,
                               hint: Text('Select Point'),
                               validators: [FormBuilderValidators.required()],

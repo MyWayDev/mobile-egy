@@ -353,14 +353,14 @@ class _StockDialog extends State<StockDialog> {
                       )
                     : stock - safetyStock < 1
                         ? Text(
-                            'Jumlah yang tersedia 0 ',
+                            'الكميه المتاحه 0',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.red,
                             ),
                           )
                         : Text(
-                            ' Jumlah yang tersedia ${stock - safetyStock}',
+                            ' الكميه المتاحه ${stock - safetyStock}',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.red,

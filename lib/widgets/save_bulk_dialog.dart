@@ -410,9 +410,9 @@ class _SaveBulkDialogState extends State<SaveBulkDialog> {
                                                     model.shipmentAddress,
                                                 widget.courierId);
                                         isLoading(false, model);
-                                        PaymentInfo(model)
-                                            .flushAction(context)
-                                            .show(context);
+                                        // PaymentInfo(model)
+                                        //     .flushAction(context)
+                                        //     .show(context);
                                       }
                                     },
                                     splashColor: Colors.pink[900],

@@ -92,6 +92,9 @@ class _RegistrationPage extends State<RegistrationPage> {
       _registrationFormKey.currentState.save();
       return true;
     }
+    else{
+      print("not valid entry");
+    }
     isloading(false);
     return false;
   }
@@ -196,13 +199,13 @@ class _RegistrationPage extends State<RegistrationPage> {
                     TextFormField(
                       initialValue: '',
                       decoration: InputDecoration(
-                          labelText: _mobileNumber, // 'Nomor Telepon',
+                          labelText: 'الهاتف', // 'Nomor Telepon',
                           contentPadding: EdgeInsets.all(8.0),
                           icon: Icon(Icons.phone, color: Colors.pink[500])),
-                      validator: (value) =>
-                          value.isEmpty ? 'الهاتف' : 'الهاتف!!',
+                       validator: (value) =>
+                           value.isEmpty ? 'الهاتف' : 'الهاتف!!',
                       onSaved: (String value) {
-                        _registrationFormData['الهاتف'] = value;
+                        _registrationFormData['telephone'] = value;
                       },
                     ),
                     TextFormField(
@@ -232,7 +235,7 @@ class _RegistrationPage extends State<RegistrationPage> {
                             Icons.lock,
                             color: Colors.pink[500],
                           )),
-                      validator: (value) =>
+                       validator: (value) =>
                           value.isEmpty ? 'كلمة المرور' : 'كلمة المرور',
                       obscureText: true,
                       onSaved: (String value) {
