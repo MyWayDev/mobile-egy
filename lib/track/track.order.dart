@@ -25,7 +25,7 @@ class TrackOrder extends StatefulWidget {
 
 @override
 class _TrackOrder extends State<TrackOrder> {
-  List<Sorder> firstSorder;
+  List<Sorder> firstSorder = [];
   final formatter = new NumberFormat("#,###");
   double addPpnTax(int index) {
     double cf = double.tryParse(firstSorder[index].coureirFee) ?? 0.0;
@@ -71,8 +71,10 @@ class _TrackOrder extends State<TrackOrder> {
     if (response.statusCode == 200 && firstSorder.length == 0) {
       print('getSorder ok');
       List<dynamic> soList = json.decode(response.body);
-      List<Sorder> sos = soList.map((i) => Sorder.fromJson(i)).toList();
-      List<SoItem> items = soList.map((i) => SoItem.fromJson(i)).toList();
+      List<Sorder> sos = [];
+      sos = soList.map((i) => Sorder.fromJson(i)).toList();
+      List<SoItem> items = [];
+      items = soList.map((i) => SoItem.fromJson(i)).toList();
 //List<Invoice> firstInvoice = [];
 //items.forEach((f)=>print('${f.itemId}..${f.docId}'));
       sos.forEach((f) {
@@ -555,7 +557,7 @@ class _TrackOrder extends State<TrackOrder> {
                                       child: Column(
                                         children: <Widget>[
                                           Text(
-                                            'EGP ${(formatter.format(addPpnTax(index)))}',
+                                            'EGP ${(formatter.format(double.tryParse(firstSorder[index].soTotal)))}',
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               color: Colors.red[100],

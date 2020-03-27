@@ -85,7 +85,10 @@ class _IconBar extends State<IconBar> {
               IconButton(
                 icon: Icon(Icons.info_outline),
                 iconSize: 30.0,
-                color: Colors.blueAccent, onPressed: () {},
+                color: Colors.blueAccent,
+                onPressed: () {
+                  model.getWeeklyPromo();
+                },
                 // onPressed: () {
                 //   Navigator.push(
                 //       context,

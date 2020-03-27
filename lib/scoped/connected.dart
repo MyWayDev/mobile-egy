@@ -1074,17 +1074,23 @@ class MainModel extends Model {
     return _bp;
   }
 
-  void getWeeklyPromo() async {
+  Future<int> getWeeklyPromo() async {
+    int promoItemBpTotal;
     DataSnapshot snapshot =
         await database.reference().child('$path/gifts/en-US/').once();
     Map<dynamic, dynamic> giftsList = snapshot.value;
     List list = giftsList.values.toList();
     List<Gift> gifts = list.map((f) => Gift.fbList(f)).toList();
-    String giftItem = gifts[0].items.first;
-    print(giftItem);
-    ItemOrder _iO = itemorderlist.where((f) => f.itemId == giftItem).first;
+    String promoItem = gifts[0].items.first.toString();
 
-    print(_iO.bp);
+    itemorderlist.forEach((f) => print('order items=>${f.itemId}'));
+    for (ItemOrder item in itemorderlist) {
+      if (item.itemId == promoItem) {
+        promoItemBpTotal = item.bp * item.qty;
+      }
+    }
+    return promoItemBpTotal;
+    // print(_iO.bp);
   }
 
   Future<OrderMsg> orderBalanceCheck(String shipmentId, double courierfee,
