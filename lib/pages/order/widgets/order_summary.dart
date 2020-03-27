@@ -39,34 +39,36 @@ class OrderSummary extends StatelessWidget {
                                 height: 27,
                                 child: ListTile(
                                   title: Text(
-                                    'Total Weight',
+                                    'إجمالى الوزن',
                                     style: TextStyle(fontSize: 14),
-                                    // textDirection: TextDirection.rtl,
+                                    textAlign: TextAlign.right
                                   ),
-                                  trailing: Text(
+                                  leading: Text(
                                     doubleFormat.format(model.orderWeight()) +
                                         ' Kg',
                                     style: TextStyle(fontSize: 14),
+                                    textAlign: TextAlign.right,
                                   ),
-                                  leading: Icon(
+                                  trailing: Icon(
                                     GroovinMaterialIcons.weight_kilogram,
                                     size: 22,
                                     color: Colors.black,
+                                    
                                   ),
                                 )),
                             Container(
                                 height: 27,
                                 child: ListTile(
                                   title: Text(
-                                    'Total Poin',
+                                    'اجمالي النقاط',
                                     style: TextStyle(fontSize: 14),
-                                    // textDirection: TextDirection.rtl,
+                                    textAlign: TextAlign.right,
                                   ),
-                                  trailing: Text(
+                                  leading: Text(
                                     model.orderBp().toString() + ' Bp',
                                     style: TextStyle(fontSize: 14),
                                   ),
-                                  leading: Icon(
+                                  trailing: Icon(
                                     Icons.trending_up,
                                     size: 22,
                                     color: Colors.green,
@@ -76,13 +78,13 @@ class OrderSummary extends StatelessWidget {
                                 height: 27,
                                 child: ListTile(
                                   title: Text(
-                                    'Biaya Kurir',
+                                    'مصاريف الشحن',
                                     style: TextStyle(
                                       fontSize: 13,
                                     ),
-                                    // textDirection: TextDirection.rtl,
+                                    textAlign: TextAlign.right,
                                   ),
-                                  trailing: courierDiscount != null &&
+                                  leading: courierDiscount != null &&
                                           courierDiscount > 0
                                       ? Container(
                                           color: Colors.yellow[100],
@@ -131,7 +133,7 @@ class OrderSummary extends StatelessWidget {
                                               ' EGP',
                                           style: TextStyle(fontSize: 13),
                                         ),
-                                  leading: Icon(
+                                  trailing: Icon(
                                     Icons.local_shipping,
                                     size: 22,
                                     color: Colors.pink[900],
@@ -141,15 +143,15 @@ class OrderSummary extends StatelessWidget {
                                 height: 27,
                                 child: ListTile(
                                   title: Text(
-                                    'Total Tagihan',
+                                    'الإجمالي',
                                     style: TextStyle(fontSize: 14),
-                                    // textDirection: TextDirection.rtl,
+                                    textAlign: TextAlign.right,
                                   ),
-                                  trailing: Text(
+                                  leading: Text(
                                     formatter.format(model.orderSum()) + ' EGP',
                                     style: TextStyle(fontSize: 13),
                                   ),
-                                  leading: Icon(
+                                  trailing: Icon(
                                     Icons.monetization_on,
                                     size: 22,
                                     color: Colors.yellow[600],
@@ -190,19 +192,19 @@ class OrderSummary extends StatelessWidget {
                                 height: 27,
                                 child: ListTile(
                                   title: Text(
-                                    'Total Weight',
+                                    'إجمالى الوزن',
                                     style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold),
-                                    // textDirection: TextDirection.rtl,
+                                        textAlign: TextAlign.right,
                                   ),
-                                  trailing: Text(
+                                  leading: Text(
                                     doubleFormat
                                             .format(model.bulkOrderWeight()) +
                                         ' Kg',
                                     style: TextStyle(fontSize: 14),
                                   ),
-                                  leading: Icon(
+                                  trailing: Icon(
                                     GroovinMaterialIcons.weight_kilogram,
                                     size: 22,
                                     color: Colors.black,
@@ -212,18 +214,19 @@ class OrderSummary extends StatelessWidget {
                                 height: 27,
                                 child: ListTile(
                                   title: Text(
-                                    'Total Poin',
+                                    'اجمالي النقاط',
                                     style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold),
                                     // textDirection: TextDirection.rtl,
+                                      textAlign: TextAlign.right,
                                   ),
-                                  trailing: Text(
+                                  leading: Text(
                                     model.bulkOrderBp().toInt().toString() +
                                         ' Bp',
                                     style: TextStyle(fontSize: 14),
                                   ),
-                                  leading: Icon(
+                                  trailing: Icon(
                                     Icons.trending_up,
                                     size: 22,
                                     color: Colors.green,
@@ -233,13 +236,14 @@ class OrderSummary extends StatelessWidget {
                                 height: 27,
                                 child: ListTile(
                                   title: Text(
-                                    'Biaya Kurir',
+                                    'مصاريف الشحن',
                                     style: TextStyle(
                                         fontSize: 13,
                                         fontWeight: FontWeight.bold),
                                     // textDirection: TextDirection.rtl,
+                                        textAlign: TextAlign.right,
                                   ),
-                                  trailing: courierDiscount != null &&
+                                  leading: courierDiscount != null &&
                                           courierDiscount > 0
                                       ? Container(
                                           color: Colors.yellow[100],
@@ -289,7 +293,7 @@ class OrderSummary extends StatelessWidget {
                                               ' EGP',
                                           style: TextStyle(fontSize: 13),
                                         ),
-                                  leading: Icon(
+                                  trailing: Icon(
                                     Icons.local_shipping,
                                     size: 22,
                                     color: Colors.pink[900],
@@ -299,18 +303,18 @@ class OrderSummary extends StatelessWidget {
                                 height: 27,
                                 child: ListTile(
                                   title: Text(
-                                    'Total Tagihan',
+                                    'الإجمالي',
                                     style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold),
                                     // textDirection: TextDirection.rtl,
                                   ),
-                                  trailing: Text(
+                                  leading: Text(
                                     formatter.format(model.bulkOrderSum()) +
                                         ' EGP',
                                     style: TextStyle(fontSize: 13),
                                   ),
-                                  leading: Icon(
+                                  trailing: Icon(
                                     Icons.monetization_on,
                                     size: 22,
                                     color: Colors.yellow[900],

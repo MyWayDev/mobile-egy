@@ -254,7 +254,7 @@ class _EndOrder extends State<EndOrder> with SingleTickerProviderStateMixin {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Text(
-                                    'Tekan Icon diatas untuk menyelesaikan pesanan',
+                                    'اضغط على الرمز أعلاه لإدخال العنوان',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 13.5,

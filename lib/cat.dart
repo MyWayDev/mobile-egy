@@ -96,7 +96,7 @@ class _CatState extends State<Cat> {
                 primary: true,
                 appBar: AppBar(
                   centerTitle: true,
-                  title: Text("Katalog"),
+                  title: Text("الكاتالوج"),
                   actions: <Widget>[],
                 ),
                 path: pathPDF);
