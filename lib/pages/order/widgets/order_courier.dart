@@ -71,13 +71,13 @@ class _CourierOrder extends State<CourierOrder> {
                     Container(
                       height: 38,
                       child: TextField(
-                        textAlign: TextAlign.left,
+                        textAlign: TextAlign.right,
                         maxLines: 1,
                         textDirection: TextDirection.ltr,
                         controller: controller,
                         decoration: InputDecoration(
                           fillColor: Colors.lightBlue,
-                          hintText: 'Komentar',
+                          hintText: 'ملاحظات',
                         ),
                         // style: TextStyle(fontSize: 18.0),
                         // onChanged: onSearchTextChanged,
@@ -87,7 +87,7 @@ class _CourierOrder extends State<CourierOrder> {
                     model.giftorderList.length > 0
                         //|| model.giftPacks.length > 0
                         ? Text(
-                            'Poin Hadiah',
+                            'هدايا النقاط',
                             style: TextStyle(
                                 color: Colors.grey,
                                 //fontWeight: FontWeight.bold,
@@ -152,7 +152,7 @@ class _CourierOrder extends State<CourierOrder> {
                                   decoration: InputDecoration(
                                     icon: Icon(Icons.local_shipping),
                                     labelText: stateValue == null
-                                        ? 'Tipe Pengiriman / ${model.shipmentName}'
+                                        ? 'شركة الشحن / ${model.shipmentName}'
                                         : '',
                                     errorText:
                                         state.hasError ? state.errorText : null,

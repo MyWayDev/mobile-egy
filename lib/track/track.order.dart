@@ -185,7 +185,7 @@ class _TrackOrder extends State<TrackOrder> {
                         topRight: const Radius.circular(10.0))),
                 child: new Center(
                   child: new Text(
-                      " harap menunggu ${(5 - wait)} menit untuk melanjutkan "),
+                      "    الرجاء الاتظار  ${(5 - wait)}  دقائق للتنفيذ "),
                 )),
           );
         });

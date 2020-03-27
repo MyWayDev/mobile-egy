@@ -53,6 +53,16 @@ class OrderSave extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
+                          Text(
+                            formatter.format((orderTotal(model)) + courierFee) +
+                                ' EGP',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
+                              Expanded(
+                            child: Container(),
+                          ),
                           Transform.translate(
                             offset: Offset(1.0, 0.0),
                             child: Container(
@@ -67,20 +77,13 @@ class OrderSave extends StatelessWidget {
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white),
                                       //  textDirection: TextDirection.rtl,
+                                          textAlign: TextAlign.right ,
                                     ),
                                   ],
                                 )),
                           ),
-                          Expanded(
-                            child: Container(),
-                          ),
-                          Text(
-                            formatter.format((orderTotal(model)) + courierFee) +
-                                ' EGP',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
-                          ),
+                          
+                          
                         ],
                       ),
                       onPressed: () {

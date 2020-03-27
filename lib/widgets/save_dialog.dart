@@ -76,7 +76,7 @@ class _SaveDialog extends State<SaveDialog> {
                               Padding(
                                 padding: EdgeInsets.only(right: 10),
                                 child: Text(
-                                  'Jumlah',
+                                  'االكمية',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold),
@@ -85,7 +85,7 @@ class _SaveDialog extends State<SaveDialog> {
                               Padding(
                                 padding: EdgeInsets.only(right: 10),
                                 child: Text(
-                                  'Kode',
+                                  'الكود',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold),
@@ -321,8 +321,8 @@ class _SaveDialog extends State<SaveDialog> {
                       ? Column(
                           children: <Widget>[
                             Text(
-                              '$soid: nomor order',
-                              textDirection: TextDirection.rtl,
+                              'رقم الطلبية : $soid',
+                              textDirection: TextDirection.ltr,
                               style: TextStyle(
                                   fontSize: 16.0,
                                   color: Colors.grey,
