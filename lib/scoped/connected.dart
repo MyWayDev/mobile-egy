@@ -1079,6 +1079,7 @@ class MainModel extends Model {
     _wPromo = await getWeeklyPromo(orderBp());
     double _exPromo = 0;
     _exPromo = getExPromo(orderBp());
+    if (_wPromo > 0 && _exPromo > 0) {}
     print('$_wPromo / $_exPromo');
   }
 
