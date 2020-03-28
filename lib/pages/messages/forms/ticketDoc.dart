@@ -76,7 +76,7 @@ class _DocFormState extends State<DocForm> {
     super.dispose();
   }
 
-  String errorText = 'Entri yang diperlukan';
+  String errorText = 'يجب إدخال بيانات';
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
@@ -120,7 +120,7 @@ class _DocFormState extends State<DocForm> {
                                       child: DropdownButton(
                                         hint: Center(
                                           child: Text(
-                                            "Nomor tagihan",
+                                            "رقم الفاتورة",
                                             style: TextStyle(fontSize: 13),
                                           ),
                                         ),
@@ -183,7 +183,7 @@ class _DocFormState extends State<DocForm> {
                       : Container(),
                   isItemChips && widget.docProblem != 'l'
                       ? FormBuilderChipsInput(
-                          decoration: InputDecoration(labelText: "Barang"),
+                          decoration: InputDecoration(labelText: "المنتجات"),
                           attribute: 'chips',
                           // readonly: true,
                           validators: [
@@ -347,7 +347,7 @@ class _DocFormState extends State<DocForm> {
                                   child: Text(
                                     "${profile.qty.toInt().toString()}" +
                                         ' ' +
-                                        "Jumlah",
+                                        "الكميه",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 15),
@@ -369,7 +369,7 @@ class _DocFormState extends State<DocForm> {
                           maxLines: 4,
                           attribute: "comment",
                           decoration: InputDecoration(
-                            labelText: "Komentar",
+                            labelText: "ملاحظات",
                             /*border: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.red),
                         ),*/
@@ -389,7 +389,7 @@ class _DocFormState extends State<DocForm> {
                             FormBuilderValidators.minLength(3,
                                 errorText: errorText),
                             FormBuilderValidators.maxLength(300,
-                                errorText: 'Batas masuk tercapai'),
+                                errorText: 'تجاوز حد الادخال'),
                           ],
                         )
                       : Container(),

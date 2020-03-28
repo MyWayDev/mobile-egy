@@ -206,7 +206,7 @@ class _SaveDialog extends State<SaveDialog> {
                               Padding(
                                 padding: EdgeInsets.only(right: 10),
                                 child: Text(
-                                  'Jumlah',
+                                  'الكمية',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold),
@@ -215,7 +215,7 @@ class _SaveDialog extends State<SaveDialog> {
                               Padding(
                                 padding: EdgeInsets.only(right: 10),
                                 child: Text(
-                                  'Kode',
+                                  'الكود',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold),
@@ -256,7 +256,7 @@ class _SaveDialog extends State<SaveDialog> {
                                   Padding(
                                     padding: EdgeInsets.all(10),
                                     child: Text(
-                                      'order telah diubah sesuai dengan ketersediaan saat ini',
+                                      'تم تحديث الطلبيه حسب الكميات المتاحه الان',
                                       softWrap: true,
                                       // textDirection: TextDirection.rtl,
                                       style: TextStyle(
@@ -281,7 +281,7 @@ class _SaveDialog extends State<SaveDialog> {
                                     splashColor: Colors.pink[900],
                                   ),
                                   Text(
-                                    'kebali ke modifikasi',
+                                    'الرجاء العوده للتعديل',
                                     textDirection: TextDirection.rtl,
                                     style: TextStyle(
                                         fontSize: 14.0,

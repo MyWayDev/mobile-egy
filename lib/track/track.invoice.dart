@@ -394,7 +394,7 @@ class _TrackInvoice extends State<TrackInvoice> {
                                                       firstInvoice[index]
                                                                   .flagType !=
                                                               'CA'
-                                                          ? 'Track # ${firstInvoice[index].refNo}'
+                                                          ? ''// 'Track # ${firstInvoice[index].refNo}'
                                                           : firstInvoice[index]
                                                               .flagType,
                                                       style: TextStyle(
