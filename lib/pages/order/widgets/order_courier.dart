@@ -262,7 +262,7 @@ class _CourierOrder extends State<CourierOrder> {
                                   decoration: InputDecoration(
                                     icon: Icon(Icons.local_shipping),
                                     labelText: stateValue == null
-                                        ? 'Tipe Pengiriman / ${model.shipmentName}'
+                                        ? '${model.shipmentName}'
                                         : '',
                                     errorText:
                                         state.hasError ? state.errorText : null,

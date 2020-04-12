@@ -282,7 +282,7 @@ class _TrackOrder extends State<TrackOrder> {
                       sos[index].docId,
                       sos[index].distrId,
                       model,
-                      "Barang yang sudah dipesan akan dibatalkan dan order akan dihapus",
+                      "سيتم إلغاء المنتجات التي تم طلبها وسيتم حذف الطلبية",
                       false,
                       sos[index].storeId,
                       sos[index].soType);

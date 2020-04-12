@@ -320,7 +320,7 @@ class _SaveBulkDialogState extends State<SaveBulkDialog> {
                           Center(
                             // TOD  padding: EdgeInsets.only(right: 10),
                             child: Text(
-                              'Invoice Number',
+                              'أرقام الطلبيات',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold),
@@ -514,7 +514,7 @@ class _SaveBulkDialogState extends State<SaveBulkDialog> {
                       itemBuilder: (context, i) {
                         return ids != null || ids != []
                             ? Text(
-                                '$ids: nomor order',
+                                '$ids: أرقام الطلبيات',
                                 style: TextStyle(
                                     fontSize: 16.0,
                                     color: Colors.grey,

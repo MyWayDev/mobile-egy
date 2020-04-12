@@ -254,7 +254,7 @@ class _EndOrder extends State<EndOrder> with SingleTickerProviderStateMixin {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Text(
-                                    'اضغط على الرمز أعلاه لإدخال العنوان',
+                                    'اضغط على الرمز أعلاه لإضافة عنوان',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 13.5,
@@ -275,7 +275,7 @@ class _EndOrder extends State<EndOrder> with SingleTickerProviderStateMixin {
                                               MainAxisAlignment.center,
                                           children: <Widget>[
                                             Text(
-                                              'Tekan Icon dibawah untuk menyele saikan vesanann downline',
+                                              'اضغط على االرمز أدناه لإكمال الطلبية',
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 14,

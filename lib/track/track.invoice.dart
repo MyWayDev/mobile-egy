@@ -175,7 +175,7 @@ class _TrackInvoice extends State<TrackInvoice> {
           height: 80,
           child: AlertDialog(
             title: Text(
-              "Nomor tagiha akan disembunyikan",
+              "سيتم إخفاء أرقام الفواتير التالية",
               textAlign: TextAlign.center,
             ),
             content: Text(
