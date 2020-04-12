@@ -13,7 +13,7 @@ class OrderSave extends StatelessWidget {
   final String note;
   final String userId;
   final String areaId;
-  final formatter = new NumberFormat("#,###");
+  final formatter = new NumberFormat("#,###.##");
 
   OrderSave(this.courierId, this.courierFee, this.courierDiscount, this.distrId,
       this.note, this.areaId, this.userId);
@@ -60,7 +60,7 @@ class OrderSave extends StatelessWidget {
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold),
                           ),
-                              Expanded(
+                          Expanded(
                             child: Container(),
                           ),
                           Transform.translate(
@@ -77,13 +77,11 @@ class OrderSave extends StatelessWidget {
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white),
                                       //  textDirection: TextDirection.rtl,
-                                          textAlign: TextAlign.right ,
+                                      //   textAlign: TextAlign.right,
                                     ),
                                   ],
                                 )),
                           ),
-                          
-                          
                         ],
                       ),
                       onPressed: () {
@@ -110,43 +108,37 @@ class OrderSave extends StatelessWidget {
                   padding: EdgeInsets.only(top: 1),
                   child: RaisedButton(
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0)),
+                          borderRadius: BorderRadius.circular(40.0)),
                       splashColor: Theme.of(context).primaryColor,
                       color: Colors.tealAccent[400],
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Transform.translate(
-                            offset: Offset(1.0, 0.0),
-                            child: Container(
-                                padding: const EdgeInsets.only(right: 2.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text(
-                                      'اجمالى الطلبيه',
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white),
-                                      //  textDirection: TextDirection.rtl,
-                                    ),
-                                  ],
-                                )),
-                          ),
-                          Expanded(
-                            child: Container(),
-                          ),
-                          Text(
-                            formatter.format((bulkOrderTotal(model)) +
-                                    bulkOrderCourierFee(model)) +
-                                ' EGP',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
+                      child: Transform.translate(
+                        offset: Offset(2.0, 0.0),
+                        child: Container(
+                            padding: const EdgeInsets.only(right: 2.0),
+                            child: ListTile(
+                              trailing: Text(
+                                'اجمالى الطلبيه',
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                                textAlign: TextAlign.right,
+                                //  textDirection: TextDirection.rtl,
+                              ),
+                              leading: Text(
+                                formatter.format((bulkOrderTotal(model)) +
+                                        bulkOrderCourierFee(model)) +
+                                    ' EGP',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            )),
                       ),
+                      /*   awaitExpanded(
+                            child: Container(),
+                          ),*/
+
                       onPressed: () async {
                         model.isBalanceChecked = true;
 

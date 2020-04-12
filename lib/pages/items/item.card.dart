@@ -61,6 +61,7 @@ class ItemCard extends StatelessWidget {
                             Padding(
                               padding: EdgeInsets.only(bottom: 2.0),
                             ),
+
                             Text(
                               itemData[index].itemId,
                               style: TextStyle(

@@ -1,6 +1,9 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:groovin_material_icons/groovin_material_icons.dart';
 import 'package:mor_release/models/item.dart';
+import 'package:mor_release/pages/items/item.details.dart';
+import 'package:mor_release/pages/items/itemDetails/details.dart';
 import 'package:mor_release/scoped/connected.dart';
 import 'package:mor_release/widgets/stock_dialog.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -40,22 +43,38 @@ class _IconBar extends State<IconBar> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               !model.cartLocked
-                  ? BadgeIconButton(
-                      itemCount: model.iCount(widget.index),
-                      icon: Icon(
-                        Icons.shopping_cart,
-                        color: Colors.pink[900],
-                        size: 32.0,
-                      ),
-                      // required
-                      //badgeColor: Colors.pink[900],
-                      badgeTextColor: Colors.white,
-                      onPressed: () async {
-                        showDialog(
-                            context: context,
-                            builder: (_) => StockDialog(widget.itemData,
-                                widget.index, model.iCount(widget.index)));
-                      },
+                  ? Stack(
+                      children: <Widget>[
+                        BadgeIconButton(
+                          itemCount: model.iCount(widget.index),
+                          icon: Icon(
+                            Icons.shopping_cart,
+                            color: Colors.pink[900],
+                            size: 32.0,
+                          ),
+                          // required
+                          badgeColor: !model.iheld(widget.index)
+                              ? Colors.red
+                              : Colors.amberAccent,
+                          badgeTextColor: Colors.white,
+                          onPressed: () async {
+                            showDialog(
+                                context: context,
+                                builder: (_) => StockDialog(widget.itemData,
+                                    widget.index, model.iCount(widget.index)));
+                          },
+                        ),
+                        Positioned(
+                          right: 14,
+                          bottom: 33,
+                          child: model.iheld(widget.index)
+                              ? Icon(
+                                  GroovinMaterialIcons.arrow_down_bold,
+                                  color: Colors.blue,
+                                )
+                              : Container(),
+                        ),
+                      ],
                     )
                   : BadgeIconButton(
                       itemCount: model.iCount(widget.index),
@@ -83,23 +102,24 @@ class _IconBar extends State<IconBar> {
                 padding: EdgeInsets.only(left: 6.0, right: 6.0),
               ),
               IconButton(
-                icon: Icon(Icons.info_outline),
-                iconSize: 30.0,
-                color: Colors.blueAccent,
-                onPressed: () async {
-                  model.bpValidPercent();
-                },
-                // onPressed: () {
-                //   Navigator.push(
-                //       context,
-                //       MaterialPageRoute(
-                //           builder: (context) => Details(
-                //               widget.itemData[widget.index],
-                //               model.getCaouselItems(
-                //                   widget.itemData[widget.index]))
-                // ItemDetails(widget.itemData[widget.index])
-                //         ));
-              ),
+                  icon: Icon(Icons.info_outline),
+                  iconSize: 30.0,
+                  color: Colors.blueAccent,
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Details(
+                                widget.itemData[widget.index],
+                                model.getCaouselItems(
+                                    widget.itemData[widget.index]))));
+                    /*   onPressed: () async {
+                 // print('held:${model.iheld(widget.index)}');
+                  //
+                  // model.itemDataUpdataProductToFB();
+                  //model.bpValidPercent();
+                },*/
+                  }),
               /* IconButton(
                   // !delete this mock icon;
                   icon: Icon(Icons.code),

@@ -23,7 +23,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 class MainModel extends Model {
   // ** items //** */
-  static String _version = '3.20r'; //!Modify for every release version./.
+  static String _version = '3.21r'; //!Modify for every release version./.
   static String firebaseDb = "egyProduction"; //!modify back to egyProduction;
   static String stage = "egyStage";
   static String updateDb = "egyStage";
@@ -61,6 +61,48 @@ class MainModel extends Model {
     _distrPointNames = distrPointName;
     notifyListeners();
     return _distrPointNames;
+  }
+
+  void itemDataUpdataProductToFB() async {
+    List<Products> products = await getitemDetailsApi();
+    if (products.isNotEmpty) {
+      for (Products p in products)
+        itemData.where((i) => i.itemId == p.itemId).forEach((f) {
+          print(f.key);
+          print(products.length);
+          print(itemData.length);
+          updateItemsCatFalse(f.key, p);
+        });
+    }
+  }
+
+  Future<List<Products>> getitemDetailsApi() async {
+    List<Products> products;
+    //List productlist;
+    final response = await http.get('$httpath/allitemdetails');
+    if (response.statusCode == 200) {
+      final productlist = json.decode(response.body) as List;
+
+      products = productlist.map((i) => Products.fromList(i)).toList();
+    }
+    return products;
+  }
+
+  updateItemsCatFalse(String itemId, Products p) {
+    DatabaseReference catF = FirebaseDatabase.instance.reference().child(
+        'flamelink/environments/egyProduction/content/items/en-US/$itemId');
+
+    catF.update({
+      'catalogue': p.catalog,
+      'disable': false,
+      'promo': p.promo,
+      'price': p.price,
+      'bp': p.bp,
+      'bv': p.bv,
+      'weigth': p.weight
+
+      // 'fromSupport': 0,
+    });
   }
 
   updateEnabledItems(String itemId) {
@@ -412,15 +454,16 @@ class MainModel extends Model {
     }
   }
 
-  void addItemOrder(Item item, int qty) {
+  void addItemOrder(Item item, int qty, [bool _held = false]) {
     final ItemOrder itemorder = ItemOrder(
       itemId: item.itemId,
       price: double.parse(item.price.toString()),
       bp: item.bp,
       bv: double.parse(item.bv.toString()),
       qty: qty,
+      held: _held,
       name: item.name,
-      weight: item.weight,
+      weight: double.parse(item.weight.toString()),
       img: item.imageUrl,
     );
 
@@ -455,6 +498,49 @@ class MainModel extends Model {
   }
 
 //!--------*
+  bool iheld(int x, {String item}) {
+    if (item != null) {
+      var i = itemData.where((i) => i.itemId == item);
+      int index = itemData.indexOf(i.first);
+
+      try {
+        var l = itemorderlist.where((o) => o.itemId == itemData[index].itemId);
+        // int index = itemorderlist.indexOf(l.first);
+        notifyListeners();
+        return l.single.held; //use to be l.first.qty
+      } catch (e) {
+        notifyListeners();
+
+        return false;
+      }
+    }
+    if (itemorderlist.length > 0) {
+      if (searchResult.length == 0) {
+        try {
+          var l = itemorderlist.where((o) => o.itemId == itemData[x].itemId);
+          //int index = itemorderlist.indexOf(l.first);
+          notifyListeners();
+          return l.single.held; //use to be l.first.qty
+        } catch (e) {
+          notifyListeners();
+          return false;
+        }
+      } else {
+        try {
+          var l =
+              itemorderlist.where((o) => o.itemId == searchResult[x].itemId);
+          // int index = itemorderlist.indexOf(l.first);
+          notifyListeners();
+          return l.single.held; //use to be l.first.qty
+        } catch (e) {
+          notifyListeners();
+
+          return false;
+        }
+      }
+    }
+    return false;
+  }
 
   int iCount(int x, {String item}) {
     if (item != null) {
@@ -1122,7 +1208,9 @@ class MainModel extends Model {
     //promoOrderList.forEach((p) => print('bp:${p.bp}Qty:${p.qty}'));
     for (ItemOrder item in itemorderlist) {
       await getStock(item.itemId).then((i) {
-        if (i < item.qty) {
+        if (i < item.qty && !item.held) {
+          print('stock:$i');
+          print('heldtree:${item.held}');
           orderOutList.add(item);
           orderOutList.last.qty = i;
           print('OutListBelow:');
@@ -1236,7 +1324,10 @@ class MainModel extends Model {
   List<AggrItem> bulkItemsList(List<SalesOrder> orders) {
     List<ItemOrder> itemOrdersII = [];
     // orders.forEach((o) => print({o.distrId: o.total}));
-    orders.forEach((so) => so.order.forEach((item) => itemOrdersII.add(item)));
+    orders.forEach((so) => so.order.forEach((item) {
+          print("held too:${item.held}");
+          itemOrdersII.add(item);
+        }));
 
     return itemOrderAggrList(itemOrdersII);
   }
@@ -1262,7 +1353,8 @@ class MainModel extends Model {
     for (var item in aggrItem) {
       item.id != '90'
           ? await getStock(item.id).then((i) {
-              if (i < item.qty) {
+              if (i < item.qty && item.held) {
+                print('held one:${item.held}');
                 itemOutList.add(item);
                 itemOutList.last.qtyOut = i;
                 print('BulkOutListBelow:');
@@ -1309,6 +1401,7 @@ class MainModel extends Model {
         item.itemId != '90'
             ? await getStock(item.itemId).then((i) {
                 if (i < item.qty) {
+                  print('held also:${item.held}');
                   orderOutList.add(item);
                   orderOutList.last.qty = i;
                   print('BulkOutListBelow:');
@@ -1502,6 +1595,17 @@ class MainModel extends Model {
   }
 
 //!-----------------------orders starts here ----------------------
+  List<ItemOrder> getHeld(List<ItemOrder> itemList) {
+    List<ItemOrder> itemorderlistWithHeld = [];
+    itemList.forEach((i) => itemorderlistWithHeld.add(i));
+    for (var item in itemorderlistWithHeld) {
+      if (item.held && item.qty > 0) {
+        item.qty = item.qty * (-1);
+        print("QTY${item.qty}" + '=>' + "${item.itemId}");
+      }
+    }
+    return itemorderlistWithHeld;
+  }
 
   Future<OrderMsg> saveOrder(String shipmentId, double courierfee,
       String distrId, String note, String areaId) async {
@@ -1531,7 +1635,7 @@ class MainModel extends Model {
     if (courierfee > 0) {
       addCourierToOrder('90', courierfee);
     }
-
+    getHeld(itemorderlist);
     SalesOrder salesOrder = SalesOrder(
       distrId: distrId,
       userId: userInfo.distrId,
@@ -1545,7 +1649,7 @@ class MainModel extends Model {
       storeId: setStoreId,
       branchId: setStoreId,
       soType: docType,
-      order: itemorderlist,
+      order: getHeld(itemorderlist),
     );
 
     print(salesOrder.postOrderToJson(salesOrder));
@@ -1787,7 +1891,7 @@ for(var area in areas){
     List list = _areas.values.toList();
     distrPoints = list
         .map((f) => Region.json(f))
-        .where((r) => r.distrPoint == true && r.id == _regionId)
+        .where((r) => r.distrPoint == true) //&& r.regionId == _regionId)
         .toList();
     print('distrPoints Count:${distrPoints.length}');
     return distrPoints;
@@ -1831,11 +1935,7 @@ for(var area in areas){
     for (var s in services) {
       for (var a in s.areas) {
         if (areaId == a.toString()) {
-          if (orderWeight.toDouble() < s.minWeight.toDouble()) {
-            x = s.minWeight.toInt().toDouble() * s.rate.toDouble();
-          } else {
-            x = orderWeight.ceil().toDouble() * s.rate.toDouble();
-          }
+          x = (orderWeight.ceil().toDouble() * s.rate.toDouble()) + s.minWeight;
         }
       }
     }

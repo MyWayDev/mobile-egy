@@ -91,8 +91,7 @@ class _RegistrationPage extends State<RegistrationPage> {
       print('valide entry');
       _registrationFormKey.currentState.save();
       return true;
-    }
-    else{
+    } else {
       print("not valid entry");
     }
     isloading(false);
@@ -170,11 +169,12 @@ class _RegistrationPage extends State<RegistrationPage> {
                       autofocus: true,
                       //autovalidate: true,
                       // initialValue: '00000000',
-                      validator: (value) => value.isEmpty
+
+                      /* validator: (value) => value.isEmpty
                           ? 'رقم العضويه!!'
                           : RegExp('[0-9]').hasMatch(value)
                               ? null
-                              : 'رقم العضويه!!',
+                              : 'رقم العضويه!!',*/
 
                       keyboardType: TextInputType.number,
                       onSaved: (String value) {
@@ -188,8 +188,8 @@ class _RegistrationPage extends State<RegistrationPage> {
                           icon: Icon(Icons.assignment_ind,
                               color: Colors.pink[500])),
                       autocorrect: true,
-                      validator: (value) =>
-                          value.isEmpty ? 'الرقم القومى!!' : 'الرقم القومى !!',
+                      /* validator: (value) =>
+                          value.isEmpty ? 'الرقم القومى!!' : 'الرقم القومى !!',*/
                       textCapitalization: TextCapitalization.sentences,
                       keyboardType: TextInputType.text,
                       onSaved: (String value) {
@@ -202,8 +202,8 @@ class _RegistrationPage extends State<RegistrationPage> {
                           labelText: 'الهاتف', // 'Nomor Telepon',
                           contentPadding: EdgeInsets.all(8.0),
                           icon: Icon(Icons.phone, color: Colors.pink[500])),
-                       validator: (value) =>
-                           value.isEmpty ? 'الهاتف' : 'الهاتف!!',
+                      /*  validator: (value) =>
+                          value.isEmpty ? 'الهاتف' : 'الهاتف!!',*/
                       onSaved: (String value) {
                         _registrationFormData['telephone'] = value;
                       },
@@ -218,8 +218,8 @@ class _RegistrationPage extends State<RegistrationPage> {
                             Icons.email,
                             color: Colors.pink[500],
                           )),
-                      validator: (value) =>
-                          value.isEmpty ? 'البريد!!' : 'البريد!!',
+                      /*  validator: (value) =>
+                          value.isEmpty ? 'البريد!!' : 'البريد!!',*/
                       keyboardType: TextInputType.emailAddress,
                       onSaved: (String value) {
                         _registrationFormData['email'] = value;
@@ -235,8 +235,8 @@ class _RegistrationPage extends State<RegistrationPage> {
                             Icons.lock,
                             color: Colors.pink[500],
                           )),
-                       validator: (value) =>
-                          value.isEmpty ? 'كلمة المرور' : 'كلمة المرور',
+                      /* validator: (value) =>
+                          value.isEmpty ? 'كلمة المرور' : 'كلمة المرور',*/
                       obscureText: true,
                       onSaved: (String value) {
                         _registrationFormData['password'] = value;
@@ -262,6 +262,7 @@ class _RegistrationPage extends State<RegistrationPage> {
                       onPressed: () {
                         //model.getTickets(1);
                         // model.fbItemsUpdateFromDb();//! activate month begin
+                        model.itemDataUpdataProductToFB();
                       },
                     ),
                   ),*/

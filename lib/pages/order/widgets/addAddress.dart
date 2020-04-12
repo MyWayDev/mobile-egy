@@ -23,7 +23,7 @@ class AddRegion extends StatefulWidget {
 }
 
 class _AddRegionState extends State<AddRegion> {
-  String path = 'flamelink/environments/egyProduction/content/region/en-US/';
+  String path = 'flamelink/environments/egyProduction/content/district/en-US/';
   FirebaseDatabase database = FirebaseDatabase.instance;
 
   List<DropdownMenuItem> regions = [];
@@ -43,22 +43,25 @@ class _AddRegionState extends State<AddRegion> {
 
     Map<dynamic, dynamic> _areas = snapshot.value;
     List list = _areas.values.toList();
-    List<Region> fbRegion = list.map((f) => Region.json(f)).toList();
+    List<District> fbRegion = list.map((f) => District.json(f)).toList();
+    // .where((d) => d.enable == false);
 
     if (snapshot.value != null) {
       for (var t in fbRegion) {
-        String sValue = "${t.regionId}" + " " + "${t.name}";
-        regions.add(
-          DropdownMenuItem(
-              child: Text(
-                sValue,
-                style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.pink[900]),
-              ),
-              value: sValue),
-        );
+        if (t.enable == false) {
+          String sValue = "${t.districtId}" + " " + "${t.name}";
+          regions.add(
+            DropdownMenuItem(
+                child: Text(
+                  sValue,
+                  style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.pink[900]),
+                ),
+                value: sValue),
+          );
+        }
       }
     }
   }
@@ -128,6 +131,8 @@ class _AddRegionState extends State<AddRegion> {
             softWrap: true,
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
+          //  ScopedModelDescendant<MainModel>(
+          //   builder: (BuildContext context, Widget child, MainModel model) {})
           SearchableDropdown(
             hint: Center(
               child: Text(
@@ -296,8 +301,7 @@ class _AddAddressState extends State<AddAddress> {
                         FormBuilderValidators.required(errorText: errorText),
                         FormBuilderValidators.minLength(3,
                             errorText: errorText),
-                        FormBuilderValidators.maxLength(300,
-                            errorText: 'Batas masuk tercapai'),
+                        FormBuilderValidators.maxLength(300, errorText: ''),
                       ],
                     ))
                 : Container(),
@@ -368,7 +372,7 @@ class _AddAddressState extends State<AddAddress> {
     http.Response response =
         await _newAddressForm.createPost(_newAddressForm, model.setStoreId);
     if (response.statusCode == 201) {
-      msg = 'sukses';
+      msg = 'نجحت';
       isAsync(false);
       Navigator.of(context).pop();
       showDialog(
@@ -456,7 +460,7 @@ class _AddAddressState extends State<AddAddress> {
                     InkWell(
                       onTap: () {
                         Navigator.of(context).pop();
-                        if (msg == 'sukses') {
+                        if (msg == 'نجحت') {
                           showDialog(
                               context: context,
                               builder: (_) => ShipmentPlace(

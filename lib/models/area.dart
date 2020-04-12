@@ -1,5 +1,38 @@
 import 'package:firebase_database/firebase_database.dart';
 
+class District {
+  String districtId;
+  String name;
+  bool enable;
+
+  District({this.districtId, this.name, this.enable});
+
+  District.fromSnapshot(DataSnapshot snapshot)
+      : districtId = snapshot.value['districtId'],
+        name = snapshot.value['name'],
+        enable = snapshot.value['enalble'];
+  factory District.json(Map<dynamic, dynamic> json) {
+    return District(
+        districtId: json['districtId'],
+        name: json['name'],
+        enable: json['enalble']);
+  }
+
+  factory District.jsonParse(Map<dynamic, dynamic> json) {
+    return District(
+        districtId: json['districtId'],
+        name: json['name'],
+        enable: json['enlable']);
+  }
+  toJson() {
+    return {
+      "distictId": districtId,
+      "name": name,
+      "enable": enable,
+    };
+  }
+}
+
 class Area {
   String areaId;
   String name;

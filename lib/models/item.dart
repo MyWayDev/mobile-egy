@@ -5,6 +5,7 @@ class Item {
   String key;
   var id;
   String itemId;
+  bool held;
   String name;
   var price;
   var bp;
@@ -30,6 +31,7 @@ class Item {
       {this.key,
       this.id,
       this.itemId,
+      this.held,
       this.name,
       this.price,
       this.bp,
@@ -51,7 +53,7 @@ class Item {
       this.usage,
       this.weight});
 
-  final formatter = NumberFormat("#,###");
+  final formatter = NumberFormat("#,###.##");
   String get priceFormat {
     String _price;
     _price = formatter.format(price);
@@ -62,6 +64,7 @@ class Item {
       : key = snapshot.key,
         id = snapshot.key,
         itemId = snapshot.value['itemId'],
+        held = snapshot.value['held'] ?? false,
         name = snapshot.value['name'] ?? "",
         price = snapshot.value['price'],
         bp = snapshot.value['bp'],
@@ -160,14 +163,51 @@ class Item {
   }
 }
 
+class Products {
+  String itemId;
+  String name;
+  var price;
+  var bp;
+  var bv;
+  var weight;
+  String promo;
+  bool enabled;
+  bool catalog;
+  Products({
+    this.itemId,
+    this.name,
+    this.price,
+    this.bp,
+    this.bv,
+    this.weight,
+    this.promo,
+    this.enabled,
+    this.catalog,
+  });
+  factory Products.fromList(Map<dynamic, dynamic> list) {
+    return Products(
+      itemId: list['ITEM_ID'],
+      name: list['ANAME'] ?? "",
+      price: list['PRICE'],
+      bp: list['BP'],
+      bv: list['BV'],
+      promo: list['PROMO'],
+      catalog: list['CATALOG'],
+      enabled: list['ENABLED'],
+    );
+  }
+}
+
 class AggrItem {
   String id;
+  bool held;
   int qty;
   int qtyOut;
 
   AggrItem({
     this.id,
     this.qty,
+    this.held = false,
     this.qtyOut,
   });
 }
