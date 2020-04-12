@@ -30,7 +30,7 @@ class NewMemberPage extends StatefulWidget {
 @override
 class _NewMemberPage extends State<NewMemberPage> {
   DateTime selected;
-  String path = 'flamelink/environments/egyProduction/content/region/en-US/';
+  String path = 'flamelink/environments/egyProduction/content/district/en-US/';
   FirebaseDatabase database = FirebaseDatabase.instance;
   TextEditingController controller = new TextEditingController();
 
@@ -47,7 +47,7 @@ class _NewMemberPage extends State<NewMemberPage> {
 
   @override
   void initState() {
-    getPlaces();
+    getDistrict();
     //  getAreas();
     controller.addListener(() {
       setState(() {});
@@ -77,11 +77,11 @@ class _NewMemberPage extends State<NewMemberPage> {
 
     Map<dynamic, dynamic> _areas = snapshot.value;
     List list = _areas.values.toList();
-    List<Region> fbRegion = list.map((f) => Region.json(f)).toList();
+    List<District> fbRegion = list.map((f) => District.json(f)).toList();
 
     if (snapshot.value != null) {
       for (var t in fbRegion) {
-        String sValue = "${t.regionId}" + " " + "${t.name}";
+        String sValue = "${t.districtId}" + " " + "${t.name}";
         items.add(
           DropdownMenuItem(
               child: Text(
@@ -100,6 +100,31 @@ class _NewMemberPage extends State<NewMemberPage> {
     print(
         'shipmentPlace:${place.shipmentPlace}:spName${place.spName}:areaId:${place.areaId}');
     return place;
+  }
+
+  void getDistrict() async {
+    DataSnapshot snapshot = await database.reference().child(path).once();
+
+    Map<dynamic, dynamic> _areas = snapshot.value;
+    List list = _areas.values.toList();
+    List<District> fbRegion = list.map((f) => District.json(f)).toList();
+
+    if (snapshot.value != null) {
+      for (var t in fbRegion) {
+        String sValue = "${t.districtId}" + " " + "${t.name}";
+        places.add(
+          DropdownMenuItem(
+              child: Text(
+                sValue,
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.pink[900]),
+              ),
+              value: sValue),
+        );
+      }
+    }
   }
 
   List<AreaPlace> areaPlace;
@@ -177,7 +202,8 @@ class _NewMemberPage extends State<NewMemberPage> {
       _newMemberForm.birthDate =
           DateFormat('yyyy-MM-dd').format(selected).toString();
       _newMemberForm.email = userId;
-      _newMemberForm.areaId = getplace(placeSplit.first).areaId;
+      _newMemberForm.areaId =
+          placeSplit.first; //getplace(placeSplit.first).areaId;
       _newMemberForm.serviceCenter = sc;
       setState(() {
         validData = true;
@@ -603,6 +629,7 @@ class _NewMemberPage extends State<NewMemberPage> {
                             padding: EdgeInsets.only(right: 10.0),
                           ),
                           Expanded(
+                              child: SingleChildScrollView(
                             child: IconButton(
                               icon: Center(
                                 child: Icon(
@@ -626,7 +653,7 @@ class _NewMemberPage extends State<NewMemberPage> {
                                   // PaymentInfo(model)
                                   //     .flushAction(context)
                                   //     .show(context);
-                                  
+
                                 }
 
                                 //  s
@@ -634,7 +661,7 @@ class _NewMemberPage extends State<NewMemberPage> {
                                 //_newMemberFormKey.currentState.reset();
                               },
                             ),
-                          ),
+                          )),
                         ],
                       ),
                     )
@@ -657,8 +684,8 @@ class _NewMemberPage extends State<NewMemberPage> {
     Response response = await _newMemberForm.createPost(
         _newMemberForm,
         user,
-        getplace(placeSplit.first).shipmentPlace,
-        getplace(placeSplit.first).spName,
+        '100058', //getplace(placeSplit.first).shipmentPlace,
+        'جسر السويس', //getplace(placeSplit.first).spName,
         docType,
         storeId);
     if (response.statusCode == 201) {

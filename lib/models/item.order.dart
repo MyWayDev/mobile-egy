@@ -12,6 +12,7 @@ class ItemOrder {
   double bv;
   double weight;
   int qty;
+  bool held;
   String name;
   String img;
 
@@ -34,6 +35,7 @@ class ItemOrder {
     this.itemId,
     this.price,
     this.qty,
+    this.held = false,
     this.bp,
     this.bv,
     this.name,

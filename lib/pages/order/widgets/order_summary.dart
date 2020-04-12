@@ -38,11 +38,9 @@ class OrderSummary extends StatelessWidget {
                             Container(
                                 height: 27,
                                 child: ListTile(
-                                  title: Text(
-                                    'إجمالى الوزن',
-                                    style: TextStyle(fontSize: 14),
-                                    textAlign: TextAlign.right
-                                  ),
+                                  title: Text('إجمالى الوزن',
+                                      style: TextStyle(fontSize: 14),
+                                      textAlign: TextAlign.right),
                                   leading: Text(
                                     doubleFormat.format(model.orderWeight()) +
                                         ' Kg',
@@ -53,7 +51,6 @@ class OrderSummary extends StatelessWidget {
                                     GroovinMaterialIcons.weight_kilogram,
                                     size: 22,
                                     color: Colors.black,
-                                    
                                   ),
                                 )),
                             Container(
@@ -142,10 +139,12 @@ class OrderSummary extends StatelessWidget {
                             Container(
                                 height: 27,
                                 child: ListTile(
-                                  title: Text(
-                                    'الإجمالي',
-                                    style: TextStyle(fontSize: 14),
-                                    textAlign: TextAlign.right,
+                                  title: Center(
+                                    child: Text(
+                                      'الإجمالي',
+                                      style: TextStyle(fontSize: 14),
+                                      textAlign: TextAlign.right,
+                                    ),
                                   ),
                                   leading: Text(
                                     formatter.format(model.orderSum()) + ' EGP',
@@ -196,7 +195,7 @@ class OrderSummary extends StatelessWidget {
                                     style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold),
-                                        textAlign: TextAlign.right,
+                                    textAlign: TextAlign.right,
                                   ),
                                   leading: Text(
                                     doubleFormat
@@ -219,7 +218,7 @@ class OrderSummary extends StatelessWidget {
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold),
                                     // textDirection: TextDirection.rtl,
-                                      textAlign: TextAlign.right,
+                                    textAlign: TextAlign.right,
                                   ),
                                   leading: Text(
                                     model.bulkOrderBp().toInt().toString() +
@@ -241,7 +240,7 @@ class OrderSummary extends StatelessWidget {
                                         fontSize: 13,
                                         fontWeight: FontWeight.bold),
                                     // textDirection: TextDirection.rtl,
-                                        textAlign: TextAlign.right,
+                                    textAlign: TextAlign.right,
                                   ),
                                   leading: courierDiscount != null &&
                                           courierDiscount > 0
@@ -307,12 +306,14 @@ class OrderSummary extends StatelessWidget {
                                     style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold),
-                                    // textDirection: TextDirection.rtl,
+                                    // textAlign: TextAlign.right,
+                                    // textDirection: TextDirection.RTL,
                                   ),
                                   leading: Text(
                                     formatter.format(model.bulkOrderSum()) +
                                         ' EGP',
                                     style: TextStyle(fontSize: 13),
+                                    textAlign: TextAlign.right,
                                   ),
                                   trailing: Icon(
                                     Icons.monetization_on,
