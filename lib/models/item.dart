@@ -68,7 +68,7 @@ class Item {
         price = snapshot.value['price'] ?? 0,
         bp = snapshot.value['bp'] ?? 0,
         bv = snapshot.value['bv'] ?? 0.0,
-        image = snapshot.value['image'] ?? "",
+        image = snapshot.value['image'] ?? [],
         imageUrl = snapshot.value['imageUrl'] ?? "",
         size = snapshot.value['size'] ?? "",
         unit = snapshot.value['unit'] ?? "",
