@@ -160,7 +160,11 @@ class _TrackOrder extends State<TrackOrder> {
             name: model.itemData[i].name,
             imageUrl: model.itemData[i].imageUrl,
           );
-          model.addItemOrder(item, items[d].qty.toInt());
+          model.addItemOrder(
+              item,
+              items[d].qty.toInt() > 0
+                  ? items[d].qty.toInt()
+                  : items[d].qty.toInt() * -1);
           //vitems.add(item);
         }
       }
@@ -184,8 +188,11 @@ class _TrackOrder extends State<TrackOrder> {
                         topLeft: const Radius.circular(10.0),
                         topRight: const Radius.circular(10.0))),
                 child: new Center(
-                  child: new Text(
-                      "    الرجاء الاتظار  ${(5 - wait)}  دقائق للتنفيذ "),
+                  child: new Text("الرجاء الاتظار" +
+                      "  " +
+                      "${5 - wait}" +
+                      "  " +
+                      "دقائق للتنفيذ"),
                 )),
           );
         });

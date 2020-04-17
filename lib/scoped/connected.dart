@@ -590,7 +590,9 @@ class MainModel extends Model {
 
   int getItemIndex(int x) {
     var item = itemData.where((i) => i.itemId == itemorderlist[x].itemId);
-    int index = itemData.indexOf(item.first);
+
+    int index;
+    item.isNotEmpty ? index = itemData.indexOf(item.first) : null;
 
     return index;
   }
@@ -1595,6 +1597,7 @@ class MainModel extends Model {
   }
 
 //!-----------------------orders starts here ----------------------
+
   List<ItemOrder> getHeld(List<ItemOrder> itemList) {
     List<ItemOrder> itemorderlistWithHeld = [];
     itemList.forEach((i) => itemorderlistWithHeld.add(i));
@@ -1635,7 +1638,7 @@ class MainModel extends Model {
     if (courierfee > 0) {
       addCourierToOrder('90', courierfee);
     }
-    getHeld(itemorderlist);
+    // getHeld(itemorderlist);
     SalesOrder salesOrder = SalesOrder(
       distrId: distrId,
       userId: userInfo.distrId,
@@ -1649,7 +1652,7 @@ class MainModel extends Model {
       storeId: setStoreId,
       branchId: setStoreId,
       soType: docType,
-      order: getHeld(itemorderlist),
+      order: itemorderlist,
     );
 
     print(salesOrder.postOrderToJson(salesOrder));
@@ -1669,14 +1672,12 @@ class MainModel extends Model {
       OrderMsg errorMsg = OrderMsg(error: 'operation failed');
       return errorMsg;
     }
-
+  }
 //return salesOrder;
 //itemorderlist.forEach((f)=>so.order.add(f))  ;
 //itemorderlist.forEach((f)=>so.order.add(f));
 //print('SalesOrderLength:${so.order.length}');
 //salesOrder.order.forEach((o)=>print(postSalesOrderToJson(SSo)));
-  }
-
 //!--------*Areas*---------////
 //? Areaupdate to firebase..
 
@@ -2035,7 +2036,7 @@ for( var i = 0 ; i < _list.length; i++){
         locKCart(context); //! uncomment this before buildR
         locKApp(context); //! uncomment this before buildR
         userAccess(key, context);
-        // getAreauserTest(key, context);
+        // getAreagetAreauserTest(key, context);
         // getArea();
 
         try {

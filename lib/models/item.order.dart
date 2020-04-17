@@ -45,7 +45,7 @@ class ItemOrder {
 
   Map<String, dynamic> toJson() => {
         "ITEM_ID": itemId,
-        "QTY": qty,
+        "QTY": held ? qty * -1 : qty,
         "QTY_REQ": qty,
         "UNIT_PRICE": price,
         "NET_PRICE": totalPrice,

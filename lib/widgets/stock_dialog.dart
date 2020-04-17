@@ -249,6 +249,9 @@ class _StockDialog extends State<StockDialog> {
                           // Navigator.pop(context);
                         }*/
                       onPressed: () async {
+                        var qtyOrder = _data.number +
+                            model.getItemBulkQty(itemData[index]) +
+                            model.getItemOrderQty(itemData[index]);
                         bool _limited =
                             model.limited(int.parse(itemData[index].key));
                         if (_data.number > 0) {
@@ -258,11 +261,13 @@ class _StockDialog extends State<StockDialog> {
                               await isGetStock(model, itemData[index].itemId);
                           int _stock =
                               await model.getStock(itemData[index].itemId);
-                          if (itemData[index].held &&
-                              _stock <
-                                  _data.number +
-                                      model.getItemBulkQty(itemData[index]) +
-                                      model.getItemOrderQty(itemData[index])) {
+                          print('itemHeld:=>${itemData[index].held}');
+                          print('StockApi:=>$_stock');
+                          print('qtyInput:=>${_data.number}');
+                          print('qtyOrder:=>$qtyOrder');
+                          print(
+                              'qtyOrder+inputQty:=>${qtyOrder + _data.number}');
+                          if (itemData[index].held && _stock < qtyOrder) {
                             model.addItemOrder(
                                 itemData[index], _data.number, true);
 

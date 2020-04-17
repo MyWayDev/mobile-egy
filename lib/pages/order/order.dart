@@ -712,14 +712,13 @@ Widget _buildIconButton(BuildContext context, int i, MainModel model) {
                   model.itemorderlist[i].qty));
         },
       ),
-      Positioned(
-        top: -5,
-        right: 15,
-        child: model.iheld(model.getItemIndex(i))
-            ? Icon(GroovinMaterialIcons.arrow_down_bold,
-                color: Colors.blue, size: 21)
-            : Container(),
-      ),
+      model.iheld(model.getItemIndex(i))
+          ? Positioned(
+              top: -5,
+              right: 15,
+              child: Icon(GroovinMaterialIcons.arrow_down_bold,
+                  color: Colors.blue, size: 21))
+          : Container(),
     ],
   );
 }

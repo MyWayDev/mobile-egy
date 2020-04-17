@@ -23,7 +23,7 @@ class _TrackInvoice extends State<TrackInvoice> {
   List<Invoice> firstInvoice;
   final formatter = new NumberFormat("#,###");
   double addPpnTax(int index) {
-    print(firstInvoice[index].shipFee);
+    // print(firstInvoice[index].shipFee);
     return firstInvoice[index].invocieTotal +
         double.tryParse(firstInvoice[index].shipFee);
   }
@@ -63,8 +63,7 @@ class _TrackInvoice extends State<TrackInvoice> {
           } else if (item.itemId == '90') {
             var _shipFee = double.tryParse(firstInvoice[i].shipFee) ?? 0.0;
             _shipFee = item.price;
-            print(
-                'Invoice shipFee: =>${firstInvoice[i].shipFee}:${item.itemId}');
+            // print('Invoice shipFee: =>${firstInvoice[i].shipFee}:${item.itemId}');
           }
           /*else  {
             if (firstInvoice[i].docId == item.docId) {
@@ -394,7 +393,7 @@ class _TrackInvoice extends State<TrackInvoice> {
                                                       firstInvoice[index]
                                                                   .flagType !=
                                                               'CA'
-                                                          ? ''// 'Track # ${firstInvoice[index].refNo}'
+                                                          ? '' // 'Track # ${firstInvoice[index].refNo}'
                                                           : firstInvoice[index]
                                                               .flagType,
                                                       style: TextStyle(
