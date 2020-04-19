@@ -1,6 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:groovin_material_icons/groovin_material_icons.dart';
 import 'package:mor_release/models/item.dart';
 import 'package:mor_release/scoped/connected.dart';
 import 'package:mor_release/widgets/stock_dialog.dart';
@@ -42,28 +43,42 @@ Widget _appbar(BuildContext context, MainModel model, String itemId) {
 
 Widget _buildIconButton(BuildContext context, MainModel model, String itemId) {
   return !model.cartLocked
-      ? BadgeIconButton(
-          itemCount: model.iCount(model.getIndex(itemId), item: itemId),
-          icon: Icon(
-            Icons.shopping_cart,
-            color: Colors.pink[900],
-            size: 32.0,
+      ? Stack(children: <Widget>[
+          BadgeIconButton(
+            itemCount: model.iCount(model.getIndex(itemId), item: itemId),
+            icon: Icon(
+              Icons.shopping_cart,
+              color: Colors.pink[900],
+              size: 32.0,
+            ),
+            // required
+            badgeColor: !model.iheld(model.getIndex(itemId))
+                ? Colors.red
+                : Colors.amber[400],
+            badgeTextColor: Colors.white,
+            onPressed: () {
+              Navigator.of(context).pop();
+              showDialog(
+                  context: context,
+                  builder: (_) => StockDialog(
+                        model.itemData,
+                        model.getIndex(itemId),
+                        model.iCount(model.getIndex(itemId), item: itemId),
+                        pop: false,
+                      ));
+            },
           ),
-          // required
-          //badgeColor: Colors.pink[900],
-          badgeTextColor: Colors.white,
-          onPressed: () {
-            Navigator.of(context).pop();
-            showDialog(
-                context: context,
-                builder: (_) => StockDialog(
-                      model.itemData,
-                      model.getIndex(itemId),
-                      model.iCount(model.getIndex(itemId), item: itemId),
-                      pop: false,
-                    ));
-          },
-        )
+          Positioned(
+            right: 21,
+            bottom: 33,
+            child: model.iheld(model.getIndex(itemId))
+                ? Icon(
+                    GroovinMaterialIcons.arrow_down_bold,
+                    color: Colors.blue,
+                  )
+                : Container(),
+          ),
+        ])
       : BadgeIconButton(
           itemCount: model.iCount(model.getIndex(itemId), item: itemId),
           icon: Icon(

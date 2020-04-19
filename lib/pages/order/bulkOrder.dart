@@ -63,7 +63,7 @@ class _BulkOrderState extends State<BulkOrder> {
                 style: TextStyle(
                   fontSize: 16,
                   fontStyle: FontStyle.italic,
-                  color: Colors.amberAccent,
+                  color: Colors.orange,
                 ),
               )
             ]),

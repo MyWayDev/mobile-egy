@@ -2,7 +2,6 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:groovin_material_icons/groovin_material_icons.dart';
 import 'package:mor_release/models/item.dart';
-import 'package:mor_release/pages/items/item.details.dart';
 import 'package:mor_release/pages/items/itemDetails/details.dart';
 import 'package:mor_release/scoped/connected.dart';
 import 'package:mor_release/widgets/stock_dialog.dart';
@@ -55,7 +54,7 @@ class _IconBar extends State<IconBar> {
                           // required
                           badgeColor: !model.iheld(widget.index)
                               ? Colors.red
-                              : Colors.amberAccent,
+                              : Colors.amber[400],
                           badgeTextColor: Colors.white,
                           onPressed: () async {
                             showDialog(
@@ -65,7 +64,7 @@ class _IconBar extends State<IconBar> {
                           },
                         ),
                         Positioned(
-                          right: 14,
+                          right: 21,
                           bottom: 33,
                           child: model.iheld(widget.index)
                               ? Icon(

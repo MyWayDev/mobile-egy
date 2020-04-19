@@ -31,11 +31,19 @@ class ItemOrder {
     return _totalBp;
   }
 
+  bool get orderSatus {
+    bool _held = false;
+
+    held == null || held == false ? _held = false : _held = true;
+
+    return _held;
+  }
+
   ItemOrder({
     this.itemId,
     this.price,
     this.qty,
-    this.held = false,
+    this.held,
     this.bp,
     this.bv,
     this.name,
@@ -45,7 +53,7 @@ class ItemOrder {
 
   Map<String, dynamic> toJson() => {
         "ITEM_ID": itemId,
-        "QTY": held ? qty * -1 : qty,
+        "QTY": orderSatus ? qty * -1 : qty,
         "QTY_REQ": qty,
         "UNIT_PRICE": price,
         "NET_PRICE": totalPrice,

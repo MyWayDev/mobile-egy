@@ -689,38 +689,54 @@ Widget _orderExp(BuildContext context, MainModel model, NumberFormat formatter,
 //double orderPlus(double orderSum, int courierFee, int bpLimit) {}
 
 Widget _buildIconButton(BuildContext context, int i, MainModel model) {
-  return Stack(
-    children: <Widget>[
-      BadgeIconButton(
-        itemCount: model.itemorderlist[i].qty <= 0
-            ? 0
-            : model.itemorderlist[i].qty, // required
+  return !model.iheld(model.getItemIndex(i))
+      ? BadgeIconButton(
+          itemCount: model.itemorderlist[i].qty <= 0
+              ? 0
+              : model.itemorderlist[i].qty, // required
 
-        icon: Icon(
-          Icons.shopping_cart,
-          color: Colors.grey[600],
-          size: 28.0,
-        ), // required
-        badgeColor: !model.iheld(model.getItemIndex(i))
-            ? Colors.red
-            : Colors.amberAccent,
-        badgeTextColor: Colors.white,
-        onPressed: () async {
-          showDialog(
-              context: context,
-              builder: (_) => StockDialog(model.itemData, model.getItemIndex(i),
-                  model.itemorderlist[i].qty));
-        },
-      ),
-      model.iheld(model.getItemIndex(i))
-          ? Positioned(
-              top: -5,
-              right: 15,
-              child: Icon(GroovinMaterialIcons.arrow_down_bold,
-                  color: Colors.blue, size: 21))
-          : Container(),
-    ],
-  );
+          icon: Icon(
+            Icons.shopping_cart,
+            color: Colors.grey[600],
+            size: 28.0,
+          ), // required
+          badgeColor: Colors.red,
+          badgeTextColor: Colors.white,
+          onPressed: () async {
+            showDialog(
+                context: context,
+                builder: (_) => StockDialog(model.itemData,
+                    model.getItemIndex(i), model.itemorderlist[i].qty));
+          },
+        )
+      : Stack(
+          children: <Widget>[
+            BadgeIconButton(
+              itemCount: model.itemorderlist[i].qty <= 0
+                  ? 0
+                  : model.itemorderlist[i].qty, // required
+
+              icon: Icon(
+                Icons.shopping_cart,
+                color: Colors.grey[600],
+                size: 28.0,
+              ), // required
+              badgeColor: Colors.amber[400],
+              badgeTextColor: Colors.white,
+              onPressed: () async {
+                showDialog(
+                    context: context,
+                    builder: (_) => StockDialog(model.itemData,
+                        model.getItemIndex(i), model.itemorderlist[i].qty));
+              },
+            ),
+            Positioned(
+                top: -5,
+                right: 23,
+                child: Icon(GroovinMaterialIcons.arrow_down_bold,
+                    color: Colors.blue, size: 21)),
+          ],
+        );
 }
 
 class BulkGiftsAndPromos extends StatefulWidget {

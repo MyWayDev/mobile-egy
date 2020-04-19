@@ -96,28 +96,37 @@ class _StockDialog extends State<StockDialog> {
                                   child: CircleAvatar(
                                     child: Padding(
                                       padding: EdgeInsets.only(top: 101),
-                                      child: BadgeIconButton(
-                                        itemCount: qty,
-                                        // required
-                                        icon: Icon(
-                                          Icons.shopping_cart,
-                                          color: Colors.pink[900],
-                                          size: 36.0,
-                                        ), // required
-                                        badgeColor: !model.iheld(widget.index)
-                                            ? Colors.red
-                                            : Colors.amberAccent,
-                                        badgeTextColor: Colors.white,
-                                      ),
-                                      /*  Positioned(
-                                              child: model.iheld(widget.index)
-                                                  ? Icon(
-                                                      GroovinMaterialIcons
-                                                          .arrow_down_bold,
-                                                      color: Colors.blue,
-                                                    )
-                                                  : Container(),
-                                            ),*/
+                                      child: model.iheld(widget.index)
+                                          ? Stack(children: <Widget>[
+                                              BadgeIconButton(
+                                                itemCount: qty,
+                                                // required
+                                                icon: Icon(
+                                                  Icons.shopping_cart,
+                                                  color: Colors.pink[900],
+                                                  size: 36.0,
+                                                ), // required
+                                                badgeColor: Colors.amber[400],
+                                                badgeTextColor: Colors.white,
+                                              ),
+                                              Positioned(
+                                                  child: Icon(
+                                                GroovinMaterialIcons
+                                                    .arrow_down_bold,
+                                                color: Colors.blue,
+                                              )),
+                                            ])
+                                          : BadgeIconButton(
+                                              itemCount: qty,
+                                              // required
+                                              icon: Icon(
+                                                Icons.shopping_cart,
+                                                color: Colors.pink[900],
+                                                size: 36.0,
+                                              ), // required
+                                              badgeColor: Colors.red,
+                                              badgeTextColor: Colors.white,
+                                            ),
                                     ),
                                     minRadius: 40,
                                     maxRadius: 50,
@@ -159,11 +168,21 @@ class _StockDialog extends State<StockDialog> {
                         size: 33.0,
                         color: Colors.grey,
                       ),
-                      onPressed: () {
-                        if (_data.number > 0) {
-                          model.removeItemOrder(itemData[index], _data.number);
+                      onPressed: () async {
+                        int _stock =
+                            await model.getStock(itemData[index].itemId);
+                        var qtyOrder = model.getItemBulkQty(itemData[index]) +
+                            model.getItemOrderQty(itemData[index]);
+                        if (_data.number > 0 && itemData[index].held) {
+                          isLoading(true);
+                          _stock >= (qtyOrder - _data.number)
+                              ? model.removeItemOrder(
+                                  itemData[index], _data.number, false)
+                              : model.removeItemOrder(
+                                  itemData[index], _data.number, true);
                           Navigator.pop(context);
                         }
+                        isLoading(false);
                       },
                     ),
                     IconButton(
@@ -262,18 +281,18 @@ class _StockDialog extends State<StockDialog> {
                           int _stock =
                               await model.getStock(itemData[index].itemId);
                           print('itemHeld:=>${itemData[index].held}');
-                          print('StockApi:=>$_stock');
-                          print('qtyInput:=>${_data.number}');
+                          print('_stock:=>$_stock');
+                          print('_data:=>${_data.number}');
                           print('qtyOrder:=>$qtyOrder');
                           print(
                               'qtyOrder+inputQty:=>${qtyOrder + _data.number}');
                           if (itemData[index].held && _stock < qtyOrder) {
                             model.addItemOrder(
                                 itemData[index], _data.number, true);
-
+                            model.itemorderlist.forEach((i) =>
+                                print('itemStatus: ${i.itemId}=>${i.held}'));
                             Navigator.pop(context);
                             isLoading(x);
-                            print('held ${itemData[index].itemId}');
                           } else {
                             if (!_limited) {
                               if (_data.number != 0 &&
@@ -293,8 +312,9 @@ class _StockDialog extends State<StockDialog> {
                                               itemData[index]) <=
                                       model.settings.maxOrder) {
                                 model.addItemOrder(
-                                    itemData[index], _data.number);
-
+                                    itemData[index], _data.number, false);
+                                model.itemorderlist.forEach((i) => print(
+                                    'itemStatus: ${i.itemId}=>${i.held}'));
                                 Navigator.pop(context);
                                 isLoading(x);
                               } else {
@@ -324,8 +344,9 @@ class _StockDialog extends State<StockDialog> {
                                               itemData[index]) <=
                                       model.settings.maxLimited) {
                                 model.addItemOrder(
-                                    itemData[index], _data.number);
-
+                                    itemData[index], _data.number, false);
+                                model.itemorderlist.forEach((i) => print(
+                                    'itemStatus: ${i.itemId}=>${i.held}'));
                                 Navigator.pop(context);
                                 isLoading(x);
                               } else {

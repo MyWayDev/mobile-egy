@@ -474,6 +474,7 @@ class MainModel extends Model {
       itemOrdered = itemorderlist.where((i) => i.itemId == item.itemId).first;
       i = itemorderlist.indexOf(itemOrdered);
       itemorderlist[i].qty += itemorder.qty;
+      itemorderlist[i].held = itemorder.held;
       notifyListeners();
     } else {
       itemorderlist.add(itemorder);
@@ -497,48 +498,52 @@ class MainModel extends Model {
     notifyListeners();
   }
 
-//!--------*
+//!-------------------------------------------*
   bool iheld(int x, {String item}) {
-    if (item != null) {
-      var i = itemData.where((i) => i.itemId == item);
-      int index = itemData.indexOf(i.first);
+    if (itemorderlist.isNotEmpty) {
+      if (item != null) {
+        var i = itemData.where((i) => i.itemId == item);
+        int index = itemData.indexOf(i.first);
 
-      try {
-        var l = itemorderlist.where((o) => o.itemId == itemData[index].itemId);
-        // int index = itemorderlist.indexOf(l.first);
-        notifyListeners();
-        return l.single.held; //use to be l.first.qty
-      } catch (e) {
-        notifyListeners();
-
-        return false;
-      }
-    }
-    if (itemorderlist.length > 0) {
-      if (searchResult.length == 0) {
-        try {
-          var l = itemorderlist.where((o) => o.itemId == itemData[x].itemId);
-          //int index = itemorderlist.indexOf(l.first);
-          notifyListeners();
-          return l.single.held; //use to be l.first.qty
-        } catch (e) {
-          notifyListeners();
-          return false;
-        }
-      } else {
         try {
           var l =
-              itemorderlist.where((o) => o.itemId == searchResult[x].itemId);
+              itemorderlist.where((o) => o.itemId == itemData[index].itemId);
           // int index = itemorderlist.indexOf(l.first);
           notifyListeners();
           return l.single.held; //use to be l.first.qty
         } catch (e) {
           notifyListeners();
-
           return false;
         }
       }
+      if (itemorderlist.length > 0) {
+        if (searchResult.length == 0) {
+          try {
+            var l = itemorderlist.where((o) => o.itemId == itemData[x].itemId);
+            //int index = itemorderlist.indexOf(l.first);
+            notifyListeners();
+            return l.single.held; //use to be l.first.qty
+          } catch (e) {
+            notifyListeners();
+            return false;
+          }
+        } else {
+          try {
+            var l =
+                itemorderlist.where((o) => o.itemId == searchResult[x].itemId);
+            // int index = itemorderlist.indexOf(l.first);
+            notifyListeners();
+            return l.single.held; //use to be l.first.qty
+          } catch (e) {
+            notifyListeners();
+
+            return false;
+          }
+        }
+      }
+      return false;
     }
+
     return false;
   }
 
@@ -614,7 +619,7 @@ class MainModel extends Model {
   }
 
 //!--------*
-  void removeItemOrder(Item item, int qty) {
+  void removeItemOrder(Item item, int qty, [bool _held = false]) {
     giftorderList.clear();
     promoOrderList.clear();
     final ItemOrder itemorder = ItemOrder(
@@ -637,6 +642,8 @@ class MainModel extends Model {
         itemorderlist.remove(itemOrdered);
       } else {
         itemorderlist[i].qty -= itemorder.qty;
+        itemorderlist[i].held = _held;
+        print('removeItem Held:=>$_held');
         notifyListeners();
         print('olderIndex:$i');
         print('x not empty :${x.isNotEmpty}');
@@ -1654,6 +1661,8 @@ class MainModel extends Model {
       soType: docType,
       order: itemorderlist,
     );
+    itemorderlist
+        .forEach((i) => print('itemOrderList held : ${i.itemId}=>${i.held}'));
 
     print(salesOrder.postOrderToJson(salesOrder));
 
