@@ -44,35 +44,58 @@ class _IconBar extends State<IconBar> {
               !model.cartLocked
                   ? Stack(
                       children: <Widget>[
-                        BadgeIconButton(
-                          itemCount: model.iCount(widget.index),
-                          icon: Icon(
-                            Icons.shopping_cart,
-                            color: Colors.pink[900],
-                            size: 32.0,
-                          ),
-                          // required
-                          badgeColor: !model.iheld(widget.index)
-                              ? Colors.red
-                              : Colors.amber[400],
-                          badgeTextColor: Colors.white,
-                          onPressed: () async {
-                            showDialog(
-                                context: context,
-                                builder: (_) => StockDialog(widget.itemData,
-                                    widget.index, model.iCount(widget.index)));
-                          },
-                        ),
-                        Positioned(
-                          right: 21,
-                          bottom: 33,
-                          child: model.iheld(widget.index)
-                              ? Icon(
-                                  GroovinMaterialIcons.arrow_down_bold,
-                                  color: Colors.blue,
-                                )
-                              : Container(),
-                        ),
+                        !model.iheld(widget.index)
+                            ? BadgeIconButton(
+                                itemCount: model.iCount(widget.index),
+                                icon: Icon(
+                                  Icons.shopping_cart,
+                                  color: Colors.pink[900],
+                                  size: 32.0,
+                                ),
+                                // required
+                                badgeColor: !model.iheld(widget.index)
+                                    ? Colors.red
+                                    : Colors.amber[400],
+                                badgeTextColor: Colors.white,
+                                onPressed: () async {
+                                  showDialog(
+                                      context: context,
+                                      builder: (_) => StockDialog(
+                                          widget.itemData,
+                                          widget.index,
+                                          model.iCount(widget.index)));
+                                },
+                              )
+                            : Stack(
+                                children: <Widget>[
+                                  BadgeIconButton(
+                                    itemCount: model.iCount(widget.index),
+                                    icon: Icon(
+                                      Icons.shopping_cart,
+                                      color: Colors.pink[900],
+                                      size: 32.0,
+                                    ),
+                                    // required
+                                    badgeColor: Colors.amber[400],
+                                    badgeTextColor: Colors.white,
+                                    onPressed: () async {
+                                      showDialog(
+                                          context: context,
+                                          builder: (_) => StockDialog(
+                                              widget.itemData,
+                                              widget.index,
+                                              model.iCount(widget.index)));
+                                    },
+                                  ),
+                                  Positioned(
+                                      right: 21,
+                                      bottom: 33,
+                                      child: Icon(
+                                        GroovinMaterialIcons.arrow_down_bold,
+                                        color: Colors.blue,
+                                      )),
+                                ],
+                              )
                       ],
                     )
                   : BadgeIconButton(
