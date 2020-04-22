@@ -99,13 +99,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.3"
-  draggable_fab:
-    dependency: "direct main"
-    description:
-      name: draggable_fab
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.1"
   firebase_auth:
     dependency: "direct main"
     description:
@@ -373,13 +366,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.3"
-  rxdart:
-    dependency: "direct main"
-    description:
-      name: rxdart
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.22.6"
   scoped_model:
     dependency: "direct main"
     description:

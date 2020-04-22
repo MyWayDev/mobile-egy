@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:mor_release/models/area.dart';
+import 'package:mor_release/models/backOrder.dart';
 import 'package:mor_release/models/courier.dart';
 import 'package:mor_release/models/gift.dart';
 import 'package:mor_release/models/gift.order.dart';
@@ -24,9 +25,9 @@ import 'package:firebase_core/firebase_core.dart';
 class MainModel extends Model {
   // ** items //** */
   static String _version = '3.21r'; //!Modify for every release version./.
-  static String firebaseDb = "egyProduction"; //!modify back to egyProduction;
+  static String firebaseDb = "egyProduction"; //!modify back to egyStage;
   static String stage = "egyStage";
-  static String updateDb = "egyStage";
+  static String updateDb = "egyProduction";
   final FirebaseDatabase database = FirebaseDatabase.instance;
   DatabaseReference databaseReference;
   final String path = 'flamelink/environments/$firebaseDb/content';
@@ -74,6 +75,21 @@ class MainModel extends Model {
           updateItemsCatFalse(f.key, p);
         });
     }
+  }
+
+  Future<List<BackOrder>> getBackOrderItems(
+      String distrId, String storeId) async {
+    List<BackOrder> _backOrder = [];
+    List<BackOrder> backOrder = [];
+
+    //List productlist;
+    final response =
+        await http.get('$httpath/getBackOrderItems/$distrId/$storeId');
+    if (response.statusCode == 200) {
+      final backOrderItems = json.decode(response.body) as List;
+      _backOrder = backOrderItems.map((i) => BackOrder.jsonParse(i)).toList();
+    }
+    return _backOrder;
   }
 
   Future<List<Products>> getitemDetailsApi() async {
@@ -1645,7 +1661,6 @@ class MainModel extends Model {
     if (courierfee > 0) {
       addCourierToOrder('90', courierfee);
     }
-    // getHeld(itemorderlist);
     SalesOrder salesOrder = SalesOrder(
       distrId: distrId,
       userId: userInfo.distrId,

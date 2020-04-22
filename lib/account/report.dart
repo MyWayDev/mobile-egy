@@ -108,7 +108,7 @@ class _Report extends State<Report> {
     }
 
     isloading(false);
-    member = null;
+    // member = null;
 
     return member;
   }

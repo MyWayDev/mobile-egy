@@ -191,7 +191,7 @@ class Member {
       totBp: json['TOTAL_BP'] ?? 0,
       ratio: json['m_ratio'] ?? 0,
       leaderId: json['LEADER_ID_N'] ?? '',
-      sponsorId: json['SPONSOR_ID'],
+      sponsorId: json['SPONSOR_ID'] ?? '',
       grpCount: json['COUNT'] ?? 0,
       area: json['AREA'],
       lastUpdate: json['LASTUPDATE'] ?? '12:00:00 ',

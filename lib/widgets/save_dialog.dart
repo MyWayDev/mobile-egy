@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:mor_release/bottom_nav.dart';
 import 'package:mor_release/models/item.order.dart';
-import 'package:mor_release/pages/order/widgets/payment.dart';
 import 'package:mor_release/scoped/connected.dart';
 import 'package:mor_release/widgets/color_loader_2.dart';
 import 'package:scoped_model/scoped_model.dart';
