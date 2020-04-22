@@ -61,7 +61,7 @@ class _CashOrder extends State<CashOrder> {
                         controller: controller,
                         decoration: InputDecoration(
                           fillColor: Colors.lightBlue,
-                          hintText: 'Komentar',
+                          hintText: 'الملاحظات',
                         ),
                         // style: TextStyle(fontSize: 18.0),
                         // onChanged: onSearchTextChanged,
@@ -70,7 +70,7 @@ class _CashOrder extends State<CashOrder> {
                     model.giftorderList.length > 0
                         //|| model.giftPacks.length > 0
                         ? Text(
-                            'Poin Hadiah',
+                            'هدايا النقاط',
                             style: TextStyle(
                                 color: Colors.grey,
                                 //fontWeight: FontWeight.bold,
