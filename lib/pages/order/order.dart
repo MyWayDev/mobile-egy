@@ -267,7 +267,7 @@ class _OrderPage extends State<OrderPage> {
       return ModalProgressHUD(
           color: Colors.black,
           inAsyncCall: _isloading,
-          opacity: 0.8,
+          opacity: 0.6,
           progressIndicator: ColorLoader2(),
           child: Scaffold(
               floatingActionButton: model.isBulk
@@ -1329,9 +1329,10 @@ class _NodeBODialogeState extends State<NodeBODialoge> {
                         });
 
                         showDialog(
-                            context: context,
-                            builder: (_) => BackOrderDialog(_backOrders,
-                                _nodeData.distrId, _nodeData.name));
+                          context: context,
+                          builder: (_) => BackOrderDialog(
+                              _backOrders, _nodeData.distrId, _nodeData.name),
+                        );
                       }
                     } else {
                       resetVeri();

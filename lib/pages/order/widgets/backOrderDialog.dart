@@ -8,7 +8,7 @@ import 'package:mor_release/widgets/color_loader_2.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class BackOrderDialog extends StatefulWidget {
-  final List<BackOrder> backOrders;
+  List<BackOrder> backOrders;
   final String memberId;
   final String memberName;
 
@@ -23,18 +23,35 @@ class BackOrderDialog extends StatefulWidget {
 class _BackOrderDialog extends State<BackOrderDialog> {
   BackOrderRelease _backOrderRelease;
   bool isRelease = false;
+  bool _isAll = false;
 
   @override
   void initState() {
     _backOrderRelease = BackOrderRelease(
       distrId: widget.memberId,
     );
+    _backOrderRelease.backOrder = [];
+
     super.initState();
   }
 
   @override
   void dispose() {
+    widget.backOrders = [];
+    print(widget.backOrders.length);
+    print('disposed backOrders');
     super.dispose();
+  }
+
+  void _value1Changed(bool value) {
+    setState(() => _isAll = value);
+    releaseAll(value);
+  }
+
+  void releaseAll(bool value) {
+    if (widget.backOrders.isNotEmpty) {
+      widget.backOrders.forEach((i) => i.release = value);
+    }
   }
 
   void isLoading(bool o, MainModel model) {
@@ -69,14 +86,38 @@ class _BackOrderDialog extends State<BackOrderDialog> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
           child: Container(
-            height: 475.0,
-            width: 310.0,
+            height: 518.0,
+            width: 312.0,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
               color: Colors.amber[50],
             ),
             child: Column(
               children: <Widget>[
+                Container(
+                  height: 46,
+                  child: Card(
+                    child: Flex(
+                        direction: Axis.horizontal,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Checkbox(value: _isAll, onChanged: _value1Changed),
+                          IconButton(
+                              icon: Icon(
+                                Icons.check_circle,
+                              ),
+                              onPressed: () {
+                                model.backOrdersList.forEach((o) {
+                                  print(o.distrId);
+                                  o.backOrder.forEach(
+                                    (i) => print(
+                                        'backOrderList:${i.docId} ${i.itemId}'),
+                                  );
+                                });
+                              }),
+                        ]),
+                  ),
+                ),
                 Card(
                   elevation: 3,
                   color: Colors.amber[50],
@@ -85,7 +126,7 @@ class _BackOrderDialog extends State<BackOrderDialog> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.only(right: 5),
+                          padding: EdgeInsets.only(left: 12),
                           child: Text(
                             'االكمية',
                             style: TextStyle(
@@ -111,7 +152,7 @@ class _BackOrderDialog extends State<BackOrderDialog> {
                                 fontWeight: FontWeight.bold),
                           ),
                         ]),
-                        Padding(
+                        /*Padding(
                           padding: EdgeInsets.only(right: 0),
                           child: Text(
                             'الكود',
@@ -119,7 +160,7 @@ class _BackOrderDialog extends State<BackOrderDialog> {
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold),
                           ),
-                        ),
+                        ),*/
                       ]),
                 ),
                 Container(
@@ -169,16 +210,18 @@ class _BackOrderDialog extends State<BackOrderDialog> {
                                     elevation: 6,
                                     fillColor: Colors.green,
                                     onPressed: () async {
-                                      _backOrderRelease.backOrder = [];
+                                      //_backOrderRelease.backOrder = [];
                                       isLoading(true, model);
-                                      widget.backOrders.forEach((i) => i.release
-                                          ? _backOrderRelease.backOrder.add(i)
-                                          : null);
-                                      print(_backOrderRelease.distrId);
-                                      _backOrderRelease.backOrder.forEach((f) =>
-                                          print(
-                                              'Release Itmes${f.itemId}=>${f.docId}'));
+                                      widget.backOrders.forEach((f) =>
+                                          f.release == true
+                                              ? _backOrderRelease.backOrder
+                                                  .add(f)
+                                              : null);
+
+                                      model.addToBackOrderList(
+                                          _backOrderRelease);
                                       isLoading(false, model);
+                                      Navigator.of(context).pop();
                                     },
                                     splashColor: Colors.pink[900],
                                   )
@@ -203,11 +246,10 @@ class _BackOrderDialog extends State<BackOrderDialog> {
         color: backOrder[i].release ? Colors.green[100] : Colors.amber[100],
         elevation: 9,
         child: ListTile(
-            onLongPress: () {
-              backOrder[i].release = false;
-            },
             onTap: () {
-              backOrder[i].release = true;
+              backOrder[i].release == true
+                  ? backOrder[i].release = false
+                  : backOrder[i].release = true;
             },
             trailing: Padding(
               padding: EdgeInsets.only(left: 25),

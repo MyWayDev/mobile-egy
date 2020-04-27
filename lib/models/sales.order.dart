@@ -13,7 +13,8 @@ class Sorder {
   String get soTotal {
     double _totalPrice = 0;
     for (SoItem s in soItems) {
-      s.itemId != '90' ? _totalPrice += s.total : '0';
+      // s.itemId != '90' ?     //: '0';
+      _totalPrice += s.total;
     }
     return _totalPrice.toString();
   }

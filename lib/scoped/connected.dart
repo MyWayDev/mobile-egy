@@ -24,7 +24,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 class MainModel extends Model {
   // ** items //** */
-  static String _version = '3.21r'; //!Modify for every release version./.
+  static String _version = '3.22r'; //!Modify for every release version./.
   static String firebaseDb = "egyProduction"; //!modify back to egyStage;
   static String stage = "egyStage";
   static String updateDb = "egyProduction";
@@ -51,7 +51,7 @@ class MainModel extends Model {
   List<PromoOrder> promoOrderList = [];
   bool isBulk = false;
   String token = '';
-
+  List<BackOrderRelease> backOrdersList = [];
   bool loading = false;
   bool bulkLoading = false;
   bool isBalanceChecked = true;
@@ -77,19 +77,49 @@ class MainModel extends Model {
     }
   }
 
+  void addToBackOrderList(BackOrderRelease bOR) {
+    if (backOrdersList.length > 0) {
+      for (var bo in backOrdersList) {
+        if (bo.distrId == bOR.distrId) {
+          bo.backOrder.addAll(bOR.backOrder);
+        }
+      }
+    } else {
+      backOrdersList.add(bOR);
+    }
+  }
+
   Future<List<BackOrder>> getBackOrderItems(
       String distrId, String storeId) async {
     List<BackOrder> _backOrder = [];
-    List<BackOrder> backOrder = [];
-
-    //List productlist;
+    List<BackOrder> checkedBO = [];
     final response =
         await http.get('$httpath/getBackOrderItems/$distrId/$storeId');
     if (response.statusCode == 200) {
       final backOrderItems = json.decode(response.body) as List;
       _backOrder = backOrderItems.map((i) => BackOrder.jsonParse(i)).toList();
+      if (backOrdersList.length > 0) {
+        for (BackOrderRelease bol in backOrdersList) {
+          for (final bo in _backOrder) {
+            bool found = false;
+            for (final bl in bol.backOrder) {
+              if (bo.itemId == bl.itemId && bo.docId == bl.docId) {
+                found = true;
+                print(bl.itemId);
+                break;
+              }
+            }
+            if (!found) {
+              checkedBO.add(bo);
+            }
+          }
+        }
+      } else {
+        checkedBO = _backOrder;
+      }
     }
-    return _backOrder;
+
+    return checkedBO;
   }
 
   Future<List<Products>> getitemDetailsApi() async {

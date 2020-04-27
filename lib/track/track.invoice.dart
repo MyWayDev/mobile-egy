@@ -21,7 +21,7 @@ class TrackInvoice extends StatefulWidget {
 @override
 class _TrackInvoice extends State<TrackInvoice> {
   List<Invoice> firstInvoice;
-  final formatter = new NumberFormat("#,###");
+  final formatter = new NumberFormat("#,###.##");
   double addPpnTax(int index) {
     // print(firstInvoice[index].shipFee);
     return firstInvoice[index].invocieTotal +

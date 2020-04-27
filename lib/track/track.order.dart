@@ -26,7 +26,7 @@ class TrackOrder extends StatefulWidget {
 @override
 class _TrackOrder extends State<TrackOrder> {
   List<Sorder> firstSorder = [];
-  final formatter = new NumberFormat("#,###");
+  final formatter = new NumberFormat("#,###.##");
   double addPpnTax(int index) {
     double cf = double.tryParse(firstSorder[index].coureirFee) ?? 0.0;
     return double.tryParse(firstSorder[index].soTotal) + cf;
@@ -377,7 +377,7 @@ class _TrackOrder extends State<TrackOrder> {
             progressIndicator: LinearProgressIndicator(),
             child: Column(
               children: <Widget>[
-                CustomAppBar("الطلبيات الغير مسددة"),
+                CustomAppBar("امر بيع"),
                 Container(),
                 Expanded(
                   child: ListView.builder(
