@@ -201,7 +201,7 @@ class _Report extends State<Report> {
                         padding: EdgeInsets.only(top: 6),
                         child: Column(
                           children: <Widget>[
-                            Text("التحيث القادم"),
+                            Text("التحديث القادم"),
                             Text('${member.nextUpdate.substring(0, 5)}',
                                 style: TextStyle(color: Colors.pink[900]),
                                 textDirection: TextDirection.rtl),
