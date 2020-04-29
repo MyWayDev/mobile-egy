@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:groovin_material_icons/groovin_material_icons.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:mor_release/models/backOrder.dart';
+import 'package:mor_release/pages/order/widgets/backOrderDialog.dart';
 import 'package:mor_release/scoped/connected.dart';
+import 'package:mor_release/widgets/color_loader_2.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class BackOrderList extends StatefulWidget {
@@ -11,39 +15,87 @@ class BackOrderList extends StatefulWidget {
 }
 
 class _BackOrderListState extends State<BackOrderList> {
+  bool _isloading = false;
+
+  void isloading(bool i) {
+    setState(() {
+      _isloading = i;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Dialog(child: ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return model.backOrdersList.isNotEmpty
-          ? Container(
-              height: MediaQuery.of(context).size.height / 1.45,
-              width: MediaQuery.of(context).size.width,
-              child: Column(children: <Widget>[
-                Expanded(
-                    child: ListView.builder(
-                  itemCount: model.backOrdersList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Dismissible(
-                        onDismissed: (DismissDirection direction) {
-                          if (direction == DismissDirection.endToStart) {
-                            model.deleteBackOrderItem(index);
-                          } else if (direction == DismissDirection.startToEnd) {
-                            model.deleteBackOrderItem(index);
-                          }
-                        },
-                        background: Container(),
-                        key: Key(model.backOrdersList[index].distrId),
-                        child: Card(
-                            color: Colors.blue[300],
-                            child: Column(children: <Widget>[
-                              Center(child: Text('طلب فك حجز')),
-                              _buildBackOrderRelease(
-                                  model.backOrdersList, index, model),
-                            ])));
-                  },
-                ))
-              ]))
+          ? ModalProgressHUD(
+              color: Colors.black,
+              inAsyncCall: _isloading,
+              opacity: 0.6,
+              progressIndicator: ColorLoader2(),
+              child: Container(
+                  height: MediaQuery.of(context).size.height / 1.6,
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(children: <Widget>[
+                    Expanded(
+                        child: ListView.builder(
+                      itemCount: model.backOrdersList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Dismissible(
+                            onDismissed: (DismissDirection direction) {
+                              if (direction == DismissDirection.endToStart) {
+                                model.deleteBackOrderItem(index, context);
+                              } else if (direction ==
+                                  DismissDirection.startToEnd) {
+                                model.deleteBackOrderItem(index, context);
+                              }
+                            },
+                            background: Container(),
+                            key: Key(model.backOrdersList[index].distrId),
+                            child: Card(
+                                color: Colors.blue[300],
+                                child: Column(children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: <Widget>[
+                                      Text('طلب فك حجز'),
+                                      !model.userInfo.isleader
+                                          ? IconButton(
+                                              icon: Icon(
+                                                  GroovinMaterialIcons
+                                                      .arrow_right_thick,
+                                                  size: 28,
+                                                  color: Colors.pink[500]),
+                                              onPressed: () async {
+                                                isloading(true);
+                                                List<BackOrder> _backOrders =
+                                                    [];
+                                                _backOrders = await model
+                                                    .getBackOrderItems(
+                                                        model.userInfo.distrId,
+                                                        model.setStoreId);
+                                                Navigator.of(context).pop();
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (_) =>
+                                                        BackOrderDialog(
+                                                            _backOrders,
+                                                            model.userInfo
+                                                                .distrId,
+                                                            model.userInfo
+                                                                .name));
+                                                isloading(false);
+                                              })
+                                          : SizedBox(width: 18)
+                                    ],
+                                  ),
+                                  _buildBackOrderRelease(
+                                      model.backOrdersList, index, model),
+                                ])));
+                      },
+                    ))
+                  ])))
           : Container();
     }));
   }
@@ -63,7 +115,7 @@ class _BackOrderListState extends State<BackOrderList> {
                 size: 28,
               ),
               onPressed: () {
-                model.deleteBackOrderItem(index);
+                model.deleteBackOrderItem(index, context);
               }),
           title: Container(
             child: Column(
@@ -139,7 +191,7 @@ class _BackOrderListState extends State<BackOrderList> {
                   size: 22,
                 ),
                 onPressed: () {
-                  model.deleteBackOrderDetails(bO);
+                  model.deleteBackOrderDetails(bO, context);
                 })),
       );
     });

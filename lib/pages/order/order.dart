@@ -486,16 +486,19 @@ class _OrderPage extends State<OrderPage> {
                                                 builder: (_) =>
                                                     model.userInfo.isleader
                                                         ? NodeBODialoge(model)
-                                                        : BackOrderDialog(
-                                                            _backOrders,
-                                                            widget
-                                                                .model
-                                                                .userInfo
-                                                                .distrId,
-                                                            widget
-                                                                .model
-                                                                .userInfo
-                                                                .name));
+                                                        : model.backOrdersList
+                                                                .isEmpty
+                                                            ? BackOrderDialog(
+                                                                _backOrders,
+                                                                widget
+                                                                    .model
+                                                                    .userInfo
+                                                                    .distrId,
+                                                                widget
+                                                                    .model
+                                                                    .userInfo
+                                                                    .name)
+                                                            : BackOrderList());
                                             isloading(false);
                                           },
                                           splashColor: Colors.pink[900],

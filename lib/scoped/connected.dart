@@ -13,6 +13,7 @@ import 'package:mor_release/models/item.dart';
 import 'package:mor_release/models/item.order.dart';
 import 'package:mor_release/models/lock.dart';
 import 'package:mor_release/models/sales.order.dart';
+import 'package:mor_release/pages/order/widgets/backOrderDialog.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../models/user.dart';
 import 'dart:convert';
@@ -63,6 +64,8 @@ class MainModel extends Model {
     notifyListeners();
     return _distrPointNames;
   }
+
+  void openBackOrderDialog(BuildContext context) async {}
 
   void itemDataUpdataProductToFB() async {
     List<Products> products = await getitemDetailsApi();
@@ -681,12 +684,13 @@ class MainModel extends Model {
     notifyListeners();
   }
 
-  void deleteBackOrderItem(int i) {
+  void deleteBackOrderItem(int i, BuildContext context) {
     backOrdersList.remove(backOrdersList[i]);
+    backOrdersList.isEmpty ? Navigator.of(context).pop() : null;
     notifyListeners();
   }
 
-  void deleteBackOrderDetails(BackOrder backOrder) {
+  void deleteBackOrderDetails(BackOrder backOrder, BuildContext context) {
     bool v = false;
     for (final f in backOrdersList) {
       if (f.backOrder.contains(backOrder)) {
@@ -698,6 +702,7 @@ class MainModel extends Model {
       for (var bo in backOrdersList) {
         bo.backOrder.remove(backOrder);
         bo.backOrder.isEmpty ? backOrdersList.remove(bo) : null;
+        bo.backOrder.isEmpty ? Navigator.of(context).pop() : null;
       }
     }
     notifyListeners();
