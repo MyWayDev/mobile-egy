@@ -107,6 +107,7 @@ class _BackOrderDialog extends State<BackOrderDialog> {
                                 Icons.check_circle,
                               ),
                               onPressed: () {
+                                print(model.txtBackOrderList());
                                 model.backOrdersList.forEach((o) {
                                   print(o.distrId);
                                   o.backOrder.forEach(
@@ -217,7 +218,6 @@ class _BackOrderDialog extends State<BackOrderDialog> {
                                               ? _backOrderRelease.backOrder
                                                   .add(f)
                                               : null);
-
                                       model.addToBackOrderList(
                                           _backOrderRelease);
                                       isLoading(false, model);

@@ -11,6 +11,7 @@ import 'package:mor_release/pages/gift/promo/promo_card.dart';
 import 'package:mor_release/pages/order/bulkOrder.dart';
 import 'package:mor_release/pages/order/end_order.dart';
 import 'package:mor_release/pages/order/widgets/backOrderDialog.dart';
+import 'package:mor_release/pages/order/widgets/backOrderList.dart';
 import 'package:mor_release/pages/order/widgets/shipmentArea.dart';
 import 'package:mor_release/scoped/connected.dart';
 import 'package:mor_release/widgets/color_loader_2.dart';
@@ -430,30 +431,45 @@ class _OrderPage extends State<OrderPage> {
                                         MainAxisAlignment.spaceAround,
                                     children: <Widget>[
                                       Padding(
-                                        padding: EdgeInsets.only(bottom: 5),
+                                        padding: EdgeInsets.only(bottom: 2),
                                         child: RawMaterialButton(
                                           child: Column(
                                               mainAxisSize: MainAxisSize.max,
                                               children: <Widget>[
-                                                Icon(
-                                                  GroovinMaterialIcons
-                                                      .arrow_down_bold,
-                                                  size: 21.0,
-                                                  color: Colors.blue,
+                                                Stack(
+                                                  fit: StackFit.loose,
+                                                  overflow: Overflow.clip,
+                                                  children: <Widget>[
+                                                    BadgeIconButton(
+                                                      itemCount: model
+                                                          .backOrdersList
+                                                          .length,
+                                                      icon: Icon(
+                                                        GroovinMaterialIcons
+                                                            .arrow_down_bold,
+                                                        size: 25.0,
+                                                        color: Colors.blue,
+                                                      ),
+                                                      badgeTextColor:
+                                                          Colors.red[700],
+                                                      badgeColor:
+                                                          Colors.grey[100],
+                                                    ),
+                                                    Text('فك الحجز',
+                                                        style: TextStyle(
+                                                            fontSize: 11,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: Colors
+                                                                .grey[700])),
+                                                  ],
                                                 ),
-                                                Text('فك الحجز',
-                                                    style: TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color:
-                                                            Colors.grey[700])),
                                               ]),
                                           constraints: const BoxConstraints(
-                                              maxHeight: 38, maxWidth: 38),
+                                              maxHeight: 48, maxWidth: 45),
                                           shape: CircleBorder(),
                                           highlightColor: Colors.pink[900],
-                                          elevation: 6,
+                                          elevation: 21,
                                           fillColor: Colors.amber[400],
                                           onPressed: () async {
                                             if (!model.userInfo.isleader) {
@@ -1101,99 +1117,102 @@ class _NodeDialogeState extends State<NodeDialoge> {
         opacity: 0.6,
         progressIndicator: LinearProgressIndicator(),
         child: Dialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-          child: Container(
-            width: 120,
-            height: 60,
-            child: ListTile(
-              //  contentPadding: EdgeInsets.all(0),
-              leading: Icon(Icons.vpn_key, size: 24.0, color: Colors.pink[500]),
-              title: TextFormField(
-                textAlign: TextAlign.center,
-                controller: controller,
-                enabled: !veri ? true : false,
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-                decoration: InputDecoration(
-                  hintText: 'أدخل رقم العضو',
-                  hintStyle: TextStyle(color: Colors.grey[400]),
-                ),
-                keyboardType: TextInputType.number,
-                validator: (value) => value.isEmpty
-                    ? 'كود المنتج فارغ !!'
-                    : RegExp('[0-9]').hasMatch(value)
-                        ? null
-                        : 'كود المنتج غير صحيح !!',
-                onSaved: (String value) {
-                  _orderFormData['id'] = value.padLeft(8, '0');
-                },
-              ),
-              trailing: IconButton(
-                icon: !veri //&& controller.text.length > 0
-                    ? Icon(
-                        Icons.check,
-                        size: 26.0,
-                        color: Colors.blue,
-                      )
-                    : controller.text.length > 0
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            child: Column(children: <Widget>[
+              // _orderExp(context, model, formatter, formatWeight),
+              Container(
+                width: 120,
+                height: 60,
+                child: ListTile(
+                  //  contentPadding: EdgeInsets.all(0),
+                  leading:
+                      Icon(Icons.vpn_key, size: 24.0, color: Colors.pink[500]),
+                  title: TextFormField(
+                    textAlign: TextAlign.center,
+                    controller: controller,
+                    enabled: !veri ? true : false,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                    decoration: InputDecoration(
+                      hintText: 'أدخل رقم العضو',
+                      hintStyle: TextStyle(color: Colors.grey[400]),
+                    ),
+                    keyboardType: TextInputType.number,
+                    validator: (value) => value.isEmpty
+                        ? 'كود المنتج فارغ !!'
+                        : RegExp('[0-9]').hasMatch(value)
+                            ? null
+                            : 'كود المنتج غير صحيح !!',
+                    onSaved: (String value) {
+                      _orderFormData['id'] = value.padLeft(8, '0');
+                    },
+                  ),
+                  trailing: IconButton(
+                    icon: !veri //&& controller.text.length > 0
                         ? Icon(
-                            Icons.close,
-                            size: 24.0,
-                            color: Colors.grey,
+                            Icons.check,
+                            size: 26.0,
+                            color: Colors.blue,
                           )
-                        : Container(),
-                color: Colors.pink[900],
-                onPressed: () async {
-                  isloading(true);
-                  if (!veri) {
-                    veri = await widget.model
-                        .leaderVerification(controller.text.padLeft(8, '0'));
-                    if (veri) {
-                      _nodeData = await widget.model
-                          .nodeJson(controller.text.padLeft(8, '0'));
-                      print('_nodeData.distrId:${_nodeData.distrId}');
-                      _nodeData.distrId == '00000000'
-                          ? resetVeri()
-                          : controller.text =
-                              _nodeData.distrId + '    ' + _nodeData.name;
-                      if (_nodeData.distrId == '00000000') {
-                        Navigator.of(context).pop();
-                        showDialog(
-                            context: context,
-                            builder: (_) => NodeDialoge(widget.model));
-                      } else {
-                        Navigator.of(context).pop();
-                        setState(() {
-                          widget.model.bulkDistrId = _nodeData.distrId;
-                        });
-                        widget.model.shipmentAddress == null ||
-                                widget.model.shipmentAddress == ''
-                            ? showDialog(
+                        : controller.text.length > 0
+                            ? Icon(
+                                Icons.close,
+                                size: 24.0,
+                                color: Colors.grey,
+                              )
+                            : Container(),
+                    color: Colors.pink[900],
+                    onPressed: () async {
+                      isloading(true);
+                      if (!veri) {
+                        veri = await widget.model.leaderVerification(
+                            controller.text.padLeft(8, '0'));
+                        if (veri) {
+                          _nodeData = await widget.model
+                              .nodeJson(controller.text.padLeft(8, '0'));
+                          print('_nodeData.distrId:${_nodeData.distrId}');
+                          _nodeData.distrId == '00000000'
+                              ? resetVeri()
+                              : controller.text =
+                                  _nodeData.distrId + '    ' + _nodeData.name;
+                          if (_nodeData.distrId == '00000000') {
+                            Navigator.of(context).pop();
+                            showDialog(
                                 context: context,
-                                builder: (_) => ShipmentPlace(
-                                      model: widget.model,
-                                      memberId: _nodeData.distrId,
-                                    ))
-                            : widget.model
-                                .orderToBulk(widget.model.bulkDistrId);
+                                builder: (_) => NodeDialoge(widget.model));
+                          } else {
+                            Navigator.of(context).pop();
+                            setState(() {
+                              widget.model.bulkDistrId = _nodeData.distrId;
+                            });
+                            widget.model.shipmentAddress == null ||
+                                    widget.model.shipmentAddress == ''
+                                ? showDialog(
+                                    context: context,
+                                    builder: (_) => ShipmentPlace(
+                                          model: widget.model,
+                                          memberId: _nodeData.distrId,
+                                        ))
+                                : widget.model
+                                    .orderToBulk(widget.model.bulkDistrId);
+                          }
+                        } else {
+                          resetVeri();
+                        }
+                      } else {
+                        resetVeri();
                       }
-                    } else {
-                      resetVeri();
-                    }
-                  } else {
-                    resetVeri();
-                  }
-                  isloading(false);
-                },
-                splashColor: Colors.pink,
+                      isloading(false);
+                    },
+                    splashColor: Colors.pink,
+                  ),
+                ),
               ),
-            ),
-          ),
-        ));
+            ])));
   }
 }
 
@@ -1255,97 +1274,106 @@ class _NodeBODialogeState extends State<NodeBODialoge> {
         inAsyncCall: _isloading,
         opacity: 0.6,
         progressIndicator: LinearProgressIndicator(),
-        child: Dialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-          child: Container(
-            width: 120,
-            height: 60,
-            child: ListTile(
-              //  contentPadding: EdgeInsets.all(0),
-              leading: Icon(Icons.vpn_key, size: 24.0, color: Colors.pink[500]),
-              title: TextFormField(
-                textAlign: TextAlign.center,
-                controller: controller,
-                enabled: !veri ? true : false,
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-                decoration: InputDecoration(
-                  hintText: 'أدخل رقم العضو',
-                  hintStyle: TextStyle(color: Colors.grey[400]),
-                ),
-                keyboardType: TextInputType.number,
-                validator: (value) => value.isEmpty
-                    ? 'كود المنتج فارغ !!'
-                    : RegExp('[0-9]').hasMatch(value)
-                        ? null
-                        : 'كود المنتج غير صحيح !!',
-                onSaved: (String value) {
-                  _orderFormData['id'] = value.padLeft(8, '0');
-                },
-              ),
-              trailing: IconButton(
-                icon: !veri //&& controller.text.length > 0
-                    ? Icon(
-                        Icons.check,
-                        size: 26.0,
-                        color: Colors.blue,
-                      )
-                    : controller.text.length > 0
+        child: Flex(
+          mainAxisSize: MainAxisSize.min,
+          direction: Axis.vertical,
+          children: <Widget>[
+            Dialog(
+              elevation: 21,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0)),
+              child: Container(
+                width: 120,
+                height: 60,
+                child: ListTile(
+                  //  contentPadding: EdgeInsets.all(0),
+                  leading:
+                      Icon(Icons.vpn_key, size: 24.0, color: Colors.pink[500]),
+                  title: TextFormField(
+                    textAlign: TextAlign.center,
+                    controller: controller,
+                    enabled: !veri ? true : false,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                    decoration: InputDecoration(
+                      hintText: 'أدخل رقم العضو',
+                      hintStyle: TextStyle(color: Colors.grey[400]),
+                    ),
+                    keyboardType: TextInputType.number,
+                    validator: (value) => value.isEmpty
+                        ? 'كود المنتج فارغ !!'
+                        : RegExp('[0-9]').hasMatch(value)
+                            ? null
+                            : 'كود المنتج غير صحيح !!',
+                    onSaved: (String value) {
+                      _orderFormData['id'] = value.padLeft(8, '0');
+                    },
+                  ),
+                  trailing: IconButton(
+                    icon: !veri //&& controller.text.length > 0
                         ? Icon(
-                            Icons.close,
-                            size: 24.0,
-                            color: Colors.grey,
+                            Icons.check,
+                            size: 26.0,
+                            color: Colors.blue,
                           )
-                        : Container(),
-                color: Colors.pink[900],
-                onPressed: () async {
-                  isloading(true);
-                  if (!veri) {
-                    veri = await widget.model
-                        .leaderVerification(controller.text.padLeft(8, '0'));
-                    if (veri) {
-                      _nodeData = await widget.model
-                          .nodeJson(controller.text.padLeft(8, '0'));
-                      print('_nodeData.distrId:${_nodeData.distrId}');
-                      _nodeData.distrId == '00000000'
-                          ? resetVeri()
-                          : controller.text =
-                              _nodeData.distrId + '    ' + _nodeData.name;
-                      if (_nodeData.distrId == '00000000') {
-                        Navigator.of(context).pop();
-                        showDialog(
-                            context: context,
-                            builder: (_) => NodeBODialoge(widget.model));
-                      } else {
-                        _backOrders = await widget.model.getBackOrderItems(
-                            _nodeData.distrId, widget.model.setStoreId);
-                        Navigator.of(context).pop();
-                        setState(() {
-                          widget.model.bulkDistrId = _nodeData.distrId;
-                        });
+                        : controller.text.length > 0
+                            ? Icon(
+                                Icons.close,
+                                size: 24.0,
+                                color: Colors.grey,
+                              )
+                            : Container(),
+                    color: Colors.pink[900],
+                    onPressed: () async {
+                      isloading(true);
+                      if (!veri) {
+                        veri = await widget.model.leaderVerification(
+                            controller.text.padLeft(8, '0'));
+                        if (veri) {
+                          _nodeData = await widget.model
+                              .nodeJson(controller.text.padLeft(8, '0'));
+                          print('_nodeData.distrId:${_nodeData.distrId}');
+                          _nodeData.distrId == '00000000'
+                              ? resetVeri()
+                              : controller.text =
+                                  _nodeData.distrId + '    ' + _nodeData.name;
+                          if (_nodeData.distrId == '00000000') {
+                            Navigator.of(context).pop();
+                            showDialog(
+                                context: context,
+                                builder: (_) => NodeBODialoge(widget.model));
+                          } else {
+                            _backOrders = await widget.model.getBackOrderItems(
+                                _nodeData.distrId, widget.model.setStoreId);
+                            Navigator.of(context).pop();
+                            setState(() {
+                              widget.model.bulkDistrId = _nodeData.distrId;
+                            });
 
-                        showDialog(
-                          context: context,
-                          builder: (_) => BackOrderDialog(
-                              _backOrders, _nodeData.distrId, _nodeData.name),
-                        );
+                            showDialog(
+                              context: context,
+                              builder: (_) => BackOrderDialog(_backOrders,
+                                  _nodeData.distrId, _nodeData.name),
+                            );
+                          }
+                        } else {
+                          resetVeri();
+                        }
+                      } else {
+                        resetVeri();
                       }
-                    } else {
-                      resetVeri();
-                    }
-                  } else {
-                    resetVeri();
-                  }
-                  isloading(false);
-                },
-                splashColor: Colors.pink,
+                      isloading(false);
+                    },
+                    splashColor: Colors.pink,
+                  ),
+                ),
               ),
             ),
-          ),
+            BackOrderList(),
+          ],
         ));
   }
 }

@@ -23,7 +23,7 @@ class AddRegion extends StatefulWidget {
 }
 
 class _AddRegionState extends State<AddRegion> {
-  String path = 'flamelink/environments/egyProduction/content/district/en-US/';
+  String path = 'flamelink/environments/egyStage/content/district/en-US/';
   FirebaseDatabase database = FirebaseDatabase.instance;
 
   List<DropdownMenuItem> regions = [];

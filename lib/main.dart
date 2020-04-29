@@ -37,7 +37,7 @@ class _MyApp extends State<MyApp> {
 
   Random random = Random();
   final String pathLink =
-      'flamelink/environments/egyProduction/content/tokens/en-US/';
+      'flamelink/environments/egyStage/content/tokens/en-US/';
   static final FirebaseDatabase database = FirebaseDatabase.instance;
   final DatabaseReference databaseReference = database.reference();
   final firebaseMessaging = new FirebaseMessaging();

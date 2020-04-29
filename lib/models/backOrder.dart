@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class BackOrder {
   String docId;
   String itemId;
@@ -16,7 +18,7 @@ class BackOrder {
         qty: json['QTY']);
   }
   toJson() {
-    return {"DOC_ID": docId, "ITEM_ID": itemId, "ANAME": name, "QTY": qty};
+    return {"DOC_ID": docId, "ITEM_ID": itemId};
   }
 }
 
@@ -25,4 +27,13 @@ class BackOrderRelease {
   List<BackOrder> backOrder;
 
   BackOrderRelease({this.distrId, this.backOrder});
+
+  toJson() {
+    return {"distrId": distrId, "backOrder": backOrder};
+  }
+
+  String backOrderToJson(BackOrderRelease backOrder) {
+    final dyn = backOrder.toJson();
+    return json.encode(dyn);
+  }
 }

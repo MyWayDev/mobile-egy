@@ -4,5 +4,5 @@ import 'package:scoped_model/scoped_model.dart';
 class ToolModel extends Model {
   final FirebaseDatabase database = FirebaseDatabase.instance;
   DatabaseReference databaseReference;
-  String path = 'flamelink/environments/egyProduction/content/items/en-US/';
+  String path = 'flamelink/environments/egyStage/content/items/en-US/';
 }

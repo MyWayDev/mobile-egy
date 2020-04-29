@@ -25,9 +25,9 @@ import 'package:firebase_core/firebase_core.dart';
 class MainModel extends Model {
   // ** items //** */
   static String _version = '3.22r'; //!Modify for every release version./.
-  static String firebaseDb = "egyProduction"; //!modify back to egyStage;
+  static String firebaseDb = "egyStage"; //!modify back to egyStage;
   static String stage = "egyStage";
-  static String updateDb = "egyProduction";
+  static String updateDb = "egyStage";
   final FirebaseDatabase database = FirebaseDatabase.instance;
   DatabaseReference databaseReference;
   final String path = 'flamelink/environments/$firebaseDb/content';
@@ -69,20 +69,22 @@ class MainModel extends Model {
     if (products.isNotEmpty) {
       for (Products p in products)
         itemData.where((i) => i.itemId == p.itemId).forEach((f) {
-          print(f.key);
-          print(products.length);
-          print(itemData.length);
           updateItemsCatFalse(f.key, p);
         });
     }
   }
 
   void addToBackOrderList(BackOrderRelease bOR) {
-    if (backOrdersList.length > 0) {
+    bool v = false;
+    for (final f in backOrdersList) {
+      if (f.distrId.contains(bOR.distrId)) {
+        v = true;
+        break;
+      }
+    }
+    if (v) {
       for (var bo in backOrdersList) {
-        if (bo.distrId == bOR.distrId) {
-          bo.backOrder.addAll(bOR.backOrder);
-        }
+        bo.backOrder.addAll(bOR.backOrder);
       }
     } else {
       backOrdersList.add(bOR);
@@ -93,22 +95,37 @@ class MainModel extends Model {
       String distrId, String storeId) async {
     List<BackOrder> _backOrder = [];
     List<BackOrder> checkedBO = [];
+    bool v = false;
+
     final response =
         await http.get('$httpath/getBackOrderItems/$distrId/$storeId');
+
     if (response.statusCode == 200) {
       final backOrderItems = json.decode(response.body) as List;
+
       _backOrder = backOrderItems.map((i) => BackOrder.jsonParse(i)).toList();
-      if (backOrdersList.length > 0) {
-        for (BackOrderRelease bol in backOrdersList) {
+
+      for (final f in backOrdersList) {
+        if (f.distrId.contains(distrId)) {
+          v = true;
+          break;
+        }
+      }
+
+      if (v) {
+        for (BackOrderRelease bol
+            in backOrdersList.where((f) => f.distrId == distrId)) {
           for (final bo in _backOrder) {
             bool found = false;
+
             for (final bl in bol.backOrder) {
-              if (bo.itemId == bl.itemId && bo.docId == bl.docId) {
+              if (bo.docId == bl.docId && bo.itemId == bl.itemId) {
                 found = true;
                 print(bl.itemId);
                 break;
               }
             }
+
             if (!found) {
               checkedBO.add(bo);
             }
@@ -118,7 +135,6 @@ class MainModel extends Model {
         checkedBO = _backOrder;
       }
     }
-
     return checkedBO;
   }
 
@@ -135,8 +151,9 @@ class MainModel extends Model {
   }
 
   updateItemsCatFalse(String itemId, Products p) {
-    DatabaseReference catF = FirebaseDatabase.instance.reference().child(
-        'flamelink/environments/egyProduction/content/items/en-US/$itemId');
+    DatabaseReference catF = FirebaseDatabase.instance
+        .reference()
+        .child('flamelink/environments/egyStage/content/items/en-US/$itemId');
 
     catF.update({
       'catalogue': p.catalog,
@@ -661,6 +678,28 @@ class MainModel extends Model {
     giftorderList.clear();
     promoOrderList.clear();
     itemorderlist.remove(itemorderlist[i]);
+    notifyListeners();
+  }
+
+  void deleteBackOrderItem(int i) {
+    backOrdersList.remove(backOrdersList[i]);
+    notifyListeners();
+  }
+
+  void deleteBackOrderDetails(BackOrder backOrder) {
+    bool v = false;
+    for (final f in backOrdersList) {
+      if (f.backOrder.contains(backOrder)) {
+        v = true;
+        break;
+      }
+    }
+    if (v) {
+      for (var bo in backOrdersList) {
+        bo.backOrder.remove(backOrder);
+        bo.backOrder.isEmpty ? backOrdersList.remove(bo) : null;
+      }
+    }
     notifyListeners();
   }
 
@@ -1555,7 +1594,8 @@ class MainModel extends Model {
             ' => ' +
             order.address +
             ': ' +
-            note, //?
+            note +
+            txtBackOrderList(), //?
         projId: bulkId,
         address: order.address,
         courierId: shipmentId, //?
@@ -1663,6 +1703,12 @@ class MainModel extends Model {
     return itemorderlistWithHeld;
   }
 
+  String txtBackOrderList() {
+    String body = '';
+    backOrdersList.forEach((f) => body += f.backOrderToJson(f));
+    return body;
+  }
+
   Future<OrderMsg> saveOrder(String shipmentId, double courierfee,
       String distrId, String note, String areaId) async {
     itemorderlist.forEach((i) => print({i.itemId: i.qty}));
@@ -1691,13 +1737,14 @@ class MainModel extends Model {
     if (courierfee > 0) {
       addCourierToOrder('90', courierfee);
     }
+
     SalesOrder salesOrder = SalesOrder(
       distrId: distrId,
       userId: userInfo.distrId,
       total: orderSum(),
       totalBp: orderBp(),
       courierFee: courierfee.toString(),
-      note: note,
+      note: note + txtBackOrderList(),
       address: docType == 'CR' ? shipmentAddress : null,
       courierId: docType == 'CR' ? shipmentId : null,
       areaId: docType == 'CR' ? areaId : null,

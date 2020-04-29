@@ -64,7 +64,6 @@ class _StockDialog extends State<StockDialog> {
       child: Dialog(
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-        //  title: Center(child: Text('الكمية')),
         child: Container(
             height: 250.0,
             width: 145.0,
@@ -87,9 +86,7 @@ class _StockDialog extends State<StockDialog> {
                                   style: TextStyle(
                                       fontSize: 15.0,
                                       fontWeight: FontWeight.bold,
-                                      color:
-                                          Colors.red[900] //Color(0xFFFF8C00),
-                                      ),
+                                      color: Colors.red[900]),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.only(top: 8, left: 18),
@@ -181,92 +178,19 @@ class _StockDialog extends State<StockDialog> {
                               : model.removeItemOrder(
                                   itemData[index], _data.number, true);
                           Navigator.pop(context);
+                        } else if (_data.number > 0) {
+                          model.removeItemOrder(itemData[index], _data.number);
+                          Navigator.pop(context);
                         }
                         isLoading(false);
                       },
                     ),
                     IconButton(
-                      //disabledColor: Colors.white,
                       icon: Icon(
                         Icons.add_circle,
                         size: 33.0,
                         color: Colors.green,
                       ),
-                      /*  onPressed: () async {
-                          //  model.addItemOrder(itemData[index], _data.number);
-                          bool _limited =
-                              model.limited(int.parse(itemData[index].key));
-                          if (_data.number > 0) {
-                            bool t = true;
-                            isLoading(t);
-                            bool x =
-                                await isGetStock(model, itemData[index].itemId);
-                            int _stock =
-                                await model.getStock(itemData[index].itemId);
-                            if (!_limited) {
-                              if (_data.number != 0 &&
-                                  _stock >= 1 &&
-                                  _stock - model.settings.safetyStock >=
-                                      _data.number +
-                                          model.getItemOrderQty(
-                                              itemData[index]) +
-                                          model.getItemBulkQty(
-                                              itemData[index]) &&
-                                  _data.number +
-                                          model.getItemOrderQty(
-                                              itemData[index]) +
-                                          model.getItemBulkQty(
-                                              itemData[index]) <=
-                                      model.settings.maxOrder) {
-                                model.addItemOrder(
-                                    itemData[index], _data.number);
-
-                                Navigator.pop(context);
-                                isLoading(x);
-                              } else {
-                                Navigator.pop(context);
-                                _stockAlert(
-                                    context,
-                                    _stock,
-                                    model.settings.maxOrder,
-                                    model.settings.safetyStock,
-                                    model.getItemOrderQty(itemData[index]) +
-                                        model.getItemBulkQty(itemData[index]));
-                              }
-                            } else {
-                              if (_data.number != 0 &&
-                                  _stock >= 1 &&
-                                  _stock - model.settings.safetyStock >=
-                                      _data.number +
-                                          model.getItemOrderQty(
-                                              itemData[index]) +
-                                          model.getItemBulkQty(
-                                              itemData[index]) &&
-                                  _data.number +
-                                          model.getItemOrderQty(
-                                              itemData[index]) +
-                                          model.getItemBulkQty(
-                                              itemData[index]) <=
-                                      model.settings.maxLimited) {
-                                model.addItemOrder(
-                                    itemData[index], _data.number);
-
-                                Navigator.pop(context);
-                                isLoading(x);
-                              } else {
-                                Navigator.pop(context);
-                                _stockAlert(
-                                    context,
-                                    _stock,
-                                    model.settings.maxLimited,
-                                    model.settings.safetyStock,
-                                    model.getItemOrderQty(itemData[index]) +
-                                        model.getItemBulkQty(itemData[index]));
-                              }
-                            }
-                          }
-                          // Navigator.pop(context);
-                        }*/
                       onPressed: () async {
                         var qtyOrder = _data.number +
                             model.getItemBulkQty(itemData[index]) +
@@ -280,12 +204,6 @@ class _StockDialog extends State<StockDialog> {
                               await isGetStock(model, itemData[index].itemId);
                           int _stock =
                               await model.getStock(itemData[index].itemId);
-                          print('itemHeld:=>${itemData[index].held}');
-                          print('_stock:=>$_stock');
-                          print('_data:=>${_data.number}');
-                          print('qtyOrder:=>$qtyOrder');
-                          print(
-                              'qtyOrder+inputQty:=>${qtyOrder + _data.number}');
                           if (itemData[index].held && _stock < qtyOrder) {
                             model.addItemOrder(
                                 itemData[index], _data.number, true);
@@ -366,11 +284,9 @@ class _StockDialog extends State<StockDialog> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => Details(
-                                  // model.itemData[model.getIndex(imgList[index].itemId)],
                                   itemData[index],
                                   model.getCaouselItems(itemData[index]),
                                 ),
-                                // ItemDetails(widget.itemData[widget.index])
                               ));
                         }
                       },
