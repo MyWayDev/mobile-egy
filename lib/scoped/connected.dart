@@ -1998,7 +1998,10 @@ for(var area in areas){
     List list = _areas.values.toList();
     distrPoints = list
         .map((f) => Region.json(f))
-        .where((r) => r.distrPoint == true) //&& r.regionId == _regionId)
+        .where((r) =>
+            r.distrPoint == true &&
+            r.id ==
+                _regionId) //? very important update //&& r.regionId == _regionId)
         .toList();
     print('distrPoints Count:${distrPoints.length}');
     return distrPoints;

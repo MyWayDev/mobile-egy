@@ -92,7 +92,7 @@ class _StoreFloatState extends State<StoreFloat>
               widget.model.distrPointName = widget.model.stores[index].name;
               widget.model.docType = widget.model.stores[index].docType;
             });
-            print('region:${widget.model.distrPoint}');
+            print('distrPoint:${widget.model.distrPoint}');
             //  await widget.model.getPoints(widget.model.stores[index].region);
             print('setStore:${widget.model.setStoreId}');
             print('name:${widget.model.distrPointName}');
