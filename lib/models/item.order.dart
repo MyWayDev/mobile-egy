@@ -127,6 +127,8 @@ class SalesOrder {
   String soType;
   String projId;
   String courierFee;
+  String bonusDeduc;
+  String backOrder;
   List<ItemOrder> order;
   List<GiftOrder> gifts;
   List<PromoOrder> promos;
@@ -149,6 +151,8 @@ class SalesOrder {
       this.soType,
       this.projId,
       this.courierFee,
+      this.bonusDeduc,
+      this.backOrder,
       this.gifts,
       this.promos});
 
@@ -168,6 +172,8 @@ class SalesOrder {
           "DS_SHIPMENT_COMP": courierId,
           "DS_SHIPMENT_PLACE": areaId,
           "AREMARKS": note, //!egyupdate AREMARKS FROM LREMARKS
+          "SHIPMTHD_A": bonusDeduc,
+          "SHIPMTHD_L": backOrder,
           //"LREMARKS": courierFee ?? '0',
           "DISC_NOTES": address,
         },

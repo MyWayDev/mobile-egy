@@ -65,8 +65,6 @@ class MainModel extends Model {
     return _distrPointNames;
   }
 
-  void openBackOrderDialog(BuildContext context) async {}
-
   void itemDataUpdataProductToFB() async {
     List<Products> products = await getitemDetailsApi();
     if (products.isNotEmpty) {
@@ -1241,7 +1239,7 @@ class MainModel extends Model {
       bp: 0,
       bv: 0,
       qty: 1,
-      name: 'Biaya Courier',
+      name: 'Courier',
       weight: 0,
       img: "",
     );
@@ -1368,6 +1366,7 @@ class MainModel extends Model {
         weight: orderWeight(),
         order: itemorderlist,
         gifts: giftorderList,
+        backOrder: txtBackOrderList(),
         promos: promoOrderList);
     bulkOrder.add(order);
     itemorderlist = [];
@@ -1599,8 +1598,8 @@ class MainModel extends Model {
             ' => ' +
             order.address +
             ': ' +
-            note +
-            txtBackOrderList(), //?
+            note, //?
+        backOrder: order.backOrder,
         projId: bulkId,
         address: order.address,
         courierId: shipmentId, //?
@@ -1749,7 +1748,8 @@ class MainModel extends Model {
       total: orderSum(),
       totalBp: orderBp(),
       courierFee: courierfee.toString(),
-      note: note + txtBackOrderList(),
+      note: note,
+      backOrder: txtBackOrderList(),
       address: docType == 'CR' ? shipmentAddress : null,
       courierId: docType == 'CR' ? shipmentId : null,
       areaId: docType == 'CR' ? areaId : null,

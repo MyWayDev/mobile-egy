@@ -39,7 +39,7 @@ class _StoreFloatState extends State<StoreFloat>
   dialogDistrPoints(BuildContext context, MainModel model) {
     return showDialog(
         context: context,
-        barrierDismissible: false,
+        barrierDismissible: true,
         builder: (BuildContext context) {
           return Dialog(
             backgroundColor: Color(0xFF303030),
@@ -49,11 +49,12 @@ class _StoreFloatState extends State<StoreFloat>
               decoration:
                   BoxDecoration(borderRadius: BorderRadius.circular(20.0)),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Container(
-                      padding: EdgeInsets.only(top: 8),
-                      height: 250,
+                      padding: EdgeInsets.only(top: 3),
+                      height: 385,
                       width: 220,
                       child: storesDialog()),
                 ],
@@ -75,6 +76,8 @@ class _StoreFloatState extends State<StoreFloat>
           elevation: 5,
           child: widget.model.stores.length > 0
               ? Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(widget.model.stores[index].name,
                         style: TextStyle(color: Colors.black)),

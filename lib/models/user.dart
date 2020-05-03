@@ -142,7 +142,7 @@ class NewMember {
       String docType,
       String storeId) async {
     final response = await http.put(
-        'http://mywayegypt-api.azurewebsites.net/api/memregister/$user/$shipmentPlace/$shipmentPlaceName/$docType/$storeId',
+        'http://mywayegypt-api.azurewebsites.net/api/memregister_ds/$user/$shipmentPlace/$shipmentPlaceName/$docType/$storeId',
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           //HttpHeaders.authorizationHeader: ''
