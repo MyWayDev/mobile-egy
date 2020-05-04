@@ -129,7 +129,7 @@ class _BackOrderDialog extends State<BackOrderDialog> {
                         Padding(
                           padding: EdgeInsets.only(left: 12),
                           child: Text(
-                            'االكمية',
+                            'الكمية',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold),

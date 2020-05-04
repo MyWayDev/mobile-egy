@@ -75,7 +75,7 @@ class _SaveDialog extends State<SaveDialog> {
                               Padding(
                                 padding: EdgeInsets.only(right: 10),
                                 child: Text(
-                                  'االكمية',
+                                  'الكمية',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold),
