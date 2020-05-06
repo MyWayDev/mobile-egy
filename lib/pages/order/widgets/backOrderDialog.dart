@@ -86,48 +86,23 @@ class _BackOrderDialog extends State<BackOrderDialog> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
           child: Container(
-            height: 518.0,
-            width: 312.0,
+            height: 600.0,
+            width: 320.0,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
               color: Colors.amber[50],
             ),
             child: Column(
               children: <Widget>[
-                Container(
-                  height: 46,
-                  child: Card(
-                    child: Flex(
-                        direction: Axis.horizontal,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Checkbox(value: _isAll, onChanged: _value1Changed),
-                          IconButton(
-                              icon: Icon(
-                                Icons.check_circle,
-                              ),
-                              onPressed: () {
-                                print(model.txtBackOrderList());
-                                model.backOrdersList.forEach((o) {
-                                  print(o.distrId);
-                                  o.backOrder.forEach(
-                                    (i) => print(
-                                        'backOrderList:${i.docId} ${i.itemId}'),
-                                  );
-                                });
-                              }),
-                        ]),
-                  ),
-                ),
                 Card(
-                  elevation: 3,
+                  elevation: 21,
                   color: Colors.amber[50],
                   child: Flex(
                       direction: Axis.horizontal,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.only(left: 12),
+                          padding: EdgeInsets.only(left: 1),
                           child: Text(
                             'الكمية',
                             style: TextStyle(
@@ -137,9 +112,9 @@ class _BackOrderDialog extends State<BackOrderDialog> {
                         ),
                         Column(children: <Widget>[
                           Text(
-                            widget.memberName.length <= 20
+                            widget.memberName.length <= 16
                                 ? widget.memberName
-                                : widget.memberName.substring(0, 20) + '..',
+                                : widget.memberName.substring(0, 16) + '..',
                             textDirection: TextDirection.rtl,
                             style: TextStyle(
                                 color: Colors.black,
@@ -153,6 +128,15 @@ class _BackOrderDialog extends State<BackOrderDialog> {
                                 fontWeight: FontWeight.bold),
                           ),
                         ]),
+                        Row(
+                          verticalDirection: VerticalDirection.down,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Checkbox(value: _isAll, onChanged: _value1Changed),
+                          ],
+                        ),
                         /*Padding(
                           padding: EdgeInsets.only(right: 0),
                           child: Text(
@@ -166,21 +150,19 @@ class _BackOrderDialog extends State<BackOrderDialog> {
                 ),
                 Container(
                     color: Colors.grey[200],
-                    height: 350,
-                    width: 290,
+                    height: MediaQuery.of(context).size.height / 1.9,
+                    width: MediaQuery.of(context).size.width,
                     child: ListView.builder(
                       itemCount: widget.backOrders.length,
                       itemBuilder: (context, i) {
                         return _orderCard(context, i, widget.backOrders);
                       },
                     )),
-                SizedBox(height: 5.0),
+                //  SizedBox(height: 5.0),
                 Container(
-                    height: 62.0,
-                    width: MediaQuery.of(context).size.width,
                     color: Colors.amber[50],
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                      padding: const EdgeInsets.all(8.0),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -241,10 +223,10 @@ class _BackOrderDialog extends State<BackOrderDialog> {
 
   Widget _orderCard(BuildContext context, int i, List<BackOrder> backOrder) {
     return Container(
-      height: 58,
+      height: 59,
       child: Card(
         color: backOrder[i].release ? Colors.green[100] : Colors.amber[100],
-        elevation: 9,
+        elevation: 1,
         child: ListTile(
             onTap: () {
               backOrder[i].release == true
@@ -252,7 +234,7 @@ class _BackOrderDialog extends State<BackOrderDialog> {
                   : backOrder[i].release = true;
             },
             trailing: Padding(
-              padding: EdgeInsets.only(left: 25),
+              padding: EdgeInsets.only(left: 3),
               child: Text(
                 backOrder[i].itemId,
                 style: TextStyle(
@@ -263,23 +245,24 @@ class _BackOrderDialog extends State<BackOrderDialog> {
             ),
             title: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Text('رقم الفتورة' + ' : ' + '${backOrder[i].docId}',
+                  Text('${backOrder[i].docId}',
                       textDirection: TextDirection.rtl,
                       style: TextStyle(
                           color: Colors.blue[600],
                           fontWeight: FontWeight.bold,
-                          fontSize: 10.5)),
+                          fontSize: 10)),
                   Text(
-                    backOrder[i].name.length >= 28
-                        ? backOrder[i].name.substring(0, 28) + '...'
+                    backOrder[i].name.length >= 21
+                        ? backOrder[i].name.substring(0, 21) + '...'
                         : backOrder[i].name,
                     textDirection: TextDirection.rtl,
+                    softWrap: true,
                     style: TextStyle(
                         color: Colors.grey[600],
-                        fontSize: 11.5,
+                        fontSize: 11,
                         fontWeight: FontWeight.bold),
                   ),
                 ]),

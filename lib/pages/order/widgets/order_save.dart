@@ -1,3 +1,4 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mor_release/widgets/save_bulk_dialog.dart';
@@ -84,7 +85,7 @@ class OrderSave extends StatelessWidget {
                           ),
                         ],
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         model.isBalanceChecked = true;
 
                         // model.promoOrderList.forEach(

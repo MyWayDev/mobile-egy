@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as prefix0;
 import 'package:groovin_material_icons/groovin_material_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:mor_release/scoped/connected.dart';
@@ -141,14 +140,11 @@ class OrderSummary extends StatelessWidget {
                                 height: 27,
                                 child: ListTile(
                                   title: Text(
-                                      'الإجمالي',
-                                      style: TextStyle(
-                                        fontSize: 14
-                                        ),
-                                      textAlign: TextAlign.right,
-                                      //textDirection: prefix0.TextDirection.rtl,
-                                    ),
-                                  
+                                    'الإجمالي',
+                                    style: TextStyle(fontSize: 14),
+                                    textAlign: TextAlign.right,
+                                    //textDirection: prefix0.TextDirection.rtl,
+                                  ),
                                   leading: Text(
                                     formatter.format(model.orderSum()) + ' EGP',
                                     style: TextStyle(fontSize: 13),
@@ -309,7 +305,7 @@ class OrderSummary extends StatelessWidget {
                                     style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold),
-                                     textAlign: TextAlign.right,
+                                    textAlign: TextAlign.right,
                                     // textDirection: TextDirection.RTL,
                                   ),
                                   leading: Text(

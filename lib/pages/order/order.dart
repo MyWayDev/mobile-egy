@@ -354,7 +354,6 @@ class _OrderPage extends State<OrderPage> {
                                               fillColor: Colors.green,
                                               onPressed: () {
                                                 model.loading = false;
-
                                                 Navigator.push(context,
                                                     MaterialPageRoute(
                                                         builder: (_) {
@@ -557,11 +556,25 @@ class _OrderPage extends State<OrderPage> {
                                                   fillColor: Colors.green,
                                                   onPressed: () async {
                                                     model.loading = false;
-                                                    Navigator.push(context,
-                                                        MaterialPageRoute(
-                                                            builder: (_) {
-                                                      return EndOrder(model);
-                                                    }));
+                                                    String validMsg = await model
+                                                        .getOrderInvalidPerc(
+                                                            model);
+                                                    model
+                                                        .flush(
+                                                            context, validMsg)
+                                                        .dismiss(context);
+                                                    validMsg != ''
+                                                        ? model
+                                                            .flush(context,
+                                                                validMsg)
+                                                            .show(context)
+                                                        : Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (_) {
+                                                            return EndOrder(
+                                                                model);
+                                                          }));
                                                   },
                                                   splashColor: Colors.pink[900],
                                                 ),
@@ -586,14 +599,28 @@ class _OrderPage extends State<OrderPage> {
                                                         elevation: 9,
                                                         fillColor:
                                                             Colors.purple[800],
-                                                        onPressed: () {
+                                                        onPressed: () async {
                                                           //model.giftorderList.clear();
-
-                                                          showDialog(
-                                                              context: context,
-                                                              builder: (_) =>
-                                                                  NodeDialoge(
-                                                                      model));
+                                                          String validMsg =
+                                                              await model
+                                                                  .getOrderInvalidPerc(
+                                                                      model);
+                                                          model
+                                                              .flush(context,
+                                                                  validMsg)
+                                                              .dismiss(context);
+                                                          validMsg != ''
+                                                              ? model
+                                                                  .flush(
+                                                                      context,
+                                                                      validMsg)
+                                                                  .show(context)
+                                                              : showDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder: (_) =>
+                                                                      NodeDialoge(
+                                                                          model));
                                                         },
                                                         splashColor:
                                                             Colors.pink[900],
@@ -1120,102 +1147,102 @@ class _NodeDialogeState extends State<NodeDialoge> {
         opacity: 0.6,
         progressIndicator: LinearProgressIndicator(),
         child: Dialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
-            child: Column(children: <Widget>[
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+          child:
+
               // _orderExp(context, model, formatter, formatWeight),
               Container(
-                width: 120,
-                height: 60,
-                child: ListTile(
-                  //  contentPadding: EdgeInsets.all(0),
-                  leading:
-                      Icon(Icons.vpn_key, size: 24.0, color: Colors.pink[500]),
-                  title: TextFormField(
-                    textAlign: TextAlign.center,
-                    controller: controller,
-                    enabled: !veri ? true : false,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: 'أدخل رقم العضو',
-                      hintStyle: TextStyle(color: Colors.grey[400]),
-                    ),
-                    keyboardType: TextInputType.number,
-                    validator: (value) => value.isEmpty
-                        ? 'كود المنتج فارغ !!'
-                        : RegExp('[0-9]').hasMatch(value)
-                            ? null
-                            : 'كود المنتج غير صحيح !!',
-                    onSaved: (String value) {
-                      _orderFormData['id'] = value.padLeft(8, '0');
-                    },
-                  ),
-                  trailing: IconButton(
-                    icon: !veri //&& controller.text.length > 0
-                        ? Icon(
-                            Icons.check,
-                            size: 26.0,
-                            color: Colors.blue,
-                          )
-                        : controller.text.length > 0
-                            ? Icon(
-                                Icons.close,
-                                size: 24.0,
-                                color: Colors.grey,
-                              )
-                            : Container(),
-                    color: Colors.pink[900],
-                    onPressed: () async {
-                      isloading(true);
-                      if (!veri) {
-                        veri = await widget.model.leaderVerification(
-                            controller.text.padLeft(8, '0'));
-                        if (veri) {
-                          _nodeData = await widget.model
-                              .nodeJson(controller.text.padLeft(8, '0'));
-                          print('_nodeData.distrId:${_nodeData.distrId}');
-                          _nodeData.distrId == '00000000'
-                              ? resetVeri()
-                              : controller.text =
-                                  _nodeData.distrId + '    ' + _nodeData.name;
-                          if (_nodeData.distrId == '00000000') {
-                            Navigator.of(context).pop();
-                            showDialog(
-                                context: context,
-                                builder: (_) => NodeDialoge(widget.model));
-                          } else {
-                            Navigator.of(context).pop();
-                            setState(() {
-                              widget.model.bulkDistrId = _nodeData.distrId;
-                            });
-                            widget.model.shipmentAddress == null ||
-                                    widget.model.shipmentAddress == ''
-                                ? showDialog(
-                                    context: context,
-                                    builder: (_) => ShipmentPlace(
-                                          model: widget.model,
-                                          memberId: _nodeData.distrId,
-                                        ))
-                                : widget.model
-                                    .orderToBulk(widget.model.bulkDistrId);
-                          }
-                        } else {
-                          resetVeri();
-                        }
-                      } else {
-                        resetVeri();
-                      }
-                      isloading(false);
-                    },
-                    splashColor: Colors.pink,
-                  ),
+            width: 120,
+            height: 60,
+            child: ListTile(
+              //  contentPadding: EdgeInsets.all(0),
+              leading: Icon(Icons.vpn_key, size: 24.0, color: Colors.pink[500]),
+              title: TextFormField(
+                textAlign: TextAlign.center,
+                controller: controller,
+                enabled: !veri ? true : false,
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
                 ),
+                decoration: InputDecoration(
+                  hintText: 'أدخل رقم العضو',
+                  hintStyle: TextStyle(color: Colors.grey[400]),
+                ),
+                keyboardType: TextInputType.number,
+                validator: (value) => value.isEmpty
+                    ? 'كود المنتج فارغ !!'
+                    : RegExp('[0-9]').hasMatch(value)
+                        ? null
+                        : 'كود المنتج غير صحيح !!',
+                onSaved: (String value) {
+                  _orderFormData['id'] = value.padLeft(8, '0');
+                },
               ),
-            ])));
+              trailing: IconButton(
+                icon: !veri //&& controller.text.length > 0
+                    ? Icon(
+                        Icons.check,
+                        size: 26.0,
+                        color: Colors.blue,
+                      )
+                    : controller.text.length > 0
+                        ? Icon(
+                            Icons.close,
+                            size: 24.0,
+                            color: Colors.grey,
+                          )
+                        : Container(),
+                color: Colors.pink[900],
+                onPressed: () async {
+                  isloading(true);
+                  if (!veri) {
+                    veri = await widget.model
+                        .leaderVerification(controller.text.padLeft(8, '0'));
+                    if (veri) {
+                      _nodeData = await widget.model
+                          .nodeJson(controller.text.padLeft(8, '0'));
+                      print('_nodeData.distrId:${_nodeData.distrId}');
+                      _nodeData.distrId == '00000000'
+                          ? resetVeri()
+                          : controller.text =
+                              _nodeData.distrId + '    ' + _nodeData.name;
+                      if (_nodeData.distrId == '00000000') {
+                        Navigator.of(context).pop();
+                        showDialog(
+                            context: context,
+                            builder: (_) => NodeDialoge(widget.model));
+                      } else {
+                        Navigator.of(context).pop();
+                        setState(() {
+                          widget.model.bulkDistrId = _nodeData.distrId;
+                        });
+                        widget.model.shipmentAddress == null ||
+                                widget.model.shipmentAddress == ''
+                            ? showDialog(
+                                context: context,
+                                builder: (_) => ShipmentPlace(
+                                      model: widget.model,
+                                      memberId: _nodeData.distrId,
+                                    ))
+                            : widget.model
+                                .orderToBulk(widget.model.bulkDistrId);
+                      }
+                    } else {
+                      resetVeri();
+                    }
+                  } else {
+                    resetVeri();
+                  }
+                  isloading(false);
+                },
+                splashColor: Colors.pink,
+              ),
+            ),
+          ),
+        ));
   }
 }
 

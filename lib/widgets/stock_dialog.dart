@@ -204,7 +204,9 @@ class _StockDialog extends State<StockDialog> {
                               await isGetStock(model, itemData[index].itemId);
                           int _stock =
                               await model.getStock(itemData[index].itemId);
-                          if (itemData[index].held && _stock < qtyOrder) {
+                          if (itemData[index].held &&
+                              _stock - model.settings.safetyStock < qtyOrder &&
+                              qtyOrder <= model.settings.maxOrder) {
                             model.addItemOrder(
                                 itemData[index], _data.number, true);
                             model.itemorderlist.forEach((i) =>

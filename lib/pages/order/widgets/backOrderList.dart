@@ -50,7 +50,6 @@ class _BackOrderListState extends State<BackOrderList> {
                                 model.deleteBackOrderItem(index, context);
                               }
                             },
-                            background: Container(),
                             key: Key(model.backOrdersList[index].distrId),
                             child: Card(
                                 color: Colors.blue[300],
@@ -59,13 +58,18 @@ class _BackOrderListState extends State<BackOrderList> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     mainAxisSize: MainAxisSize.max,
                                     children: <Widget>[
-                                      Text('طلب فك حجز'),
+                                      Text(
+                                        'طلب فك حجز',
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold),
+                                      ),
                                       !model.userInfo.isleader
                                           ? IconButton(
                                               icon: Icon(
                                                   GroovinMaterialIcons
                                                       .arrow_right_thick,
-                                                  size: 28,
+                                                  size: 24,
                                                   color: Colors.pink[500]),
                                               onPressed: () async {
                                                 isloading(true);
@@ -87,7 +91,7 @@ class _BackOrderListState extends State<BackOrderList> {
                                                                 .name));
                                                 isloading(false);
                                               })
-                                          : SizedBox(width: 18)
+                                          : SizedBox(width: 12)
                                     ],
                                   ),
                                   _buildBackOrderRelease(
@@ -103,42 +107,51 @@ class _BackOrderListState extends State<BackOrderList> {
   Widget _buildBackOrderRelease(
       List<BackOrderRelease> _backOrderRelease, int index, MainModel model) {
     return ExpansionTile(
+
         // initiallyExpanded: true,
         backgroundColor: Colors.amber[300],
         key: PageStorageKey<BackOrderRelease>(_backOrderRelease[index]),
         title: ListTile(
-          leading: IconButton(
-              disabledColor: Colors.transparent,
-              icon: Icon(
-                Icons.delete_forever,
-                color: Colors.pink[900],
-                size: 28,
-              ),
-              onPressed: () {
-                model.deleteBackOrderItem(index, context);
-              }),
-          title: Container(
-            child: Column(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Icon(
-                      Icons.vpn_key,
-                      color: Colors.pink[500],
-                      size: 21,
-                    ),
-                    Text(
-                      _backOrderRelease[index].distrId,
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  ],
+          leading: ConstrainedBox(
+            constraints: const BoxConstraints(maxHeight: 50.0, maxWidth: 23.0),
+            child: IconButton(
+                disabledColor: Colors.transparent,
+                icon: Icon(
+                  Icons.delete_forever,
+                  color: Colors.pink[900],
+                  size: 22,
                 ),
-                Divider(
-                  height: 3.0,
-                  indent: 0,
-                  color: Colors.black,
-                )
+                onPressed: () {
+                  model.deleteBackOrderItem(index, context);
+                }),
+          ),
+          title: Container(
+            width: 200,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    maxHeight: 45.0,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Icon(
+                        Icons.vpn_key,
+                        color: Colors.pink[500],
+                        size: 17,
+                      ),
+                      SizedBox(width: 2),
+                      Text(
+                        int.parse(_backOrderRelease[index].distrId).toString(),
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -156,43 +169,60 @@ class _BackOrderListState extends State<BackOrderList> {
       return Card(
         color: Colors.amber,
         child: ListTile(
-            leading: Column(children: <Widget>[
-              Icon(
-                Icons.insert_drive_file,
-                color: Colors.blueGrey,
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Text(
-                bO.docId,
-              ),
-            ]),
+            leading: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    bO.docId,
+                    style:
+                        TextStyle(fontSize: 11.5, fontWeight: FontWeight.bold),
+                  ),
+                  Stack(
+                    alignment: AlignmentDirectional.topCenter,
+                    fit: StackFit.passthrough,
+                    children: <Widget>[
+                      Positioned(
+                        child: Icon(
+                          Icons.shopping_cart,
+                          size: 28,
+                          color: Colors.blue[400],
+                        ),
+                      ),
+                      Text(
+                        '${bO.qty.round().toString()}',
+                        style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  )
+                ]),
             title: Column(children: <Widget>[
               Text(
                 bO.itemId,
-                style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                bO.name.length <= 22 ? bO.name : bO.name.substring(0, 22),
-                style: TextStyle(fontSize: 12),
+                style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.bold),
               ),
             ]),
-            subtitle: Center(
-              child: Text(
-                bO.qty.round().toString(),
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
+            subtitle: Text(
+              bO.name.length <= 24 ? bO.name : bO.name.substring(0, 24),
+              textDirection: TextDirection.rtl,
+              style: TextStyle(fontSize: 11.5),
             ),
-            trailing: IconButton(
-                icon: Icon(
-                  Icons.cancel,
-                  color: Colors.pink[900],
-                  size: 22,
-                ),
-                onPressed: () {
-                  model.deleteBackOrderDetails(bO, context);
-                })),
+            trailing: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 17),
+              child: IconButton(
+                  icon: Icon(
+                    Icons.cancel,
+                    color: Colors.pink[900],
+                    size: 18,
+                  ),
+                  onPressed: () {
+                    model.deleteBackOrderDetails(bO, context);
+                  }),
+            )),
       );
     });
   }

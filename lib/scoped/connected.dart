@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
@@ -71,6 +72,7 @@ class MainModel extends Model {
       for (Products p in products)
         itemData.where((i) => i.itemId == p.itemId).forEach((f) {
           updateItemsCatFalse(f.key, p);
+          print('${f.itemId}');
         });
     }
   }
@@ -1257,14 +1259,76 @@ class MainModel extends Model {
     return _bp;
   }
 
-  void bpValidPercent() async {
+  Flushbar flush(BuildContext context, String _msg) {
+    Flushbar _flush = Flushbar(
+      duration: Duration(seconds: 3),
+      messageText: Text(_msg,
+          style: TextStyle(fontSize: 15, color: Colors.limeAccent[100])),
+      isDismissible: true,
+      flushbarPosition: FlushbarPosition.TOP,
+      flushbarStyle: FlushbarStyle.FLOATING,
+      reverseAnimationCurve: Curves.decelerate,
+      forwardAnimationCurve: Curves.elasticOut,
+      mainButton: FlatButton(
+        onPressed: () => Navigator.of(context).pop(),
+        child: Icon(
+          Icons.close,
+          color: Colors.red[400],
+        ),
+      ),
+      margin: EdgeInsets.all(8),
+      borderRadius: 8,
+      title: 'تم تخطي الحد الاقصي لنقاط ',
+      icon: Icon(
+        Icons.warning,
+        color: Colors.red,
+      ),
+      boxShadows: [
+        BoxShadow(
+          color: Colors.red[800],
+          offset: Offset(0.0, 2.0),
+          blurRadius: 3.0,
+        )
+      ],
+    );
+    return _flush;
+  }
+
+  Future<String> getOrderInvalidPerc(MainModel model) async {
+    double _exPromo = getExPromo(orderBp());
+    double _wPromo = await getWeeklyPromo(orderBp());
+    double promoSum = _exPromo + _wPromo;
+    String _msg = '';
+
+    if (orderBp() > 100) {
+      if (promoSum > 71 && _exPromo > 0 && _wPromo > 0) {
+        _msg = '% ' + '${promoSum.toInt().toString()}' + ' ' + 'العرض و الشاور';
+      } else if (_exPromo > 51 && _wPromo == 0) {
+        promoSum = _exPromo;
+        _msg = '% ' + '${_exPromo.toInt().toString()}' + ' ' + 'الشاور';
+      } else if (_wPromo > 51 && _exPromo == 0) {
+        promoSum = _wPromo;
+        _msg = '% ' + '${_wPromo.toInt().toString()}' + ' ' + 'العرض';
+      }
+    }
+
+    return _msg;
+  }
+  /*
+  Future<bool> bpValidPercent() async {
+    bool _res = true;
     double _wPromo = 0;
     _wPromo = await getWeeklyPromo(orderBp());
     double _exPromo = 0;
     _exPromo = getExPromo(orderBp());
-    if (_wPromo > 0 && _exPromo > 0) {}
-    print('$_wPromo / $_exPromo');
-  }
+    if (_wPromo > 50 || _exPromo > 50 || _wPromo + _exPromo > 70) {
+      _res = false;
+    }
+    double promoSum = _wPromo + _exPromo;
+    print('wPROMO:$_wPromo -- exPromo: $_exPromo => $promoSum');
+
+    return _res;
+  }*/
 
   double getExPromo(int totalBp) {
     int exPromoItemBpTotal = 0;
@@ -2143,7 +2207,7 @@ for( var i = 0 ; i < _list.length; i++){
         print('user is allowed ${_userInfo.isAllowed.toString()}');
         versionControl(context);
         locKCart(context); //! uncomment this before buildR
-        locKApp(context); //! uncomment this before buildR
+        //locKApp(context); //! uncomment this before buildR
         userAccess(key, context);
         // getAreagetAreauserTest(key, context);
         // getArea();

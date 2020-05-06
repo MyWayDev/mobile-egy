@@ -16,7 +16,8 @@ import 'package:http/http.dart' as http;
 
 class AddRegion extends StatefulWidget {
   final String memberId;
-  AddRegion(this.memberId, {Key key}) : super(key: key);
+  final String region;
+  AddRegion(this.memberId, this.region, {Key key}) : super(key: key);
 
   @override
   _AddRegionState createState() => _AddRegionState();
@@ -26,7 +27,7 @@ class _AddRegionState extends State<AddRegion> {
   String path = 'flamelink/environments/egyStage/content/district/en-US/';
   FirebaseDatabase database = FirebaseDatabase.instance;
 
-  List<DropdownMenuItem> regions = [];
+  //List<DropdownMenuItem> regions = [];
   List<DropdownMenuItem> areas = [];
   String selectedRegion;
   var regionSplit;
@@ -38,7 +39,7 @@ class _AddRegionState extends State<AddRegion> {
     });
   }
 
-  void getRegions() async {
+  /*void getRegions() async {
     DataSnapshot snapshot = await database.reference().child(path).once();
 
     Map<dynamic, dynamic> _areas = snapshot.value;
@@ -64,7 +65,7 @@ class _AddRegionState extends State<AddRegion> {
         }
       }
     }
-  }
+  }*/
 
   Future<List<ShipmentArea>> getAreas(String areaId) async {
     loading(true);
@@ -107,7 +108,11 @@ class _AddRegionState extends State<AddRegion> {
 
   @override
   void initState() {
-    getRegions();
+    regionSplit = widget.region.split('\ ');
+    hasData(true);
+
+    getAreas(regionSplit.first);
+    //getRegions();
     super.initState();
   }
 
@@ -131,9 +136,17 @@ class _AddRegionState extends State<AddRegion> {
             softWrap: true,
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
+          SizedBox(
+            height: 8,
+          ),
+          Text(
+            widget.region,
+            softWrap: true,
+            style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+          ),
           //  ScopedModelDescendant<MainModel>(
           //   builder: (BuildContext context, Widget child, MainModel model) {})
-          SearchableDropdown(
+          /* SearchableDropdown(
             hint: Center(
               child: Text(
                 'المحافظة',
@@ -159,7 +172,7 @@ class _AddRegionState extends State<AddRegion> {
               await getAreas(regionSplit.first);
               setState(() {});
             },
-          ),
+          ),*/
           regionSplit != null
               ? Container(
                   child: areas.length > 0

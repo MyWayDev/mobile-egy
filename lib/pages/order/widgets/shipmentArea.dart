@@ -86,7 +86,11 @@ class _ShipmentAreaState extends State<ShipmentPlace>
         showDialog(
             context: context,
             barrierDismissible: false,
-            builder: (_) => AddRegion(widget.memberId));
+            builder: (_) => AddRegion(
+                widget.memberId,
+                widget.model.distrPoint.toString().padLeft(2, '0') +
+                    ' ' +
+                    widget.model.distrPointName));
       }
     }
   }
@@ -162,7 +166,13 @@ class _ShipmentAreaState extends State<ShipmentPlace>
                             showDialog(
                                 context: context,
                                 barrierDismissible: false,
-                                builder: (_) => AddRegion(widget.memberId));
+                                builder: (_) => AddRegion(
+                                    widget.memberId,
+                                    widget.model.distrPoint
+                                            .toString()
+                                            .padLeft(2, '0') +
+                                        ' ' +
+                                        widget.model.distrPointName));
                           },
                         ),
                       ],
@@ -347,7 +357,11 @@ class _ShipmentAreaState extends State<ShipmentPlace>
       showDialog(
           context: context,
           barrierDismissible: false,
-          builder: (_) => AddRegion(widget.memberId));
+          builder: (_) => AddRegion(
+              widget.memberId,
+              widget.model.distrPoint.toString().padLeft(2, '0') +
+                  ' ' +
+                  widget.model.distrPointName));
     }
   }
 }
