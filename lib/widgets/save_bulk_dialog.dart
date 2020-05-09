@@ -1,12 +1,9 @@
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:groovin_material_icons/groovin_material_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:mor_release/bottom_nav.dart';
 import 'package:mor_release/models/item.dart';
 import 'package:mor_release/models/item.order.dart';
-import 'package:mor_release/pages/order/widgets/payment.dart';
 import 'package:mor_release/scoped/connected.dart';
 import 'package:mor_release/widgets/color_loader_2.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -164,7 +161,7 @@ class _SaveBulkDialogState extends State<SaveBulkDialog> {
                     Padding(
                       padding: EdgeInsets.only(right: 10),
                       child: Text(
-                        'ITEM',
+                        '',
                         style: TextStyle(
                             color: Colors.black, fontWeight: FontWeight.bold),
                       ),
@@ -172,7 +169,7 @@ class _SaveBulkDialogState extends State<SaveBulkDialog> {
                     Padding(
                       padding: EdgeInsets.only(right: 10),
                       child: Text(
-                        'AVALABLE STOCK',
+                        '',
                         style: TextStyle(
                             color: Colors.black, fontWeight: FontWeight.bold),
                       ),
@@ -209,8 +206,7 @@ class _SaveBulkDialogState extends State<SaveBulkDialog> {
                         Padding(
                           padding: EdgeInsets.all(10),
                           child: Text(
-                            'order telah diubah sesuai' +
-                                ' dengan ketersediaan saat ini',
+                            'تم تغيير الطلب وفقًا ' + ' للرصيد التوافر الحالي',
                             overflow: TextOverflow.clip,
                             softWrap: true,
                             style: TextStyle(
@@ -246,8 +242,7 @@ class _SaveBulkDialogState extends State<SaveBulkDialog> {
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
                               Text(
-                                'kebali ke modifikasi',
-                                //textDirection: TextDirection.ltr,
+                                'العودة إلى التعديل',
                                 style: TextStyle(
                                     fontSize: 14.0,
                                     color: Colors.grey,
@@ -281,28 +276,9 @@ class _SaveBulkDialogState extends State<SaveBulkDialog> {
                         direction: Axis.horizontal,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(right: 10),
+                          Center(
                             child: Text(
-                              'Jumlah',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(right: 10),
-                            child: Text(
-                              'Kode',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(right: 8),
-                            child: Text(
-                              '#',
+                              'ملخص الطلبيات',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold),
@@ -318,7 +294,6 @@ class _SaveBulkDialogState extends State<SaveBulkDialog> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           Center(
-                            // TOD  padding: EdgeInsets.only(right: 10),
                             child: Text(
                               'أرقام الطلبيات',
                               style: TextStyle(

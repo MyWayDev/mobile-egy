@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:mor_release/models/backOrder.dart';
 import 'dart:convert';
 import 'dart:io';
 
@@ -129,6 +130,7 @@ class SalesOrder {
   String courierFee;
   String bonusDeduc;
   String backOrder;
+  List<BackOrderRelease> backOrders;
   List<ItemOrder> order;
   List<GiftOrder> gifts;
   List<PromoOrder> promos;
@@ -139,6 +141,7 @@ class SalesOrder {
       this.total,
       this.totalBp,
       this.order,
+      this.backOrders,
       this.weight,
       this.courierId,
       this.areaId,

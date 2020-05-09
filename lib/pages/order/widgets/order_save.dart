@@ -48,7 +48,7 @@ class OrderSave extends StatelessWidget {
                   padding: EdgeInsets.only(top: 1),
                   child: RaisedButton(
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0)),
+                          borderRadius: BorderRadius.circular(40.0)),
                       splashColor: Theme.of(context).primaryColor,
                       color: Colors.tealAccent[400],
                       child: Row(
@@ -65,7 +65,7 @@ class OrderSave extends StatelessWidget {
                             child: Container(),
                           ),
                           Transform.translate(
-                            offset: Offset(1.0, 0.0),
+                            offset: Offset(2.0, 0.0),
                             child: Container(
                                 padding: const EdgeInsets.only(right: 2.0),
                                 child: Row(

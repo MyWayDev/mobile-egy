@@ -193,7 +193,7 @@ class _BackOrderListState extends State<BackOrderList> {
                       Text(
                         '${bO.qty.round().toString()}',
                         style: TextStyle(
-                            fontSize: 13,
+                            fontSize: 15,
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
@@ -212,7 +212,7 @@ class _BackOrderListState extends State<BackOrderList> {
               style: TextStyle(fontSize: 11.5),
             ),
             trailing: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 17),
+              constraints: const BoxConstraints(maxWidth: 21),
               child: IconButton(
                   icon: Icon(
                     Icons.cancel,

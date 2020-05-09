@@ -18,7 +18,7 @@ class BackOrder {
         qty: json['QTY']);
   }
   toJson() {
-    return {"DOC": docId, "ID": itemId};
+    return {"D": docId, "i": itemId};
   }
 }
 
@@ -29,7 +29,7 @@ class BackOrderRelease {
   BackOrderRelease({this.distrId, this.backOrder});
 
   toJson() {
-    return {"member": distrId, "backOrder": backOrder};
+    return {"": int.parse(distrId), "": backOrder};
   }
 
   String backOrderToJson(BackOrderRelease backOrder) {

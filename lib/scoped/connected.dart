@@ -14,7 +14,7 @@ import 'package:mor_release/models/item.dart';
 import 'package:mor_release/models/item.order.dart';
 import 'package:mor_release/models/lock.dart';
 import 'package:mor_release/models/sales.order.dart';
-import 'package:mor_release/pages/order/widgets/backOrderDialog.dart';
+import 'package:mor_release/pages/order/bulkOrder.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../models/user.dart';
 import 'dart:convert';
@@ -87,11 +87,97 @@ class MainModel extends Model {
     }
     if (v) {
       for (var bo in backOrdersList) {
-        bo.backOrder.addAll(bOR.backOrder);
+        bo.distrId == bOR.distrId ? bo.backOrder.addAll(bOR.backOrder) : null;
       }
     } else {
       backOrdersList.add(bOR);
     }
+  }
+
+  List<BackOrderRelease> addToBulkBackOrderList(
+      BackOrderRelease bOR, List<BackOrderRelease> _bulkBackOrderList) {
+    bool v = false;
+    for (final f in _bulkBackOrderList) {
+      if (f.distrId.contains(bOR.distrId)) {
+        v = true;
+        break;
+      }
+    }
+    if (v) {
+      for (var bo in _bulkBackOrderList) {
+        bo.distrId == bOR.distrId ? bo.backOrder.addAll(bOR.backOrder) : null;
+      }
+    } else {
+      _bulkBackOrderList.add(bOR);
+    }
+    return _bulkBackOrderList;
+  }
+
+  bool getbulkBackOrderDistr(String distrId) {
+    bool found = false;
+    for (SalesOrder bo in bulkOrder) {
+      for (final bbo in bo.backOrders) {
+        if (bbo.distrId == distrId) {
+          print('distrFound=>$found');
+          found = true;
+          break;
+        }
+      }
+    }
+    print('distrFound=>$found');
+    return found;
+  }
+
+  Future<List<BackOrder>> getBulkBackOrderItems(
+      String distrId, String storeId) async {
+    List<BackOrder> _backOrder = [];
+    List<BackOrder> checkedBO = [];
+    List<BackOrderRelease> bulkBackOrderList = [];
+    bool v = false;
+
+    final response =
+        await http.get('$httpath/getBackOrderItems/$distrId/$storeId');
+
+    if (response.statusCode == 200) {
+      final backOrderItems = json.decode(response.body) as List;
+
+      _backOrder = backOrderItems.map((i) => BackOrder.jsonParse(i)).toList();
+      backOrdersList
+          .forEach((o) => addToBulkBackOrderList(o, bulkBackOrderList));
+      bulkOrder.forEach((b) => b.backOrders
+          .forEach((o) => addToBulkBackOrderList(o, bulkBackOrderList)));
+
+      for (final f in bulkBackOrderList) {
+        if (f.distrId.contains(distrId)) {
+          v = true;
+          break;
+        }
+      }
+
+      if (v) {
+        for (BackOrderRelease bol
+            in bulkBackOrderList.where((f) => f.distrId == distrId)) {
+          for (final bo in _backOrder) {
+            bool found = false;
+
+            for (final bl in bol.backOrder) {
+              if (bo.docId == bl.docId && bo.itemId == bl.itemId) {
+                found = true;
+                print(bl.itemId);
+                break;
+              }
+            }
+
+            if (!found) {
+              checkedBO.add(bo);
+            }
+          }
+        }
+      } else {
+        checkedBO = _backOrder;
+      }
+    }
+    return checkedBO;
   }
 
   Future<List<BackOrder>> getBackOrderItems(
@@ -1430,9 +1516,11 @@ class MainModel extends Model {
         weight: orderWeight(),
         order: itemorderlist,
         gifts: giftorderList,
+        backOrders: backOrdersList,
         backOrder: txtBackOrderList(),
         promos: promoOrderList);
     bulkOrder.add(order);
+    backOrdersList = [];
     itemorderlist = [];
     giftorderList = [];
     promoOrderList = [];
@@ -1468,7 +1556,8 @@ class MainModel extends Model {
     List<AggrItem> bulkItemsjoin = [];
 
     for (var item in itemOrders) {
-      AggrItem aggrItem = AggrItem(id: item.itemId, qty: item.qty);
+      AggrItem aggrItem =
+          AggrItem(id: item.itemId, qty: item.qty, held: item.held);
       if (bulkItemsjoin.length == 0) {
         bulkItemsjoin.add(aggrItem);
       } else {
@@ -1479,7 +1568,7 @@ class MainModel extends Model {
         }
       }
     }
-    bulkItemsjoin.forEach((i) => print('${i.id}:${i.qty}'));
+    bulkItemsjoin.forEach((i) => print('${i.id}:${i.qty}:${i.held}'));
     return bulkItemsjoin;
   }
 
@@ -1515,7 +1604,7 @@ class MainModel extends Model {
     for (var item in aggrItem) {
       item.id != '90'
           ? await getStock(item.id).then((i) {
-              if (i < item.qty && item.held) {
+              if (i < item.qty && !item.held) {
                 print('held one:${item.held}');
                 itemOutList.add(item);
                 itemOutList.last.qtyOut = i;
@@ -1616,7 +1705,7 @@ class MainModel extends Model {
     List<SalesOrder> finalBulkOrders = [];
     String bulkId = getRandom().toString();
     for (SalesOrder order in bulkOrders) {
-      if (order.gifts.length > 0) {
+      /*if (order.gifts.length > 0) {
         /* order.gifts.forEach((g) => g.pack.forEach((p) => {p.bp = 0: p.bv = 0.0}));
       order.gifts.forEach((g) => g.pack.forEach((p) => p.price = 0.0));*/
 
@@ -1630,7 +1719,7 @@ class MainModel extends Model {
 
         order.promos.forEach((p) =>
             p.promoPack.forEach((pp) => addGiftToBlukOrder(pp, p.qty, order)));
-      }
+      }*/
       if (courierFee > 0) {
         double courierPerOrderFee =
             (order.weight / bulkOrderWeight()) * courierFee;
@@ -1814,6 +1903,7 @@ class MainModel extends Model {
       courierFee: courierfee.toString(),
       note: note,
       backOrder: txtBackOrderList(),
+      bonusDeduc: '',
       address: docType == 'CR' ? shipmentAddress : null,
       courierId: docType == 'CR' ? shipmentId : null,
       areaId: docType == 'CR' ? areaId : null,
@@ -1834,6 +1924,7 @@ class MainModel extends Model {
       itemorderlist.clear();
       giftorderList.clear();
       promoOrderList.clear();
+      backOrdersList.clear();
 
       OrderMsg msg = OrderMsg.fromJson(json.decode(response.body));
 

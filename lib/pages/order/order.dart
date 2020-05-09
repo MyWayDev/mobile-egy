@@ -162,7 +162,8 @@ class _OrderPage extends State<OrderPage> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title: Text('Hapus pesanan di keranjang ?',
+                                    title: Text(
+                                        'سيتم حذف المنتجات من السلة لتحميل',
                                         style:
                                             TextStyle(color: Colors.pink[900])),
                                     actions: <Widget>[
@@ -175,7 +176,10 @@ class _OrderPage extends State<OrderPage> {
                                       IconButton(
                                         icon: Icon(Icons.check),
                                         onPressed: () {
+                                          model.backOrdersList.clear();
                                           model.itemorderlist.clear();
+                                          model.backOrdersList.addAll(model
+                                              .bulkOrder[index].backOrders);
                                           model.itemorderlist.addAll(
                                               model.bulkOrder[index].order);
                                           model.bulkOrder
@@ -190,6 +194,8 @@ class _OrderPage extends State<OrderPage> {
                                   );
                                 });
                           } else {
+                            model.backOrdersList
+                                .addAll(model.bulkOrder[index].backOrders);
                             model.itemorderlist
                                 .addAll(model.bulkOrder[index].order);
                             model.giftorderList
@@ -1384,9 +1390,18 @@ class _NodeBODialogeState extends State<NodeBODialoge> {
                             });
 
                             showDialog(
+                              barrierDismissible: true,
                               context: context,
-                              builder: (_) => BackOrderDialog(_backOrders,
-                                  _nodeData.distrId, _nodeData.name),
+                              builder: (_) => widget.model
+                                      .getbulkBackOrderDistr(_nodeData.distrId)
+                                  ? AlertDialog(
+                                      title: Text(
+                                        "تم طلب فك الحجز لهاذا العضو في طلبيه سابقه",
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                                    )
+                                  : BackOrderDialog(_backOrders,
+                                      _nodeData.distrId, _nodeData.name),
                             );
                           }
                         } else {

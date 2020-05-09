@@ -207,7 +207,7 @@ class AggrItem {
   AggrItem({
     this.id,
     this.qty,
-    this.held = false,
+    this.held,
     this.qtyOut,
   });
 }

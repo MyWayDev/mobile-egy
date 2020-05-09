@@ -1,12 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:groovin_material_icons/groovin_material_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:mor_release/models/item.dart';
-
 import 'package:mor_release/models/sales.order.dart';
 import 'package:mor_release/scoped/connected.dart';
 import 'package:mor_release/widgets/custom_bar.dart';
@@ -75,8 +73,6 @@ class _TrackOrder extends State<TrackOrder> {
       sos = soList.map((i) => Sorder.fromJson(i)).toList();
       List<SoItem> items = [];
       items = soList.map((i) => SoItem.fromJson(i)).toList();
-//List<Invoice> firstInvoice = [];
-//items.forEach((f)=>print('${f.itemId}..${f.docId}'));
       sos.forEach((f) {
         if (f.counter == '0001' && f.soType == 'CR') {
           firstSorder.add(f);
@@ -135,8 +131,6 @@ class _TrackOrder extends State<TrackOrder> {
     isLoading(true, model);
     DateTime orderTime = firstSorder[index].addDate;
     DateTime timeNow = await model.serverTimeNow();
-
-    print('$orderTime=>$timeNow');
     Duration diff = timeNow.difference(orderTime);
     int timelapsed = diff.inMinutes;
     isLoading(false, model);
@@ -148,7 +142,6 @@ class _TrackOrder extends State<TrackOrder> {
     model.giftorderList.clear();
     model.promoOrderList.clear();
     model.itemorderlist.clear();
-
     for (var i = 0; i < model.itemData.length; i++) {
       for (var d = 0; d < items.length; d++) {
         if (model.itemData[i].itemId == items[d].itemId && items[d].price > 0) {
@@ -169,7 +162,6 @@ class _TrackOrder extends State<TrackOrder> {
         }
       }
     }
-    print(model.itemorderlist.length);
     isLoading(false, model);
   }
 
@@ -179,8 +171,7 @@ class _TrackOrder extends State<TrackOrder> {
         builder: (buider) {
           return Container(
             height: 80.0,
-            color: Colors.transparent, //could change this to Color(0xFF737373),
-            //so you don't have to change MaterialApp canvasColor
+            color: Colors.transparent,
             child: Container(
                 decoration: BoxDecoration(
                     color: Colors.white,
@@ -191,7 +182,7 @@ class _TrackOrder extends State<TrackOrder> {
                   child: Text("الرجاء الاتظار" +
                       "  " +
                       "${5 - wait}" +
-                      "  " +
+                      + "  " +
                       "دقائق للتنفيذ"),
                 )),
           );
@@ -221,7 +212,6 @@ class _TrackOrder extends State<TrackOrder> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        // return object of type Dialog
         return Container(
           height: 80,
           child: AlertDialog(
@@ -251,7 +241,6 @@ class _TrackOrder extends State<TrackOrder> {
                   }
                 },
               ),
-              // usually buttons at the bottom of the dialog
               IconButton(
                 icon: Icon(
                   Icons.cancel,
@@ -270,8 +259,7 @@ class _TrackOrder extends State<TrackOrder> {
 
   Widget _buildSorder(List<Sorder> sos, int index, MainModel model) {
     return ExpansionTile(
-        backgroundColor:
-            Colors.pink[300], // _statusColorDetails(sos[index].status),
+        backgroundColor: Colors.pink[300],
         key: PageStorageKey<Sorder>(sos[index]),
         title: ListTile(
           leading: IconButton(
@@ -300,7 +288,6 @@ class _TrackOrder extends State<TrackOrder> {
           title: Container(
             child: Column(
               children: <Widget>[
-                // Text(sos[index].docId, style: TextStyle(fontSize: 14)),
                 Text(
                   sos[index].distrName,
                   style: TextStyle(fontSize: 14),
@@ -313,40 +300,8 @@ class _TrackOrder extends State<TrackOrder> {
               ],
             ),
           ),
-          /* trailing: !model.cartLocked
-                ? IconButton(
-                    icon: Icon(
-                      Icons.edit,
-                      color: Colors.white,
-                      size: 30,
-                    ),
-                    onPressed: () async {
-                      int wait = await getTimeDiff(model, index);
-
-                      if (wait > 5) {
-                        _deleteSoDialog(
-                            firstSorder[index].soItems,
-                            sos[index].docId,
-                            sos[index].distrId,
-                            model,
-                            "Semua barang yang sudah dipesan akan dibatalkan dan dikembalikan ke keranjang belanja",
-                            true);
-                      } else {
-                        _bottomSheetAlert(model, wait);
-                      }
-                    },
-                  )
-                : IconButton(
-                    icon: Icon(
-                      Icons.block,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {},
-                  )*/
         ),
-        children: sos[index].soItems.map(_buildItem).toList()
-        //root.invoiceItems.map(_buildTiles).toList(),
-        );
+        children: sos[index].soItems.map(_buildItem).toList());
   }
 
   @override
@@ -358,7 +313,6 @@ class _TrackOrder extends State<TrackOrder> {
           floatingActionButton: FloatingActionButton(
             elevation: 21.5,
             backgroundColor: Colors.transparent,
-            //foregroundColor: Colors.transparent,
             onPressed: () {
               _getSorders(widget.userId);
             },
@@ -409,8 +363,6 @@ class _TrackOrder extends State<TrackOrder> {
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
-                                //mainAxisSize: MainAxisSize.min,
-                                //crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Row(
                                     crossAxisAlignment:
@@ -430,7 +382,6 @@ class _TrackOrder extends State<TrackOrder> {
                                         firstSorder[index].distrId,
                                         style: TextStyle(
                                             fontStyle: FontStyle.italic,
-                                            // fontSize: 14,
                                             color: Colors.white),
                                       ),
                                     ],
@@ -460,11 +411,6 @@ class _TrackOrder extends State<TrackOrder> {
                                   ),
                                 ],
                               ),
-                              /* Row(
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: <Widget>[],
-                              ),*/
                               ExpansionTile(
                                   backgroundColor: Colors.pink[400],
                                   key: PageStorageKey<Sorder>(
@@ -585,17 +531,10 @@ class _TrackOrder extends State<TrackOrder> {
                                   ),
                                   children: [
                                     _buildSorder(firstSorder, index, model)
-                                  ]
-                                  /* firstInvoice[index]
-                        .invoiceItems
-                        .map(_buildItem)
-                        .toList()*/
-                                  //root.invoiceItems.map(_buildTiles).toList(),
-                                  ),
+                                  ]),
                             ],
                           ),
                         );
-                        // EntryItem(invoices[index]);
                       }),
                 ),
               ],
