@@ -182,7 +182,7 @@ class _TrackOrder extends State<TrackOrder> {
                   child: Text("الرجاء الاتظار" +
                       "  " +
                       "${5 - wait}" +
-                      + "  " +
+                      "  " +
                       "دقائق للتنفيذ"),
                 )),
           );
@@ -212,6 +212,7 @@ class _TrackOrder extends State<TrackOrder> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        // return object of type Dialog
         return Container(
           height: 80,
           child: AlertDialog(

@@ -199,3 +199,23 @@ class Member {
     );
   }
 }
+
+class DistrBonus {
+  String distrId;
+  String name;
+  var bonus;
+
+  DistrBonus({this.distrId, this.name, this.bonus});
+  toJson() {
+    return {"": int.parse(distrId), "": bonus};
+  }
+
+  String distrBonusToJson(DistrBonus distrBonus) {
+    final dyn = distrBonus.toJson();
+    return json.encode(dyn);
+  }
+
+  factory DistrBonus.fromJson(Map<dynamic, dynamic> json) {
+    return DistrBonus(distrId: json['distr_id'], bonus: json['NET_DESRV']);
+  }
+}

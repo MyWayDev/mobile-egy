@@ -126,7 +126,8 @@ class SettingsScreenState extends State<SettingsScreen> {
           photoUrl = downloadUrl;
           FirebaseDatabase.instance
               .reference()
-              .child('flamelink/environments/egyStage/content/users/en-US/$id')
+              .child(
+                  'flamelink/environments/egyProduction/content/users/en-US/$id')
               .update({
             'name': name,
             'areaId': areaId,

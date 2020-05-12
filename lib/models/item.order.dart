@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:mor_release/models/gift.order.dart';
+import 'package:mor_release/models/user.dart';
 
 class ItemOrder {
   String itemId;
@@ -131,6 +132,7 @@ class SalesOrder {
   String bonusDeduc;
   String backOrder;
   List<BackOrderRelease> backOrders;
+  List<DistrBonus> distrBonues;
   List<ItemOrder> order;
   List<GiftOrder> gifts;
   List<PromoOrder> promos;
@@ -142,6 +144,7 @@ class SalesOrder {
       this.totalBp,
       this.order,
       this.backOrders,
+      this.distrBonues,
       this.weight,
       this.courierId,
       this.areaId,

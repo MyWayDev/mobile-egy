@@ -6,6 +6,7 @@ import 'package:mor_release/pages/gift/gift.dart';
 import 'package:mor_release/pages/gift/gift_list.dart';
 import 'package:mor_release/pages/gift/promo/promo.dart';
 import 'package:mor_release/pages/gift/promo/promo_list.dart';
+import 'package:mor_release/pages/order/widgets/bonus.deduct.dart';
 import 'package:mor_release/pages/order/widgets/order_save.dart';
 import 'package:mor_release/pages/order/widgets/order_summary.dart';
 import 'package:mor_release/scoped/connected.dart';
@@ -208,7 +209,7 @@ class _CourierOrder extends State<CourierOrder> {
 
                     courierFee != null && !model.isBulk && stateValue != null
                         ? Container(
-                            height: 180,
+                            height: 225,
                             child: ModalProgressHUD(
                                 inAsyncCall:
                                     _loading, //courierFee == null ? true : false,

@@ -27,9 +27,9 @@ import 'package:firebase_core/firebase_core.dart';
 class MainModel extends Model {
   // ** items //** */
   static String _version = '3.22r'; //!Modify for every release version./.
-  static String firebaseDb = "egyStage"; //!modify back to egyStage;
-  static String stage = "egyStage";
-  static String updateDb = "egyStage";
+  static String firebaseDb = "egyProduction"; //!modify back to egyProduction;
+  static String stage = "egyProduction";
+  static String updateDb = "egyProduction";
   final FirebaseDatabase database = FirebaseDatabase.instance;
   DatabaseReference databaseReference;
   final String path = 'flamelink/environments/$firebaseDb/content';
@@ -54,6 +54,7 @@ class MainModel extends Model {
   bool isBulk = false;
   String token = '';
   List<BackOrderRelease> backOrdersList = [];
+  List<DistrBonus> distrBonusList = [];
   bool loading = false;
   bool bulkLoading = false;
   bool isBalanceChecked = true;
@@ -239,10 +240,32 @@ class MainModel extends Model {
     return products;
   }
 
+  bool getDistrBonus(String distrId) {
+    bool found = false;
+    for (var d in distrBonusList) {
+      if (d.distrId == distrId) {
+        found = true;
+        break;
+      }
+    }
+
+    return found;
+  }
+
+  Future<DistrBonus> distrBonus(String distrId) async {
+    DistrBonus _distrBonus;
+
+    final response = await http.get('$httpath/deserve_bonus/$distrId');
+    if (response.statusCode == 200) {
+      List _bonus = json.decode(response.body);
+      _distrBonus = DistrBonus.fromJson(_bonus.first);
+    }
+    return _distrBonus;
+  }
+
   updateItemsCatFalse(String itemId, Products p) {
-    DatabaseReference catF = FirebaseDatabase.instance
-        .reference()
-        .child('flamelink/environments/egyStage/content/items/en-US/$itemId');
+    DatabaseReference catF = FirebaseDatabase.instance.reference().child(
+        'flamelink/environments/egyProduction/content/items/en-US/$itemId');
 
     catF.update({
       'catalogue': p.catalog,
@@ -770,6 +793,12 @@ class MainModel extends Model {
     notifyListeners();
   }
 
+  void deleteDistrBonus(int i, BuildContext context) {
+    distrBonusList.remove(distrBonusList[i]);
+    distrBonusList.isEmpty ? Navigator.of(context).pop() : null;
+    notifyListeners();
+  }
+
   void deleteBackOrderItem(int i, BuildContext context) {
     backOrdersList.remove(backOrdersList[i]);
     backOrdersList.isEmpty ? Navigator.of(context).pop() : null;
@@ -828,6 +857,15 @@ class MainModel extends Model {
   }
 
 //!--------*
+  double distrBonusDeductTotal() {
+    double x = 0;
+    for (DistrBonus i in distrBonusList) {
+      x += i.bonus;
+    }
+    notifyListeners();
+    return x;
+  }
+
   List<ItemOrder> get displayItemOrder {
     return List.from(itemorderlist);
   }
@@ -1517,7 +1555,9 @@ class MainModel extends Model {
         order: itemorderlist,
         gifts: giftorderList,
         backOrders: backOrdersList,
+        distrBonues: distrBonusList,
         backOrder: txtBackOrderList(),
+        bonusDeduc: txtdistrBonusList(),
         promos: promoOrderList);
     bulkOrder.add(order);
     backOrdersList = [];
@@ -1866,6 +1906,12 @@ class MainModel extends Model {
     return body;
   }
 
+  String txtdistrBonusList() {
+    String body = '';
+    distrBonusList.forEach((f) => body += f.distrBonusToJson(f));
+    return body;
+  }
+
   Future<OrderMsg> saveOrder(String shipmentId, double courierfee,
       String distrId, String note, String areaId) async {
     itemorderlist.forEach((i) => print({i.itemId: i.qty}));
@@ -1877,7 +1923,7 @@ class MainModel extends Model {
     //addAdminToOrder('91');
     //print("courier fee test=> :$courierfee");
 
-    if (giftorderList.length > 0 || promoOrderList.length > 0) {
+    /* if (giftorderList.length > 0 || promoOrderList.length > 0) {
       giftorderList
           .forEach((g) => g.pack.forEach((p) => {p.bp = 0: p.bv = 0.0}));
       promoOrderList.forEach(
@@ -1890,7 +1936,7 @@ class MainModel extends Model {
           .forEach((g) => g.pack.forEach((p) => addToItemOrder(p, g.qty)));
       promoOrderList.forEach(
           (p) => p.promoPack.forEach((pp) => addToItemOrder(pp, p.qty)));
-    }
+    }*/
     if (courierfee > 0) {
       addCourierToOrder('90', courierfee);
     }
@@ -1903,7 +1949,7 @@ class MainModel extends Model {
       courierFee: courierfee.toString(),
       note: note,
       backOrder: txtBackOrderList(),
-      bonusDeduc: '',
+      bonusDeduc: txtdistrBonusList(),
       address: docType == 'CR' ? shipmentAddress : null,
       courierId: docType == 'CR' ? shipmentId : null,
       areaId: docType == 'CR' ? areaId : null,
@@ -1925,6 +1971,7 @@ class MainModel extends Model {
       giftorderList.clear();
       promoOrderList.clear();
       backOrdersList.clear();
+      distrBonusList.clear();
 
       OrderMsg msg = OrderMsg.fromJson(json.decode(response.body));
 

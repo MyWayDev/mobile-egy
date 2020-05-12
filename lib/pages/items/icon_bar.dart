@@ -52,18 +52,19 @@ class _IconBar extends State<IconBar> {
                                   color: Colors.pink[900],
                                   size: 32.0,
                                 ),
-                                // required
                                 badgeColor: !model.iheld(widget.index)
                                     ? Colors.red
                                     : Colors.amber[400],
                                 badgeTextColor: Colors.white,
                                 onPressed: () async {
                                   showDialog(
-                                      context: context,
-                                      builder: (_) => StockDialog(
-                                          widget.itemData,
-                                          widget.index,
-                                          model.iCount(widget.index)));
+                                    context: context,
+                                    builder: (_) => StockDialog(
+                                      widget.itemData,
+                                      widget.index,
+                                      model.iCount(widget.index),
+                                    ),
+                                  );
                                 },
                               )
                             : Stack(
@@ -75,7 +76,6 @@ class _IconBar extends State<IconBar> {
                                       color: Colors.pink[900],
                                       size: 32.0,
                                     ),
-                                    // required
                                     badgeColor: Colors.amber[400],
                                     badgeTextColor: Colors.white,
                                     onPressed: () async {
@@ -109,17 +109,6 @@ class _IconBar extends State<IconBar> {
                       //badgeColor: Colors.pink[900],
                       badgeTextColor: Colors.white,
                       onPressed: () {}),
-              /* IconButton( //! order icon before badgeIcon implementation up!
-                  icon: Icon(Icons.shopping_cart),
-                  iconSize: 36.0,
-                  color: Colors.pink[900],
-                  onPressed: () async {
-                    showDialog(
-                        // barrierDismissible: false,
-                        context: context,
-                        builder: (_) =>
-                            StockDialog(widget.itemData, widget.index));
-                  }),*/
               Padding(
                 padding: EdgeInsets.only(left: 6.0, right: 6.0),
               ),
@@ -129,27 +118,15 @@ class _IconBar extends State<IconBar> {
                   color: Colors.blueAccent,
                   onPressed: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Details(
-                                widget.itemData[widget.index],
-                                model.getCaouselItems(
-                                    widget.itemData[widget.index]))));
-                    /*   onPressed: () async {
-                 // print('held:${model.iheld(widget.index)}');
-                  //
-                  // model.itemDataUpdataProductToFB();
-                  //model.bpValidPercent();
-                },*/
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Details(
+                          widget.itemData[widget.index],
+                          model.getCaouselItems(widget.itemData[widget.index]),
+                        ),
+                      ),
+                    );
                   }),
-              /* IconButton(
-                  // !delete this mock icon;
-                  icon: Icon(Icons.code),
-                  iconSize: 24.0,
-                  color: Colors.redAccent,
-                  onPressed: () {
-                    model.mockOrder(widget.itemData[widget.index], 21);
-                  }),*/
             ],
           )
         ],

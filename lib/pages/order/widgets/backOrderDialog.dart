@@ -228,78 +228,71 @@ class _BackOrderDialog extends State<BackOrderDialog> {
         color: backOrder[i].release ? Colors.green[100] : Colors.amber[100],
         elevation: 1,
         child: ListTile(
-            onTap: () {
-              backOrder[i].release == true
-                  ? backOrder[i].release = false
-                  : backOrder[i].release = true;
-            },
-            trailing: Padding(
-              padding: EdgeInsets.only(left: 3),
-              child: Text(
-                backOrder[i].itemId,
-                style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.orange[600]),
-              ),
+          onTap: () {
+            backOrder[i].release == true
+                ? backOrder[i].release = false
+                : backOrder[i].release = true;
+          },
+          trailing: Padding(
+            padding: EdgeInsets.only(left: 3),
+            child: Text(
+              backOrder[i].itemId,
+              style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.orange[600]),
             ),
-            title: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Text('${backOrder[i].docId}',
-                      textDirection: TextDirection.rtl,
-                      style: TextStyle(
-                          color: Colors.blue[600],
-                          fontWeight: FontWeight.bold,
-                          fontSize: 10)),
-                  Text(
-                    backOrder[i].name.length >= 21
-                        ? backOrder[i].name.substring(0, 21) + '...'
-                        : backOrder[i].name,
+          ),
+          title: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text('${backOrder[i].docId}',
                     textDirection: TextDirection.rtl,
-                    softWrap: true,
                     style: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: 11,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ]),
-            leading: backOrder[i].release
-                ? Column(
-                    //  mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      Text(backOrder[i].qty.toInt().toString(),
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.orange[800],
-                              fontSize: 13.5)),
-                      Icon(GroovinMaterialIcons.check,
-                          size: 22, color: Colors.green),
-                    ],
-                  )
-                : Column(
-                    //  mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      Icon(
-                        GroovinMaterialIcons.arrow_down_bold,
-                        size: 19,
-                        color: Colors.blue[200],
-                      ),
-                      Text(backOrder[i].qty.toInt().toString(),
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 13.5)),
-                    ],
-                  )
-
-            /*CircleAvatar(
-            backgroundColor: Colors.grey[100],
-            backgroundImage: NetworkImage(
-              getOrderList(model)[i].img,
-            ),
-          ),*/
-            ),
+                        color: Colors.blue[600],
+                        fontWeight: FontWeight.bold,
+                        fontSize: 10)),
+                Text(
+                  backOrder[i].name.length >= 21
+                      ? backOrder[i].name.substring(0, 21) + '...'
+                      : backOrder[i].name,
+                  textDirection: TextDirection.rtl,
+                  softWrap: true,
+                  style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold),
+                ),
+              ]),
+          leading: backOrder[i].release
+              ? Column(
+                  //  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    Text(backOrder[i].qty.toInt().toString(),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.orange[800],
+                            fontSize: 13.5)),
+                    Icon(GroovinMaterialIcons.check,
+                        size: 22, color: Colors.green),
+                  ],
+                )
+              : Column(
+                  //  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    Icon(
+                      GroovinMaterialIcons.arrow_down_bold,
+                      size: 19,
+                      color: Colors.blue[200],
+                    ),
+                    Text(backOrder[i].qty.toInt().toString(),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 13.5)),
+                  ],
+                ),
+        ),
       ),
     );
   }

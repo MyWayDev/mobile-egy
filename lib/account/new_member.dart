@@ -29,7 +29,7 @@ class NewMemberPage extends StatefulWidget {
 @override
 class _NewMemberPage extends State<NewMemberPage> {
   DateTime selected;
-  String path = 'flamelink/environments/egyStage/content/region/en-US/';
+  String path = 'flamelink/environments/egyProduction/content/region/en-US/';
   FirebaseDatabase database = FirebaseDatabase.instance;
   TextEditingController controller = new TextEditingController();
 
@@ -853,7 +853,7 @@ class NewMemberPage extends StatefulWidget {
 @override
 class _NewMemberPage extends State<NewMemberPage> {
   DateTime selected;
-  String path = 'flamelink/environments/egyStage/content/district/en-US/';
+  String path = 'flamelink/environments/egyProduction/content/district/en-US/';
   FirebaseDatabase database = FirebaseDatabase.instance;
   TextEditingController controller = new TextEditingController();
 
