@@ -63,7 +63,10 @@ class ItemDetails extends StatelessWidget {
                 Container(
                   child: Center(
                     child: SingleChildScrollView(
-                      child: Text(item.usage),
+                      child: Text(
+                        item.usage,
+                        textDirection: TextDirection.rtl,
+                      ),
                     ),
                   ),
                 )

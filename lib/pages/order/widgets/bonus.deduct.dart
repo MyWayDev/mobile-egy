@@ -163,7 +163,7 @@ class _BonusDeductState extends State<BonusDeduct> {
                         BoxConstraints(maxWidth: 250.0, minHeight: 34.0),
                     alignment: Alignment.center,
                     child: Text(
-                      " خصم المكافأة  ",
+                      " خصم المكافأة ",
                       textAlign: TextAlign.right,
                       style: TextStyle(
                           fontSize: 13,
@@ -366,7 +366,8 @@ class _BonusDeductState extends State<BonusDeduct> {
                                     barrierDismissible: true,
                                     context: context,
                                     builder: (_) => AlertDialog(
-                                          title: Text('exists'),
+                                          title: Text(
+                                              'صرف المكافأة غير متاح حاليا'),
                                         ));
                             resetVeri();
                           }

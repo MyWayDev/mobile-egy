@@ -11,20 +11,21 @@ class HowTo extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(3),
         child: SingleChildScrollView(
-            child: Center(
-                child: Padding(
-          padding: EdgeInsets.all(8),
-          child: Text(
-            html2md.convert(howToText ?? ''),
-            style: TextStyle(
-                color: Colors.black45,
-                fontWeight: FontWeight.bold,
-                fontSize: 15),
-            softWrap: true,
-            //!done direction orientation.
-            textDirection: TextDirection.ltr,
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.all(8),
+              child: Text(
+                html2md.convert(howToText ?? ''),
+                style: TextStyle(
+                    color: Colors.black45,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15),
+                softWrap: true,
+                textDirection: TextDirection.rtl,
+              ),
+            ),
           ),
-        ))),
+        ),
       ),
     );
   }

@@ -709,12 +709,11 @@ class _NewMemberPage extends State<NewMemberPage> {
       msg = body.id;
       print("body.id${body.id}");
     } else {
-      msg = "Kesalahan menyimpan data";
+      msg = "خطأ في حفظ البيانات";
     }
     print(response.statusCode);
     print(msg);
     isloading(false);
-
     return msg;
   }
 
@@ -736,7 +735,7 @@ class _NewMemberPage extends State<NewMemberPage> {
                   Column(
                     children: <Widget>[
                       Text(
-                        ' رقم العضويه: $msg ',
+                        'رقم العضويه: $msg',
                         style: TextStyle(
                             fontSize: 16.0,
                             color: Colors.pink[900],

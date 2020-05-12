@@ -111,7 +111,6 @@ class _OrderPage extends State<OrderPage> {
                     child: Row(
                       children: <Widget>[
                         Container(
-                          //width: MediaQuery.of(context).size.width * 0.8,
                           child: Flexible(
                               flex: 1,
                               child: Column(
@@ -120,7 +119,6 @@ class _OrderPage extends State<OrderPage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceAround,
                                       direction: Axis.horizontal,
-                                      //  direction: Axis.horizontal,
                                       children: <Widget>[
                                         Expanded(
                                             flex: 1,
