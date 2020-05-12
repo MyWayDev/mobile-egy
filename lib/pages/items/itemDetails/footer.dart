@@ -158,17 +158,9 @@ class _FooterState extends State<Footer> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        /*TabBar(
-          isScrollable: true,
-          controller: _controller,
-          tabs: _tabs,
-          indicatorColor: Colors.white,
-        ),*/
-        // Text('How To'),
         Divider(
           height: 0.3,
         ),
-
         SizedBox.fromSize(
           size: Size.fromHeight(ration(context)),
           child: TabBarView(

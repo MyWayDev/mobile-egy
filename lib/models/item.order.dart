@@ -178,8 +178,8 @@ class SalesOrder {
           "DS_SHIPMENT_COMP": courierId,
           "DS_SHIPMENT_PLACE": areaId,
           "AREMARKS": note, //!egyupdate AREMARKS FROM LREMARKS
-          "SHIPMTHD_A": bonusDeduc,
-          "SHIPMTHD_L": backOrder,
+          "SHIPMTHD_L": bonusDeduc,
+          "SHIPMTHD_A": backOrder,
           //"LREMARKS": courierFee ?? '0',
           "DISC_NOTES": address,
         },
