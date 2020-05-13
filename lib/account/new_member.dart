@@ -146,7 +146,6 @@ class _NewMemberPage extends State<NewMemberPage> {
   );
 
   Area stateValue;
-
   bool _isloading = false;
 
   void isloading(bool i) {
@@ -506,7 +505,7 @@ class _NewMemberPage extends State<NewMemberPage> {
                                                 String _msg;
                                                 value.length < 8
                                                     ? _msg =
-                                                        ' خطأ فى حفظ  الهاتف'
+                                                        ' خطأ فى حفظ الهاتف'
                                                     : _msg = null;
                                                 return _msg;
                                               },

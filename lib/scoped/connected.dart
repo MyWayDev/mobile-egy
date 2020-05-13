@@ -259,6 +259,8 @@ class MainModel extends Model {
     if (response.statusCode == 200) {
       List _bonus = json.decode(response.body);
       _distrBonus = DistrBonus.fromJson(_bonus.first);
+    } else {
+      _distrBonus = null;
     }
     return _distrBonus;
   }
@@ -1301,8 +1303,6 @@ class MainModel extends Model {
         item = itemData
             .where((item) => item.key == promoQty[i].items[p].toString())
             .first;
-        //print('${item.itemId}');
-
         promoPack.promoPack.add(item);
       }
       promoPacks.add(promoPack);
@@ -1311,15 +1311,16 @@ class MainModel extends Model {
 
 //!--------*Stock*---------//
   Future<int> getStock(String itemId) async {
+    ItemOrder itemOrder;
+    List stockData = [];
     http.Response response =
         await http.get('$httpath/stock/$itemId/$setStoreId');
-
-    List stockData = json.decode(response.body);
-    ItemOrder itemOrder = ItemOrder.fromJson(stockData.first);
-//ItemOrder itemOrder= ItemOrder.fromJson(json.decode(response.body));
-
-    print(itemOrder.qty);
-    return itemOrder.qty;
+    print(response.body);
+    if (response.statusCode == 200) {
+      stockData = json.decode(response.body);
+      itemOrder = ItemOrder.fromJson(stockData.first);
+    }
+    return itemOrder == null ? 0 : itemOrder.qty;
   }
 
   int getItemOrderQty(Item item) {
@@ -2338,17 +2339,18 @@ for( var i = 0 ; i < _list.length; i++){
   FirebaseUser _user;
   Future<bool> logIn(String key, String password, BuildContext context) async {
     print('key:$key');
-    User _userInfo = await userData(key)
-        .catchError((e) => print('ShitTY Erro:${e.toString()}'));
+    User _userInfo =
+        await userData(key).catchError((e) => print('Erro:${e.toString()}'));
     if (_userInfo != null) {
       if (_userInfo.isAllowed) {
         print('user is allowed ${_userInfo.isAllowed.toString()}');
         versionControl(context);
         locKCart(context); //! uncomment this before buildR
-        //locKApp(context); //! uncomment this before buildR
+        locKApp(context); //! uncomment this before buildR
         userAccess(key, context);
-        // getAreagetAreauserTest(key, context);
-        // getArea();
+        //userTest(key, context);
+        //getAreagetAreauserTest(key, context);
+        //getArea();
 
         try {
           _user = await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -2387,12 +2389,7 @@ for( var i = 0 ; i < _list.length; i++){
         giftorderList.clear();
         promoOrderList.clear();
         signOut();
-        // Navigator.pushNamedAndRemoveUntil(context, '/login', (_) => false);
-        // exit(0);
         Navigator.pushReplacementNamed(context, '/');
-        //  Navigator.pushNamedAndRemoveUntil(context, '/login', (_) => false);
-        //   Navigator.pop(
-        //   context, MaterialPageRoute(builder: (context) => LoginScreen()));
       }
     });
 
