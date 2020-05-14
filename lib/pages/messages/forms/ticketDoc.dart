@@ -442,10 +442,6 @@ class _DocFormState extends State<DocForm> {
     );
   }
 
-  ValueChanged _onChanged = (val) {
-    val.forEach((t) => print("${t.itemId} => ${t.dmQty}"));
-  };
-
   void isloading(bool i) {
     setState(() {
       _isAsync = i;

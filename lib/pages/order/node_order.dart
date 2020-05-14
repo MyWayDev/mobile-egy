@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:mor_release/models/area.dart';
 import 'package:mor_release/models/courier.dart';
 import 'package:mor_release/models/user.dart';
@@ -8,7 +6,6 @@ import 'package:mor_release/pages/order/order_cash.dart';
 import 'package:mor_release/pages/order/widgets/order_courier.dart';
 import 'package:mor_release/pages/order/widgets/shipmentArea.dart';
 import 'package:mor_release/scoped/connected.dart';
-import 'package:mor_release/widgets/color_loader_2.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class NodeOrder extends StatefulWidget {
@@ -27,11 +24,6 @@ class _NodeOrder extends State<NodeOrder> {
   List<ShipmentArea> shipmentAreas = [];
   List<Region> distrPoints = [];
   bool isSelected = false;
-  void _valueChanged(bool v) {
-    setState(() {
-      isSelected = v;
-    });
-  }
 
   bool _isloading = true;
   bool _hasData = false;
@@ -39,19 +31,6 @@ class _NodeOrder extends State<NodeOrder> {
   hasData(bool data) {
     setState(() {
       _hasData = data;
-    });
-  }
-
-  void _setType(
-    String value,
-  ) {
-    setState(() {
-      type = value;
-      widget.model.shipmentArea = value;
-      widget.model.shipmentName = shipmentAreas
-          .where((a) => a.shipmentArea == value)
-          .first
-          .shipmentName;
     });
   }
 

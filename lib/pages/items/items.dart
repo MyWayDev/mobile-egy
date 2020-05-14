@@ -71,11 +71,6 @@ class _ItemsPage extends State<ItemsPage> with SingleTickerProviderStateMixin {
 
   String type;
   bool isSelected = false;
-  void _valueChanged(bool v) {
-    setState(() {
-      isSelected = v;
-    });
-  }
 
 /*Widget build(BuildContext context) {
   return new FutureBuilder(

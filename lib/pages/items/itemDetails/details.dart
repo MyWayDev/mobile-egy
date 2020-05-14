@@ -111,13 +111,6 @@ class Details extends StatefulWidget {
 
   Details(this.item, this.recoImage);
 
-  List<String> _imgs(List<Item> items) {
-    List<String> imgList = List();
-    items.forEach((i) => imgList.add(i.imageUrl));
-
-    return imgList;
-  }
-
   @override
   _DetailsState createState() => _DetailsState();
 }

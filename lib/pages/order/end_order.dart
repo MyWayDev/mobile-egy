@@ -42,25 +42,6 @@ class _EndOrder extends State<EndOrder> with SingleTickerProviderStateMixin {
     });
   }
 
-  void _valueChanged(bool v) {
-    setState(() {
-      isSelected = v;
-    });
-  }
-
-  void _setType(
-    String value,
-  ) {
-    setState(() {
-      type = value;
-      widget.model.shipmentArea = value;
-      widget.model.shipmentName = shipmentAreas
-          .where((a) => a.shipmentArea == value)
-          .first
-          .shipmentName;
-    });
-  }
-
   /* getAreas() async {
     isloading(true);
     shipmentAreas =
@@ -164,7 +145,6 @@ class _EndOrder extends State<EndOrder> with SingleTickerProviderStateMixin {
     });
   }
 
-  @override
   TextEditingController controller = new TextEditingController();
   bool _isleader = false;
   @override

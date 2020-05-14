@@ -384,7 +384,6 @@ class _NewMemberPage extends State<NewMemberPage> {
                                                                               context)
                                                                           .show(
                                                                               context);
-                                                                      ;
                                                                     }
 
                                                                     //  s
