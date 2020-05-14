@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:groovin_material_icons/groovin_material_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:mor_release/models/item.order.dart';
-import 'package:mor_release/pages/order/widgets/payment.dart';
-import 'package:mor_release/scoped/connected.dart';
 
 class OutStock extends StatelessWidget {
   final List<ItemOrder> balanceCheckOutPut;

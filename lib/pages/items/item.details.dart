@@ -6,7 +6,7 @@ class ItemDetails extends StatelessWidget {
 
   ItemDetails(this.item);
 
-  _showWarningDialog(BuildContext context) {
+  /*_showWarningDialog(BuildContext context) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -30,7 +30,7 @@ class ItemDetails extends StatelessWidget {
             ],
           );
         });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {

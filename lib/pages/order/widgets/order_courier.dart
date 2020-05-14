@@ -6,7 +6,6 @@ import 'package:mor_release/pages/gift/gift.dart';
 import 'package:mor_release/pages/gift/gift_list.dart';
 import 'package:mor_release/pages/gift/promo/promo.dart';
 import 'package:mor_release/pages/gift/promo/promo_list.dart';
-import 'package:mor_release/pages/order/widgets/bonus.deduct.dart';
 import 'package:mor_release/pages/order/widgets/order_save.dart';
 import 'package:mor_release/pages/order/widgets/order_summary.dart';
 import 'package:mor_release/scoped/connected.dart';

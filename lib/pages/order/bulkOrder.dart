@@ -16,7 +16,6 @@ class BulkOrder extends StatefulWidget {
 }
 
 class _BulkOrderState extends State<BulkOrder> {
-  @override
   List<Courier> shipment = [];
   bool _isloading = false;
 

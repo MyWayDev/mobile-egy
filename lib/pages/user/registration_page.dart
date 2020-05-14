@@ -14,7 +14,7 @@ class RegistrationPage extends StatefulWidget {
 //final FirebaseDatabase dataBase = FirebaseDatabase.instance;
 @override
 class _RegistrationPage extends State<RegistrationPage> {
-  String _mobileNumber = '';
+  //String _mobileNumber = '';
   @override
   void initState() {
     super.initState();

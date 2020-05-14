@@ -1464,7 +1464,7 @@ class MainModel extends Model {
     for (ItemOrder i in exList) {
       exPromoItemBpTotal += i.bp * i.qty;
     }
-    ;
+
     return exPromoItemBpTotal * 100 / totalBp;
   }
 
