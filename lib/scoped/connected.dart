@@ -2329,8 +2329,6 @@ for( var i = 0 ; i < _list.length; i++){
     final DataSnapshot snapshot =
         await database.reference().child('$path/users/en-US').child(key).once();
     user = User.fromSnapshot(snapshot);
-    print('userData user.distrId:${user.distrId}');
-    print('userData user.token:${user.token}');
     return user;
   }
 
