@@ -174,9 +174,7 @@ class _NewMemberPage extends State<NewMemberPage> {
     if (form.validate() &&
         selected != null &&
         selectedValue != null &&
-        selectedItem != null &&
-        placeValue != null &&
-        placeSplit.first != null) {
+        selectedItem != null) {
       _newMemberForm.birthDate =
           DateFormat('yyyy-MM-dd').format(selected).toString();
       _newMemberForm.email = userId;
@@ -463,8 +461,8 @@ class _NewMemberPage extends State<NewMemberPage> {
                                                       color: Colors.pink[500])),
                                               validator: (value) {
                                                 String _msg;
-                                                value.length > 6
-                                                    ? _msg = 'xxxx'
+                                                value.length < 8
+                                                    ? _msg = 'أدخل أسم العضو'
                                                     : _msg = null;
                                                 return _msg;
                                               },
@@ -483,9 +481,8 @@ class _NewMemberPage extends State<NewMemberPage> {
                                                       color: Colors.pink[500])),
                                               validator: (value) {
                                                 String _msg;
-                                                value.length > 10
-                                                    ? _msg =
-                                                        'خطأ فى حفظ الرقم الوطنى'
+                                                value.length < 10
+                                                    ? _msg = 'أدخل الرقم القومي'
                                                     : _msg = null;
                                                 return _msg;
                                               },
@@ -511,9 +508,8 @@ class _NewMemberPage extends State<NewMemberPage> {
                                                   )),
                                               validator: (value) {
                                                 String _msg;
-                                                value.length > 8
-                                                    ? _msg =
-                                                        ' خطأ فى حفظ الهاتف'
+                                                value.length < 6
+                                                    ? _msg = ' أدخل الهاتف'
                                                     : _msg = null;
                                                 return _msg;
                                               },
@@ -538,9 +534,8 @@ class _NewMemberPage extends State<NewMemberPage> {
                                                   )),
                                               validator: (value) {
                                                 String _msg;
-                                                value.length > 8
-                                                    ? _msg =
-                                                        'خطأ فى حفظ العنوان'
+                                                value.length < 15
+                                                    ? _msg = 'أدخل العنوان'
                                                     : _msg = null;
                                                 return _msg;
                                               },
