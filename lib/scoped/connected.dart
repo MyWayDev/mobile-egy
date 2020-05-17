@@ -2020,14 +2020,12 @@ for(var area in areas){
 /*
   void getShipmentCompanies() async {
     final response = await http.get('$httpath/shipmentcompanies');
-
     void shipmentPushToFirebase(String courierId, Courier courier) {
       databaseReference = database
           .reference()
           .child('flamelink/environments/$firebaseDb/content/courier/en-US');
       databaseReference.child(courierId).update(courier.toJson());
     }
-
     if (response.statusCode == 200) {
       List<dynamic> responseList = json.decode(response.body);
       couriers = responseList.map((l) => Courier.fromJson(l)).toList();
@@ -2098,7 +2096,6 @@ for(var area in areas){
               if (a.toString() == areaid) {
                 print('a.string:=>${a.toString()}:areaid=$areaid');
                 print(c['courierId']);
-
                 ships.add(c);
               }
             }
@@ -2263,7 +2260,6 @@ for(var area in areas){
 //print(service.fees);
   /*_list.length;
 for( var i = 0 ; i < _list.length; i++){
-
 }*/
 
 //!--------*Users/Members*-----------//
@@ -2286,13 +2282,15 @@ for( var i = 0 ; i < _list.length; i++){
     }
 
     return memberData;
-    /*(
+    /*
+    (
       distrId: responseData[0]['DISTR_ID'],
       name: responseData[0]['ANAME'],
       distrIdent: responseData[0]['DISTR_IDENT'],
       email: responseData[0]['E_MAIL'],
       phone: responseData[0]['TELEPHONE'],
-    );*/
+    );
+    */
   }
 
   User nodeJsonData;
@@ -2314,11 +2312,9 @@ for( var i = 0 ; i < _list.length; i++){
   Future<String> regUser(String email, String password) async {
     FirebaseUser user = await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password);
-    // print(user.uid);
-
     return user.uid;
   }
-// bool isLoggedIn;
+//bool isLoggedIn;
   /// bool isValid;
 
 //!------------*
@@ -2340,15 +2336,14 @@ for( var i = 0 ; i < _list.length; i++){
         await userData(key).catchError((e) => print('Erro:${e.toString()}'));
     if (_userInfo != null) {
       if (_userInfo.isAllowed) {
-        print('user is allowed ${_userInfo.isAllowed.toString()}');
+        // print('user is allowed ${_userInfo.isAllowed.toString()}');
         versionControl(context);
         locKCart(context); //! uncomment this before buildR
         locKApp(context); //! uncomment this before buildR
         userAccess(key, context);
-        //userTest(key, context);
+        userTest(key, context);
         //getAreagetAreauserTest(key, context);
         //getArea();
-
         try {
           _user = await FirebaseAuth.instance.signInWithEmailAndPassword(
               email: _userInfo.email, password: password);

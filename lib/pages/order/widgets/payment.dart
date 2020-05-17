@@ -5,11 +5,12 @@ import 'package:mor_release/scoped/connected.dart';
 
 class PaymentInfo extends StatelessWidget {
   final MainModel model;
-  PaymentInfo(this.model);
+  final String msg;
+  PaymentInfo(this.model, this.msg);
   Flushbar flushAction(BuildContext context) {
     Flushbar flush = Flushbar(
       isDismissible: true,
-      flushbarPosition: FlushbarPosition.BOTTOM,
+      flushbarPosition: FlushbarPosition.TOP,
       flushbarStyle: FlushbarStyle.GROUNDED,
       reverseAnimationCurve: Curves.decelerate,
       forwardAnimationCurve: Curves.elasticOut,
@@ -17,18 +18,20 @@ class PaymentInfo extends StatelessWidget {
         onPressed: () => Navigator.of(context).pop(),
         child: Icon(
           GroovinMaterialIcons.close_circle_outline,
-          color: Colors.red,
+          size: 30,
+          color: Colors.pink[500],
         ),
       ),
       margin: EdgeInsets.all(8),
       borderRadius: 8,
-      titleText:
-          Text('...', style: TextStyle(fontSize: 12, color: Colors.white)),
-      messageText: Text('${model.settings.bankInfo}',
-          style: TextStyle(fontSize: 14, color: Colors.white)),
+      titleText: Text('', style: TextStyle(fontSize: 15, color: Colors.white)),
+      messageText: Text(msg,
+          textDirection: TextDirection.ltr,
+          style: TextStyle(fontSize: 16, color: Colors.white)),
       icon: Icon(
-        GroovinMaterialIcons.bank,
-        color: Colors.greenAccent,
+        GroovinMaterialIcons.alert_circle,
+        size: 36,
+        color: Colors.red,
       ),
       boxShadows: [
         BoxShadow(

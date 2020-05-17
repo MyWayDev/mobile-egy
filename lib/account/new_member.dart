@@ -28,7 +28,7 @@ class NewMemberPage extends StatefulWidget {
 @override
 class _NewMemberPage extends State<NewMemberPage> {
   DateTime selected;
-  String path = 'flamelink/environments/egyProduction/content/region/en-US/';
+  String path = 'flamelink/environments/egyProduction/content/district/en-US/';
   FirebaseDatabase database = FirebaseDatabase.instance;
   TextEditingController controller = new TextEditingController();
 
@@ -37,6 +37,7 @@ class _NewMemberPage extends State<NewMemberPage> {
   List<DropdownMenuItem> items = [];
   List<DropdownMenuItem> places = [];
   String selectedValue;
+  String selectedItem;
   String placeValue;
   var areaSplit;
   var placeSplit;
@@ -46,7 +47,7 @@ class _NewMemberPage extends State<NewMemberPage> {
   @override
   void initState() {
     getPlaces();
-    //  getAreas();
+    getAreas();
     controller.addListener(() {
       setState(() {});
     });
@@ -75,11 +76,11 @@ class _NewMemberPage extends State<NewMemberPage> {
 
     Map<dynamic, dynamic> _areas = snapshot.value;
     List list = _areas.values.toList();
-    List<Region> fbRegion = list.map((f) => Region.json(f)).toList();
+    List<District> fbRegion = list.map((f) => District.json(f)).toList();
 
     if (snapshot.value != null) {
       for (var t in fbRegion) {
-        String sValue = "${t.regionId}" + " " + "${t.name}";
+        String sValue = "${t.districtId}" + " " + "${t.name}";
         items.add(
           DropdownMenuItem(
               child: Text(
@@ -167,14 +168,19 @@ class _NewMemberPage extends State<NewMemberPage> {
 
   bool validData;
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  bool validateAndSave(String userId, String sc) {
+  bool validateAndSave(String userId, String sc, MainModel model) {
     final form = _newMemberFormKey.currentState;
     isloading(true);
-    if (form.validate() && selected != null && placeSplit.first != null) {
+    if (form.validate() &&
+        selected != null &&
+        selectedValue != null &&
+        selectedItem != null &&
+        placeValue != null &&
+        placeSplit.first != null) {
       _newMemberForm.birthDate =
           DateFormat('yyyy-MM-dd').format(selected).toString();
       _newMemberForm.email = userId;
-      _newMemberForm.areaId = getplace(placeSplit.first).areaId;
+      // _newMemberForm.areaId = getplace(placeSplit.first).areaId;
       _newMemberForm.serviceCenter = sc;
       setState(() {
         validData = true;
@@ -182,12 +188,15 @@ class _NewMemberPage extends State<NewMemberPage> {
       // isloading(true);
       print('valide entry $validData');
       _newMemberFormKey.currentState.save();
-
       print('${_newMemberForm.sponsorId}:${_newMemberForm.birthDate}');
       isloading(false);
       return true;
     }
     isloading(false);
+    PaymentInfo(model, 'الرجاء ادجال جميع البيانات')
+        .flushAction(context)
+        .show(context);
+
     return false;
   }
 
@@ -329,28 +338,36 @@ class _NewMemberPage extends State<NewMemberPage> {
                                                               FontStyle.italic,
                                                           fontWeight:
                                                               FontWeight.bold)),
-                                                  veri
+                                                  _newMemberFormKey.currentState
+                                                              .validate() &&
+                                                          selectedItem !=
+                                                              null &&
+                                                          selectedValue != null
                                                       ? Container(
-                                                          /*margin: const EdgeInsets.only(top: 8.0),
-                                padding: const EdgeInsets.only(
-                                    left: 20.0, right: 20.0),*/
                                                           child: Row(
                                                             children: <Widget>[
-                                                              /*margin: const EdgeContainer(
-                                      padding: EdgeInsets.only(right: 10.0),
-                                    ),*/
                                                               Center(
                                                                 child:
-                                                                    IconButton(
-                                                                  icon: Center(
-                                                                    child: Icon(
-                                                                      Icons
-                                                                          .check_circle,
-                                                                      color: Colors
-                                                                              .greenAccent[
-                                                                          400],
-                                                                      size: 42,
-                                                                    ),
+                                                                    RaisedButton(
+                                                                  color: Colors
+                                                                          .greenAccent[
+                                                                      700],
+                                                                  shape:
+                                                                      RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            24.0),
+                                                                    side: BorderSide(
+                                                                        color: Colors
+                                                                            .blueGrey),
+                                                                  ),
+                                                                  elevation: 21,
+                                                                  child: Icon(
+                                                                    GroovinMaterialIcons
+                                                                        .account_check,
+                                                                    color: Colors
+                                                                        .white,
+                                                                    size: 38,
                                                                   ),
                                                                   onPressed:
                                                                       () async {
@@ -361,7 +378,8 @@ class _NewMemberPage extends State<NewMemberPage> {
                                                                             .userInfo
                                                                             .distrId,
                                                                         model
-                                                                            .setStoreId)) {
+                                                                            .setStoreId,
+                                                                        model)) {
                                                                       msg = await _saveNewMember(
                                                                           model
                                                                               .userInfo
@@ -377,13 +395,6 @@ class _NewMemberPage extends State<NewMemberPage> {
                                                                       _newMemberFormKey
                                                                           .currentState
                                                                           .reset();
-
-                                                                      PaymentInfo(
-                                                                              model)
-                                                                          .flushAction(
-                                                                              context)
-                                                                          .show(
-                                                                              context);
                                                                     }
 
                                                                     //  s
@@ -450,14 +461,13 @@ class _NewMemberPage extends State<NewMemberPage> {
                                                       GroovinMaterialIcons
                                                           .format_title,
                                                       color: Colors.pink[500])),
-                                              /* validator: (value) {
-                                              String _msg;
-                                              value.length > 6
-                                                  ? _msg =
-                                                      'Nama anggota tidak valid'
-                                                  : _msg = null;
-                                              return _msg;
-                                            },*/
+                                              validator: (value) {
+                                                String _msg;
+                                                value.length > 6
+                                                    ? _msg = 'xxxx'
+                                                    : _msg = null;
+                                                return _msg;
+                                              },
                                               keyboardType: TextInputType.text,
                                               onSaved: (String value) {
                                                 _newMemberForm.name = value;
@@ -471,14 +481,14 @@ class _NewMemberPage extends State<NewMemberPage> {
                                                   icon: Icon(
                                                       Icons.assignment_ind,
                                                       color: Colors.pink[500])),
-                                              /*  'validator: (value) {
-                                              String _msg;
-                                              value.length <=16
-                                                  ? _msg =
-                                                      'خطأ فى حفظ الرقم الوطنى'
-                                                  : _msg = null;
-                                              return _msg;
-                                            },*/
+                                              validator: (value) {
+                                                String _msg;
+                                                value.length <= 16
+                                                    ? _msg =
+                                                        'خطأ فى حفظ الرقم الوطنى'
+                                                    : _msg = null;
+                                                return _msg;
+                                              },
                                               autocorrect: true,
                                               textCapitalization:
                                                   TextCapitalization.sentences,
@@ -621,56 +631,94 @@ class _NewMemberPage extends State<NewMemberPage> {
                                             Container(
                                               width: 300,
                                               child: Wrap(children: <Widget>[
-                                                Icon(Icons.add_location,
-                                                    color: Colors.pink[500]),
-                                                SearchableDropdown(
-                                                  //style: TextStyle(fontSize: 12),
-                                                  hint: Text('المنطقه'),
-                                                  iconEnabledColor:
-                                                      Colors.pink[200],
-                                                  iconDisabledColor:
-                                                      Colors.grey,
-                                                  items: places,
-                                                  value: selectedValue,
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      selectedValue = value;
-                                                      placeSplit = selectedValue
-                                                          .split('\ ');
-                                                      print(placeSplit);
-                                                    });
-                                                  },
-                                                )
-                                              ]), /* Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: <Widget>[
-                                                SearchableDropdown(
-                                                  hint: Text('region'),
-                                                  icon: Icon(
-                                                    Icons
-                                                        .arrow_drop_down_circle,
-                                                    size: 28,
-                                                  ),
-                                                  iconEnabledColor:
-                                                      Colors.pink[200],
-                                                  iconDisabledColor:
-                                                      Colors.grey,
-                                                  items: items,
-                                                  value: selectedValue,
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      selectedValue = value;
-                                                      areaSplit = selectedValue
-                                                          .split('\ ');
-                                                      _newMemberForm.areaId =
-                                                          areaSplit.first;
-                                                      print(
-                                                          'split:${_newMemberForm.areaId}');
-                                                    });
-                                                  },
+                                                Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: <Widget>[
+                                                    Icon(Icons.add_location,
+                                                        color:
+                                                            Colors.pink[500]),
+                                                    SearchableDropdown(
+                                                      hint: Text('المنطقه'),
+                                                      icon: Icon(
+                                                        Icons
+                                                            .arrow_drop_down_circle,
+                                                        color: Colors.pink[300],
+                                                        size: 28,
+                                                      ),
+                                                      iconEnabledColor:
+                                                          Colors.pink[200],
+                                                      iconDisabledColor:
+                                                          Colors.grey,
+                                                      items: items,
+                                                      value: selectedItem,
+                                                      onChanged: (value) {
+                                                        setState(() {
+                                                          selectedItem = value;
+                                                          areaSplit =
+                                                              selectedItem
+                                                                  .split('\ ');
+                                                          _newMemberForm
+                                                                  .areaId =
+                                                              areaSplit.first;
+                                                          print(
+                                                              'Areasplit:${_newMemberForm.areaId}');
+                                                        });
+                                                      },
+                                                    ),
+                                                    model.docType == 'CR'
+                                                        ? Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    left: 8,
+                                                                    right: 3),
+                                                            child: Icon(
+                                                              Icons
+                                                                  .local_shipping,
+                                                              size: 24,
+                                                              color: Colors
+                                                                  .pink[500],
+                                                            ),
+                                                          )
+                                                        : Container(),
+                                                    model.docType == 'CR'
+                                                        ? SearchableDropdown(
+                                                            icon: Icon(
+                                                              Icons
+                                                                  .arrow_drop_down_circle,
+                                                              color: Colors
+                                                                  .pink[300],
+                                                              size: 28,
+                                                            ),
+
+                                                            //style: TextStyle(fontSize: 12),
+                                                            hint: Text(
+                                                                'شحن الي منطقه'),
+                                                            iconEnabledColor:
+                                                                Colors
+                                                                    .pink[200],
+                                                            iconDisabledColor:
+                                                                Colors.grey,
+                                                            items: places,
+                                                            value:
+                                                                selectedValue,
+                                                            onChanged: (value) {
+                                                              setState(() {
+                                                                selectedValue =
+                                                                    value;
+                                                                placeSplit =
+                                                                    selectedValue
+                                                                        .split(
+                                                                            '\ ');
+                                                                print(placeSplit
+                                                                    .first);
+                                                              });
+                                                            },
+                                                          )
+                                                        : Container(),
+                                                  ],
                                                 ),
-                                              ],
-                                            ),*/
+                                              ]),
                                             ),
                                           ],
                                         ),
@@ -691,13 +739,14 @@ class _NewMemberPage extends State<NewMemberPage> {
       String user, String docType, String storeId) async {
     print('docType:$docType:storeId:$storeId');
     Id body;
-    String msg;
+    String msg = '';
     isloading(true);
     print(_newMemberForm.postNewMemberToJson(_newMemberForm));
     Response response = await _newMemberForm.createPost(
         _newMemberForm,
         user,
         getplace(placeSplit.first).shipmentPlace,
+        _newMemberForm.areaId,
         getplace(placeSplit.first).spName,
         docType,
         storeId);

@@ -21,6 +21,7 @@ class _BonusDeductState extends State<BonusDeduct> {
   bool veri = false;
   bool _isloading = false;
   DistrBonus _userBonus;
+
   void isloading(bool i) {
     setState(() {
       _isloading = i;
