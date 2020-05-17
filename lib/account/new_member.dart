@@ -483,7 +483,7 @@ class _NewMemberPage extends State<NewMemberPage> {
                                                       color: Colors.pink[500])),
                                               validator: (value) {
                                                 String _msg;
-                                                value.length <= 16
+                                                value.length > 10
                                                     ? _msg =
                                                         'خطأ فى حفظ الرقم الوطنى'
                                                     : _msg = null;
@@ -511,7 +511,7 @@ class _NewMemberPage extends State<NewMemberPage> {
                                                   )),
                                               validator: (value) {
                                                 String _msg;
-                                                value.length < 8
+                                                value.length > 8
                                                     ? _msg =
                                                         ' خطأ فى حفظ الهاتف'
                                                     : _msg = null;
@@ -538,7 +538,7 @@ class _NewMemberPage extends State<NewMemberPage> {
                                                   )),
                                               validator: (value) {
                                                 String _msg;
-                                                value.length < 9
+                                                value.length > 8
                                                     ? _msg =
                                                         'خطأ فى حفظ العنوان'
                                                     : _msg = null;
