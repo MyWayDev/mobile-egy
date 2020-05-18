@@ -35,7 +35,6 @@ class _DocFormState extends State<DocForm> {
   var items = [];
 
   final GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
-  // final GlobalKey<FormFieldState> _specifyTextFieldKey = GlobalKey<FormFieldState>();
 
   Ticket _newTicketData = Ticket(
       id: null,
@@ -128,23 +127,22 @@ class _DocFormState extends State<DocForm> {
                                         items: docs.map((option) {
                                           return DropdownMenuItem(
                                               child: Center(
-                                                child: Text(
-                                                  "${option.docId}" +
-                                                      "  ("
-                                                          '${option.docDate}' +
-                                                      ')  ' +
-                                                      "${formatter.format(option.totalVal)}" +
-                                                      " " +
-                                                      "EGP",
-                                                  style: TextStyle(
-                                                      backgroundColor:
-                                                          Colors.yellow[100],
-                                                      fontSize: 12.6,
-                                                      color: Colors.grey[800],
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ),
+                                                  child: Text(
+                                                "${option.docId}" +
+                                                    "  ("
+                                                        '${option.docDate}' +
+                                                    ')  ' +
+                                                    "${formatter.format(option.totalVal)}" +
+                                                    " " +
+                                                    "EGP",
+                                                style: TextStyle(
+                                                    backgroundColor:
+                                                        Colors.yellow[100],
+                                                    fontSize: 12.6,
+                                                    color: Colors.grey[800],
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )),
                                               value: option.docId);
                                         }).toList(),
                                         value: field.value,
@@ -170,9 +168,6 @@ class _DocFormState extends State<DocForm> {
                                           print("doc is valued = $isValid");
 
                                           _newTicketData.docId = value;
-                                          // print('docId selected Value:$value');
-
-                                          // int x = types.indexOf(value);
                                         },
                                       ),
                                     );
@@ -189,8 +184,6 @@ class _DocFormState extends State<DocForm> {
                           validators: [
                             FormBuilderValidators.required(
                                 errorText: errorText),
-                            //)
-                            //FormBuilderValidators.max(150),
                           ],
 
                           //initialValue: [],
@@ -465,11 +458,14 @@ class _DocFormState extends State<DocForm> {
     }
     if (response.statusCode == 200) {
       docList = json.decode(response.body) as List;
+      docs = docList
+          .map((i) => TicketDoc.toJson(i))
+          .where((doc) => doc.retrunDoc == '0' && doc.totalVal > 0)
+          .toList();
+    } else {
+      docs = [];
     }
-    docs = docList
-        .map((i) => TicketDoc.toJson(i))
-        .where((doc) => doc.retrunDoc == '0' && doc.totalVal > 0)
-        .toList();
+
     //print('docs count :${docs.length}');
     return docs;
   }

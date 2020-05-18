@@ -7,6 +7,7 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:mor_release/models/area.dart';
 import 'package:mor_release/models/courier.dart';
 import 'package:mor_release/pages/const.dart';
+import 'package:mor_release/pages/order/widgets/payment.dart';
 import 'package:mor_release/pages/order/widgets/shipmentArea.dart';
 import 'package:mor_release/scoped/connected.dart';
 import 'package:mor_release/widgets/color_loader_2.dart';
@@ -176,7 +177,8 @@ class _AddRegionState extends State<AddRegion> {
           regionSplit != null
               ? Container(
                   child: areas.length > 0
-                      ? AddAddress(widget.memberId, areas)
+                      ? AddAddress(
+                          widget.memberId, areas, int.parse(regionSplit.first))
                       : Container(
                           child: LinearProgressIndicator(
                             backgroundColor: greyColor,
@@ -211,9 +213,11 @@ class _AddRegionState extends State<AddRegion> {
 
 class AddAddress extends StatefulWidget {
   final String memberId;
+  final int regionId;
   final List<DropdownMenuItem> _areas;
 
-  AddAddress(this.memberId, this._areas, {Key key}) : super(key: key);
+  AddAddress(this.memberId, this._areas, this.regionId, {Key key})
+      : super(key: key);
 
   @override
   _AddAddressState createState() => _AddAddressState();
@@ -241,6 +245,42 @@ class _AddAddressState extends State<AddAddress> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  List companies = [];
+  Future<List> couriersList(String areaid, int distrPoint) async {
+    DataSnapshot snapshot = await FirebaseDatabase.instance
+        .reference()
+        .child(
+            'flamelink/environments/egyProduction/content/courier/en-US') //!enviroments/$firebaseDb
+        .once();
+
+    var courierList = snapshot
+        .value; //! changed list to var in this line for firebase key genrated
+
+    List ships = [];
+    for (var c in courierList.values) {
+      //! add .values to courierlist to loop through values while firebase key is generated
+      if (c != null) {
+        if (c['region'] == distrPoint && c['disabled'] != true) {
+          for (var s in c['service']) {
+            for (var a in s['areas']) {
+              if (a.toString() == areaid) {
+                print('a.string:=>${a.toString()}:areaid=$areaid');
+                print(c['courierId']);
+                ships.add(c);
+              }
+            }
+          }
+        }
+      }
+    }
+    courierList = [];
+    List companies = ships.map((f) => Courier.fromList(f)).toList();
+
+    ships.clear();
+
+    return companies;
   }
 
   final ShipmentArea _newAddressForm = ShipmentArea(
@@ -274,12 +314,49 @@ class _AddAddressState extends State<AddAddress> {
               items: widget._areas,
               value: selectedArea,
               onChanged: (value) {
-                setState(() {
+                setState(() async {
                   selectedArea = value;
                   areaSplit = selectedArea.split('\ ');
                   _newAddressForm.shipmentArea = selectedArea.substring(7);
                   _newAddressForm.shipmentArea = areaSplit.first;
                   print('split:${_newAddressForm.shipmentArea}');
+                  List cl =
+                      await couriersList(areaSplit.first, widget.regionId);
+                  if (cl.isEmpty) {
+                    showDialog(
+                        context: context,
+                        builder: (_) => AlertDialog(
+                              title: Text('منطقة الشحن غير مفعله حاليا',
+                                  style: TextStyle(color: Colors.pink[900])),
+                              actions: <Widget>[
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.close,
+                                    color: Colors.red,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.check,
+                                    color: Colors.green,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            ));
+                  } else {
+                    setState(() {
+                      selectedArea = value;
+                      areaSplit = selectedArea.split('\ ');
+                      _newAddressForm.shipmentArea = selectedArea.substring(7);
+                      _newAddressForm.shipmentArea = areaSplit.first;
+                    });
+                  }
                 });
               },
             ),

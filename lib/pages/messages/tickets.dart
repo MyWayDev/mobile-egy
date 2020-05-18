@@ -494,7 +494,7 @@ class _TicketsState extends State<Tickets> {
                       padding: EdgeInsets.only(right: 5),
                     ),
                     Text(
-                      "Daftar barang",
+                      "قائمة المنتجات",
                       style: TextStyle(fontSize: 13),
                     )
                   ],
