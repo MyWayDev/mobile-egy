@@ -25,7 +25,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 class MainModel extends Model {
   // ** items //** */
-  static String _version = '3.22r'; //!Modify for every release version./.
+  static String _version = '3.30r'; //!Modify for every release version./.
   static String firebaseDb = "egyProduction"; //!modify back to egyProduction;
   static String stage = "egyProduction";
   static String updateDb = "egyProduction";
@@ -1383,11 +1383,14 @@ class MainModel extends Model {
     return _bp;
   }
 
-  Flushbar flush(BuildContext context, String _msg) {
+  Flushbar flush(BuildContext context, String _msg,
+      {String subMsg = 'تم تخطي الحد الاقصي لنقاط'}) {
     Flushbar _flush = Flushbar(
-      duration: Duration(seconds: 3),
-      messageText: Text(_msg,
-          style: TextStyle(fontSize: 15, color: Colors.limeAccent[100])),
+      duration: Duration(seconds: 4),
+      messageText: Center(
+          child: Text(_msg,
+              textAlign: TextAlign.right,
+              style: TextStyle(fontSize: 15, color: Colors.limeAccent[100]))),
       isDismissible: true,
       flushbarPosition: FlushbarPosition.TOP,
       flushbarStyle: FlushbarStyle.FLOATING,
@@ -1396,16 +1399,19 @@ class MainModel extends Model {
       mainButton: FlatButton(
         onPressed: () => Navigator.of(context).pop(),
         child: Icon(
-          Icons.close,
-          color: Colors.red[400],
+          Icons.warning,
+          color: Colors.red,
         ),
       ),
       margin: EdgeInsets.all(8),
       borderRadius: 8,
-      title: 'تم تخطي الحد الاقصي لنقاط ',
-      icon: Icon(
-        Icons.warning,
-        color: Colors.red,
+      title: subMsg,
+      icon: Padding(
+        padding: EdgeInsets.only(left: 18),
+        child: Image.asset(
+          'assets/images/myway.png',
+          scale: 6,
+        ),
       ),
       boxShadows: [
         BoxShadow(
@@ -2473,6 +2479,7 @@ for( var i = 0 ; i < _list.length; i++){
         print('$version CheckYour Version $_version :)');
         signOut();
         Navigator.pushNamedAndRemoveUntil(context, '/login', (_) => false);
+        flush(context, '     نرجو تحديث التطبيق', subMsg: '').show(context);
       }
 
       /* Navigator.pop(context,
