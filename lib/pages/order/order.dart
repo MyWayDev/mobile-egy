@@ -166,13 +166,19 @@ class _OrderPage extends State<OrderPage> {
                                             TextStyle(color: Colors.pink[900])),
                                     actions: <Widget>[
                                       IconButton(
-                                        icon: Icon(Icons.close),
+                                        icon: Icon(
+                                          Icons.close,
+                                          color: Colors.red,
+                                        ),
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
                                       ),
                                       IconButton(
-                                        icon: Icon(Icons.check),
+                                        icon: Icon(
+                                          Icons.check,
+                                          color: Colors.green,
+                                        ),
                                         onPressed: () {
                                           model.backOrdersList.clear();
                                           model.distrBonusList.clear();
