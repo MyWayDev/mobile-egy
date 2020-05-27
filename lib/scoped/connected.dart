@@ -26,14 +26,15 @@ import 'package:firebase_core/firebase_core.dart';
 class MainModel extends Model {
   // ** items //** */
   static String _version = '3.30r'; //!Modify for every release version./.
-  static String firebaseDb = "egyProduction"; //!modify back to egyProduction;
+  static String firebaseDb = "egyProduction";
   static String stage = "egyProduction";
   static String updateDb = "egyProduction";
   final FirebaseDatabase database = FirebaseDatabase.instance;
   DatabaseReference databaseReference;
   final String path = 'flamelink/environments/$firebaseDb/content';
   final String httpath = 'http://mywayegypt-api.azurewebsites.net/api';
-  //!production azure'http://mywayegypt-api.azurewebsites.net/api'//
+  final List<Item> _recoImage = List();
+
   String shipmentName = '';
   String shipmentArea = '';
   String shipmentAddress = '';
@@ -58,7 +59,7 @@ class MainModel extends Model {
   bool bulkLoading = false;
   bool isBalanceChecked = true;
   bool isTypeing = false;
-  final List<Item> _recoImage = List();
+
   String get distrPointNames {
     String _distrPointNames;
     _distrPointNames = distrPointName;
@@ -289,18 +290,9 @@ class MainModel extends Model {
   }
 
   Item getRecoItem(Item item) {
-    // if (searchResult.length == 0 || searchResul.isEmpty) {
     var i = itemData.where((i) => i.itemId == item.itemId).first;
-    //int index = itemData.indexOf(i);
     notifyListeners();
     return i;
-    // } else {
-    //  var i = searchResult.where((i) => i.itemId == item.itemId).first;
-    //   int index = searchResult.indexOf(i);
-    //    notifyListeners();
-    //   return index;
-    // }
-    //print('getRecoItem index:$index');
   }
 
   List<Item> getCaouselItems(Item item) {
@@ -340,18 +332,6 @@ class MainModel extends Model {
     return _recoImage;
   }
 
-  /*List<String> getRecoImage() {
-    _recoImage.clear();
-
-    itemData.forEach((i) => _recoImage.add(i.imageUrl));
-    //_recoImage.add(NetworkImage(itemData.first.imageUrl));
-
-    return _recoImage;
-  }*/
-
-  /* void fireItemListener(Function onAdded,Function onUpdated){
-
-  }*/
   bool limited(int key) {
     bool islimited = false;
     if (settings.limitedItem != null) {
@@ -604,19 +584,6 @@ class MainModel extends Model {
   }
 
 //!--------*Orders*---------//
-  /* void addItemById(String id, int qty) {
-    Item item;
-
-    final ItemOrder itemorder = ItemOrder(
-      itemId: item.itemId,
-      price: double.parse(item.price.toString()),
-      bp: item.bp,
-      bv: double.parse(item.bv.toString()),
-      qty: qty,
-      name: item.name,
-      img: item.imageUrl,
-    );
-  }*/
 
 //!--------*
 
@@ -1418,7 +1385,7 @@ class MainModel extends Model {
           color: Colors.red[800],
           offset: Offset(0.0, 2.0),
           blurRadius: 3.0,
-        )
+        ),
       ],
     );
     return _flush;
@@ -1444,21 +1411,6 @@ class MainModel extends Model {
 
     return _msg;
   }
-  /*
-  Future<bool> bpValidPercent() async {
-    bool _res = true;
-    double _wPromo = 0;
-    _wPromo = await getWeeklyPromo(orderBp());
-    double _exPromo = 0;
-    _exPromo = getExPromo(orderBp());
-    if (_wPromo > 50 || _exPromo > 50 || _wPromo + _exPromo > 70) {
-      _res = false;
-    }
-    double promoSum = _wPromo + _exPromo;
-    print('wPROMO:$_wPromo -- exPromo: $_exPromo => $promoSum');
-
-    return _res;
-  }*/
 
   double getExPromo(int totalBp) {
     int exPromoItemBpTotal = 0;
@@ -1526,9 +1478,6 @@ class MainModel extends Model {
       msg = await saveOrder(shipmentId, courierfee, distrId, note, areaId);
     }
     return msg;
-//itemorderlist.where((i)=>i.qty==0).forEach((f)=>itemorderlist.remove(f));
-//print(itemorderlist.length);
-//itemorderlist.forEach((f)=>print('ItemId:${f.itemId}new Qty:${f.qty}'));
   }
 
   bool _isWaiting = true;
@@ -1722,7 +1671,7 @@ class MainModel extends Model {
         order.gifts.clear();
         order.promos.clear();
         order.order.removeWhere((i) => i.qty <= 0 || i.bp <= 0);
-        // bulkOrder.removeWhere((bulk) => bulk.order.length == 0);
+        //bulkOrder.removeWhere((bulk) => bulk.order.length == 0);
         isBalanceChecked = false;
 
         for (var sOrder in bulkOrder) {

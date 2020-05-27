@@ -194,6 +194,8 @@ class _LocalNotificationState extends State<LocalNotification> {
                             Container(
                               child: Text(
                                 note.title,
+                                textDirection: TextDirection.rtl,
+                                softWrap: true,
                                 style: TextStyle(
                                     color: Colors.pink[900],
                                     fontWeight: FontWeight.bold,
@@ -208,7 +210,7 @@ class _LocalNotificationState extends State<LocalNotification> {
                             ),
                             Text(
                               note.body,
-                              // textDirection: TextDirection.rtl,
+                              textDirection: TextDirection.rtl,
                               softWrap: true,
                               style: TextStyle(
                                 fontSize: 12,
