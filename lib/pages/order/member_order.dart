@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-
 import 'package:mor_release/models/courier.dart';
 import 'package:mor_release/pages/order/order_cash.dart';
 import 'package:mor_release/pages/order/widgets/order_courier.dart';
 import 'package:mor_release/scoped/connected.dart';
-
 import 'package:scoped_model/scoped_model.dart';
 
 class MemberOrder extends StatefulWidget {
@@ -59,6 +57,7 @@ class _MemberOrder extends State<MemberOrder> {
     );
   }
 }
+
 /*
 FlatButton.icon(
                               label: Text('Test Code'),

@@ -4,7 +4,6 @@ import 'package:mor_release/models/courier.dart';
 import 'package:mor_release/pages/order/member_order.dart';
 import 'package:mor_release/pages/order/node_order.dart';
 import 'package:mor_release/pages/order/widgets/shipmentArea.dart';
-
 import 'package:mor_release/scoped/connected.dart';
 import 'package:scoped_model/scoped_model.dart';
 
