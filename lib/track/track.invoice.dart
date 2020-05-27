@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -99,6 +98,8 @@ class _TrackInvoice extends State<TrackInvoice> {
       _color = Colors.lime[300];
     } else if (status == '3') {
       _color = Colors.orange[300];
+    } else if (status == '9') {
+      _color = Colors.pinkAccent[400];
     } else if (status == '4' || status == '703') {
       _color = Colors.lightGreen[300];
     } else if (status == '6' || status == '704' || status == '705') {
@@ -112,11 +113,12 @@ class _TrackInvoice extends State<TrackInvoice> {
 
   Color _statusColorHead(String status, String flagType) {
     Color _color = flagType == 'CA' ? Colors.limeAccent[400] : Colors.white;
-
     if (status == '0' || status == '1' || status == '2') {
       _color = Colors.lime[300];
     } else if (status == '3') {
       _color = Colors.orange[300];
+    } else if (status == '9') {
+      _color = Colors.pinkAccent[400];
     } else if (status == '4' || status == '703') {
       _color = Colors.lightGreen[300];
     } else if (status == '6' || status == '704' || status == '705') {
@@ -130,11 +132,12 @@ class _TrackInvoice extends State<TrackInvoice> {
 
   Color _statusColorDetails(String status, String flagType) {
     Color _color = flagType == 'CA' ? Colors.limeAccent[400] : Colors.white;
-
     if (status == '0' || status == '1' || status == '2') {
       _color = Colors.lime[300];
     } else if (status == '3') {
       _color = Colors.orange[300];
+    } else if (status == '9') {
+      _color = Colors.pinkAccent[400];
     } else if (status == '4' || status == '703') {
       _color = Colors.lightGreen[300];
     } else if (status == '6' || status == '704' || status == '705') {
