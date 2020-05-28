@@ -871,7 +871,6 @@ class MainModel extends Model {
       x += i.weight * i.qty;
     }
     x += promoWeight() + giftWeight();
-
     notifyListeners();
     return x;
   }
@@ -890,7 +889,6 @@ class MainModel extends Model {
     for (SalesOrder o in bulkOrder) {
       x += o.weight;
     }
-
     notifyListeners();
     return x;
   }
