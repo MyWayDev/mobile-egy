@@ -277,7 +277,6 @@ class MainModel extends Model {
       'bp': p.bp,
       'bv': p.bv,
       'weigth': p.weight
-
       // 'fromSupport': 0,
     });
   }
@@ -871,8 +870,9 @@ class MainModel extends Model {
     for (ItemOrder i in itemorderlist) {
       x += i.weight * i.qty;
     }
-    notifyListeners();
     x += promoWeight() + giftWeight();
+
+    notifyListeners();
     return x;
   }
 
