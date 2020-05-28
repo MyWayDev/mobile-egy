@@ -276,7 +276,7 @@ class MainModel extends Model {
       'price': p.price,
       'bp': p.bp,
       'bv': p.bv,
-      'weigth': p.weight
+      'weigth': p.weight,
       // 'fromSupport': 0,
     });
   }
