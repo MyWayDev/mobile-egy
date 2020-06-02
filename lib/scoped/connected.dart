@@ -25,7 +25,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 class MainModel extends Model {
   // ** items //** */
-  static String _version = '3.31r'; //!Modify for every release version./.
+  static String _version = '3.30I'; //!Modify for every release version./.
   static String firebaseDb = "egyProduction";
   static String stage = "egyProduction";
   static String updateDb = "egyProduction";
@@ -1512,6 +1512,7 @@ class MainModel extends Model {
         backOrder: txtBackOrderList(),
         bonusDeduc: txtdistrBonusList(),
         promos: promoOrderList);
+
     bulkOrder.add(order);
     distrBonusList = [];
     backOrdersList = [];
@@ -2295,7 +2296,7 @@ for( var i = 0 ; i < _list.length; i++){
         locKCart(context); //! uncomment this before buildR
         locKApp(context); //! uncomment this before buildR
         userAccess(key, context);
-        //userTest(key, context);
+        userTest(key, context);
         //getAreagetAreauserTest(key, context);
         //getArea();
         try {
