@@ -208,7 +208,7 @@ class DistrBonus {
 
   DistrBonus({this.distrId, this.name, this.bonus});
   toJson() {
-    return {"": int.parse(distrId), "": bonus};
+    return {"id": distrId, "": bonus};
   }
 
   String distrBonusToJson(DistrBonus distrBonus) {
