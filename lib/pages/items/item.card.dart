@@ -24,14 +24,14 @@ class ItemCard extends StatelessWidget {
                   children: <Widget>[
                     Container(
                       // color: Color.fromARGB(255, 66, 165, 245),
-                      //constraints: BoxConstraints.tight(Size(90, 100)),
+                      //  constraints: BoxConstraints.tight(Size(100, 100)),
                       child: Stack(
                         fit: StackFit.loose,
                         children: <Widget>[
                           Image.network(
                             itemData[index].imageUrl ??
                                 '', //'https://firebasestorage.googleapis.com/v0/b/mobile-coco.appspot.com/o/flamelink%2Fmedia%2F${itemData[index].image[0].toString()}_${itemData[index].itemId}.png?alt=media&token=274fc65f-8295-43d5-909c-e2b174686439',
-                            scale: 2.75,
+                            scale: 2.78,
                           ),
                           // : Container(),
                           itemData[index].promoImageUrl == '' ||

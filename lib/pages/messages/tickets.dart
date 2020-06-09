@@ -473,9 +473,9 @@ class _TicketsState extends State<Tickets> {
           ),
           Text(
             ticket.content,
-            textDirection: TextDirection.ltr,
+            textDirection: TextDirection.rtl,
             softWrap: true,
-            style: TextStyle(fontSize: 14, wordSpacing: 0.1),
+            style: TextStyle(fontSize: 13.5, wordSpacing: 0.1),
           ),
           ticket.items.length != 0
               ? Divider(
