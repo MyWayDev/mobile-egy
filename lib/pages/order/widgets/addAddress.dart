@@ -391,7 +391,7 @@ class _AddAddressState extends State<AddAddress> {
                         FormBuilderValidators.required(errorText: errorText),
                         FormBuilderValidators.minLength(3,
                             errorText: errorText),
-                        FormBuilderValidators.maxLength(300, errorText: ''),
+                        FormBuilderValidators.maxLength(500, errorText: ''),
                       ],
                     ))
                 : Container(),

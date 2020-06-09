@@ -6,6 +6,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart' as intl;
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:mor_release/models/user.dart';
 import 'package:mor_release/scoped/connected.dart';
@@ -103,7 +104,6 @@ class _Report extends State<Report> {
     if (response.statusCode == 200) {
       List _summary = json.decode(response.body);
       member = Member.formJson(_summary[0]);
-
       print(_summary);
     }
 
@@ -225,7 +225,7 @@ class _Report extends State<Report> {
                     child: ListTile(
                       // leading: Text('${member.name}'),
                       title: member.ratio != 0
-                          ? Text('${member.ratio.toInt().toString()}%')
+                          ? Text('${member.ratio.toInt().toString()} %')
                           : Text(''),
                       subtitle: member.grpCount != 0
                           ? Text(""
@@ -235,10 +235,10 @@ class _Report extends State<Report> {
                         children: <Widget>[
                           //  Row(children: <Widget>[],),
                           Text(
-                              'النقاط الشخصيه : ${member.perBp.toInt().toString()}',
+                              'النقاط الشخصيه : ${formatter.format(member.perBp.toInt())}',
                               textDirection: TextDirection.rtl),
                           Text(
-                              'نقاط المجموعه : ${member.grpBp.toInt().toString()}',
+                              'نقاط المجموعه : ${formatter.format(member.grpBp.toInt())}',
                               textDirection: TextDirection.rtl),
                         ],
                       ),
@@ -251,5 +251,6 @@ class _Report extends State<Report> {
     });
   }
 
+  final formatter = intl.NumberFormat("#,###");
 // One entry in the multilevel list displayed by this app.
 }
