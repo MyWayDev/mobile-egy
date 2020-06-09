@@ -1512,6 +1512,7 @@ class MainModel extends Model {
         backOrder: txtBackOrderList(),
         bonusDeduc: txtdistrBonusList(),
         promos: promoOrderList);
+
     bulkOrder.add(order);
     distrBonusList = [];
     backOrdersList = [];
