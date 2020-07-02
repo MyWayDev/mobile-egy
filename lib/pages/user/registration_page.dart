@@ -261,7 +261,7 @@ class _RegistrationPage extends State<RegistrationPage> {
                       ),
                       onPressed: () {
                         //model.getTickets(1);
-                       // model.fbItemsUpdateFromDb(); //! activate month begin
+                        model.fbItemsUpdateFromDb(); //! activate month begin
                         //  model.itemDataUpdataProductToFB();
                       },
                     ),

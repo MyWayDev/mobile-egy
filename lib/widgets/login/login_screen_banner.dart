@@ -33,7 +33,7 @@ class LoginBanner extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Text(
-                "v3.33-R2",
+                "v3.34r",
                 textDirection: TextDirection.ltr,
                 style: TextStyle(
                   fontSize: 14,

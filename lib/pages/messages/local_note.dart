@@ -21,7 +21,7 @@ class _LocalNotificationState extends State<LocalNotification> {
 
   List<Notify> notifyData = List();
   List<Notify> filteredNotify = [];
-  String path = 'flamelink/environments/egyProduction/content/tokens/en-US/';
+  String path = 'egyDb/tokens/';
   FirebaseDatabase database = FirebaseDatabase.instance;
 
   DatabaseReference databaseReference;

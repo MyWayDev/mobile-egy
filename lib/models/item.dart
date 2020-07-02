@@ -137,6 +137,7 @@ class Item {
       "new": nw,
       "disable": disabled,
       "discontinued": discont,
+      "HELD": held
     };
   }
 

@@ -633,6 +633,63 @@ class _OrderPage extends State<OrderPage> {
                               ),
                             )))
                     : Container(),
+                /* Container(
+                        child: RawMaterialButton(
+                          child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: <Widget>[
+                                Stack(
+                                  fit: StackFit.loose,
+                                  overflow: Overflow.clip,
+                                  children: <Widget>[
+                                    BadgeIconButton(
+                                      itemCount: model.backOrdersList.length,
+                                      icon: Icon(
+                                        GroovinMaterialIcons.arrow_down_bold,
+                                        size: 25.0,
+                                        color: Colors.blue,
+                                      ),
+                                      badgeTextColor: Colors.red[700],
+                                      badgeColor: Colors.grey[100],
+                                    ),
+                                    Text('فك الحجز',
+                                        style: TextStyle(
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.grey[700])),
+                                  ],
+                                ),
+                              ]),
+                          constraints:
+                              const BoxConstraints(maxHeight: 48, maxWidth: 45),
+                          shape: CircleBorder(),
+                          highlightColor: Colors.pink[900],
+                          elevation: 21,
+                          fillColor: Colors.amber[400],
+                          onPressed: () async {
+                            if (!model.userInfo.isleader) {
+                              isloading(true);
+                              _backOrders = await widget.model
+                                  .getBackOrderItems(
+                                      widget.model.userInfo.distrId,
+                                      widget.model.setStoreId);
+                            }
+
+                            showDialog(
+                                context: context,
+                                builder: (_) => model.userInfo.isleader
+                                    ? NodeBODialoge(model)
+                                    : model.backOrdersList.isEmpty
+                                        ? BackOrderDialog(
+                                            _backOrders,
+                                            widget.model.userInfo.distrId,
+                                            widget.model.userInfo.name)
+                                        : BackOrderList());
+                            isloading(false);
+                          },
+                          splashColor: Colors.pink[900],
+                        ),
+                      ),*/
                 model.itemorderlist.isNotEmpty
                     ? BonusDeduct(model)
                     : Container(),

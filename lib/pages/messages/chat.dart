@@ -158,7 +158,7 @@ class ChatScreenState extends State<ChatScreen> {
   bool isShowSticker;
   String imageUrl;
 
-  String path = "flamelink/environments/egyProduction/content/messages/en-US/";
+  final String path = "egyDb/messages/";
   List<Message> _msgList = List();
   FirebaseDatabase database = FirebaseDatabase.instance;
   DatabaseReference databaseReference;

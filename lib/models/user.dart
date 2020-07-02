@@ -40,7 +40,7 @@ class User {
       "distrIdent": distrIdent,
       "email": email,
       "id": int.parse(distrId).toString(),
-      "isleader": false,
+      "isleader": true,
       "areaId": areaId,
       "name": name ?? '',
       "tele": phone,
