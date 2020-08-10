@@ -14,7 +14,7 @@ description: Morocco Mobile App
 version: 1.0.2+5
 
 environment:
-  sdk: ">=2.2.0 <3.0.0"
+  sdk: '>=2.2.0 <3.0.0'
 
 dependencies:
   flutter:
@@ -54,6 +54,8 @@ dependencies:
   flushbar: ^1.9.0
   flutter_form_builder: ^3.3.0
   flutter_sliding_up_panel: ^0.0.3
+  draggable_floating_button: ^0.1.1
+
   #rxdart: ^0.22.6
   #draggable_fab: ^0.1.1
 
@@ -62,9 +64,9 @@ dev_dependencies:
     sdk: flutter
 
 flutter_icons:
-  android: "launcher_icon"
+  android: 'launcher_icon'
   ios: true
-  image_path: "assets/images/icon.png"
+  image_path: 'assets/images/icon.png'
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec

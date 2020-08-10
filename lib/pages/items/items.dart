@@ -1,5 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:mor_release/models/gift.dart';
@@ -11,6 +12,7 @@ import 'package:scoped_model/scoped_model.dart';
 import '../../models/item.dart';
 import '../items/item.card.dart';
 import 'package:mor_release/scoped/connected.dart';
+import 'package:draggable_floating_button/draggable_floating_button.dart';
 
 class ItemsPage extends StatefulWidget {
   final MainModel model;
@@ -45,20 +47,39 @@ class _ItemsPage extends State<ItemsPage> with SingleTickerProviderStateMixin {
     });
   }
 
+  double perBp;
+  AppBar appBar;
   @override
   void initState() {
     databaseReference = database.reference().child(path);
     Query query = databaseReference.orderByChild('catalogue').equalTo(true);
     widget.model.getStores();
-    //!TODO ADD QUERY TO FILTER PRODUCTS NOT IN CATALOGE..
+    widget.model.getAreasList();
+    // !TODO ADD QUERY TO FILTER PRODUCTS NOT IN CATALOGE..
     subAdd = query.onChildAdded.listen(_onItemEntryAdded);
     subChanged = query.onChildChanged.listen(_onItemEntryChanged);
+
     super.initState();
   }
 
   Future<String> getgiftImageUrl(MainModel model) async {
     List<Gift> gift = await model.giftList();
     return gift[0].imageUrl;
+  }
+
+  Future<double> getPersonalPoints(String distrId) async {
+    String perPoints;
+    double vReturn;
+    final http.Response response = await http.get(
+        'https://mywaytest.mywayapienviroment.p.azurewebsites.net/api/getpersonalpoints/$distrId');
+    if (response.statusCode == 200) {
+      perPoints = response.body.toString();
+    } else {
+      perPoints = '0';
+    }
+    vReturn = double.tryParse(perPoints);
+    print(vReturn);
+    return vReturn;
   }
 
   @override
@@ -91,12 +112,12 @@ class _ItemsPage extends State<ItemsPage> with SingleTickerProviderStateMixin {
         builder: (BuildContext context, Widget child, MainModel model) {
       model.itemData = itemData;
       model.searchResult = searchResult;
-
       return ModalProgressHUD(
           inAsyncCall: _loading,
           opacity: 0.6,
           progressIndicator: ColorLoader2(),
           child: Scaffold(
+            appBar: appBar,
             floatingActionButton: FloatingActionButton.extended(
               label: Padding(
                 child: Column(
@@ -190,78 +211,69 @@ class _ItemsPage extends State<ItemsPage> with SingleTickerProviderStateMixin {
                 FloatingActionButtonLocation.centerDocked,
             floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
             resizeToAvoidBottomPadding: false,
-            body: Column(
-              children: <Widget>[
-                Container(
-                  height: 58,
-                  color: Theme.of(context).primaryColorLight,
-                  child: Card(
-                    child: ListTile(
-                      leading: Icon(
-                        Icons.search,
-                        size: 22.0,
-                      ),
-                      title: TextField(
-                        controller: controller,
-                        decoration: InputDecoration(
-                          hintText: "",
-                          border: InputBorder.none,
+            body: Stack(children: <Widget>[
+              Column(
+                children: <Widget>[
+                  Container(
+                    height: 58,
+                    color: Theme.of(context).primaryColorLight,
+                    child: Card(
+                      child: ListTile(
+                        leading: Icon(
+                          Icons.search,
+                          size: 22.0,
                         ),
-                        // style: TextStyle(fontSize: 18.0),
-                        onChanged: onSearchTextChanged,
-                      ),
-                      trailing: IconButton(
-                        alignment: AlignmentDirectional.centerEnd,
-                        icon: Icon(Icons.cancel, size: 20.0),
-                        onPressed: () {
-                          controller.clear();
-                          onSearchTextChanged('');
-                        },
+                        title: TextField(
+                          controller: controller,
+                          decoration: InputDecoration(
+                            hintText: "",
+                            border: InputBorder.none,
+                          ),
+                          // style: TextStyle(fontSize: 18.0),
+                          onChanged: onSearchTextChanged,
+                        ),
+                        trailing: IconButton(
+                          alignment: AlignmentDirectional.centerEnd,
+                          icon: Icon(Icons.cancel, size: 20.0),
+                          onPressed: () {
+                            controller.clear();
+                            onSearchTextChanged('');
+                          },
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: searchResult.isNotEmpty || controller.text.isNotEmpty
-                      ? ListView.builder(
-                          itemCount: searchResult.length,
-                          itemBuilder: (context, i) {
-                            return ItemCard(searchResult, i);
-                          },
-                        )
-                      : ListView.builder(
-                          itemCount: itemData.length,
-                          itemBuilder: (context, index) {
-                            return ItemCard(itemData, index);
-                          },
-                        ),
-                  /*  Positioned(
-                child: DraggableFab(
-                    child: MaterialButton(
-                  child: CircleAvatar(
-                      //backgroundImage: NetworkImage(),
-                      backgroundColor: Colors.green[700],
-                      child: FutureBuilder(
-                        future: getgiftImageUrl(model),
-                        builder:
-                            (BuildContext context, AsyncSnapshot<Image> image) {
-                          if (image.hasData) {
-                            return image.data; // image is ready
-                          } else {
-                            return new Container(); // placeholder
-                          }
-                        },
-                      )),
-                  onPressed: () async {},
-                )
-
-                    
-
-                    ),
-              )*/
-                ),
-              ],
-            ),
+                  Expanded(
+                    child: searchResult.isNotEmpty || controller.text.isNotEmpty
+                        ? ListView.builder(
+                            itemCount: searchResult.length,
+                            itemBuilder: (context, i) {
+                              return ItemCard(searchResult, i);
+                            },
+                          )
+                        : ListView.builder(
+                            itemCount: itemData.length,
+                            itemBuilder: (context, index) {
+                              return ItemCard(itemData, index);
+                            },
+                          ),
+                  ),
+                ],
+              ),
+              /* DraggableFloatingActionButton(
+                  data: 'dfab_demo',
+                  offset: Offset(100, 205),
+                  backgroundColor: Colors.amberAccent,
+                  child: Text(
+                    perBp.toString(),
+                  ),
+                  onPressed: () async {
+                    print(model.userInfo.distrId);
+                    perBp = await getPersonalPoints(model.userInfo.distrId);
+                  },
+                  appContext: context,
+                  appBar: appBar),*/
+            ]),
           ));
     });
   }

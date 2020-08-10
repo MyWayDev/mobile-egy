@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:mor_release/bottom_nav.dart';
+import 'package:mor_release/models/backOrder.dart';
 import 'package:mor_release/models/item.order.dart';
 import 'package:mor_release/scoped/connected.dart';
 import 'package:mor_release/widgets/color_loader_2.dart';
@@ -45,6 +46,19 @@ class _SaveDialog extends State<SaveDialog> {
     return model.itemorderlist.where((test) => test.bp != 0).toList();
   }
 
+  List<BackOrder> getBackOrderList(MainModel model) {
+    List<BackOrder> bOs = [];
+    for (BackOrderRelease _backOrdersList in model.backOrdersList) {
+      for (BackOrder _backOrder in _backOrdersList.backOrder) {
+        if (_backOrder != null) {
+          bOs.add(_backOrder);
+        }
+      }
+    }
+
+    return bOs;
+  }
+
   @override
   Widget build(BuildContext context) {
     return _saveDialog(context);
@@ -59,7 +73,7 @@ class _SaveDialog extends State<SaveDialog> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0)),
                 child: Container(
-                  height: 475.0,
+                  height: 480.0,
                   width: 310.0,
                   decoration:
                       BoxDecoration(borderRadius: BorderRadius.circular(20.0)),
@@ -102,12 +116,26 @@ class _SaveDialog extends State<SaveDialog> {
                             ]),
                       ),
                       Container(
-                        height: 300,
+                        height: 220,
                         width: 275,
                         child: ListView.builder(
                           itemCount: getOrderList(model).length,
                           itemBuilder: (context, i) {
                             return orderCard(context, model, i);
+                          },
+                        ),
+                      ),
+                      Container(
+                        height: 17,
+                        child: Text('اصناف مستند فك الحجز'),
+                      ),
+                      Container(
+                        height: 120,
+                        width: 275,
+                        child: ListView.builder(
+                          itemCount: getBackOrderList(model).length,
+                          itemBuilder: (context, i) {
+                            return backOrderCard(context, model, i);
                           },
                         ),
                       ),
@@ -377,7 +405,7 @@ class _SaveDialog extends State<SaveDialog> {
 
   Widget orderCard(BuildContext context, MainModel model, int i) {
     return Container(
-      height: 60,
+      height: 56,
       child: Card(
         color: Color(0xFFFFFFF1),
         elevation: 5,
@@ -386,13 +414,13 @@ class _SaveDialog extends State<SaveDialog> {
             padding: EdgeInsets.only(left: 25),
             child: Text(
               getOrderList(model)[i].qty.toString(),
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
             ),
           ),
           title: Center(
             child: Text(
               getOrderList(model)[i].itemId,
-              style: TextStyle(color: Color(0xFFFF8C00)),
+              style: TextStyle(color: Color(0xFFFF8C00), fontSize: 12),
             ),
           ),
           trailing: CircleAvatar(
@@ -400,6 +428,35 @@ class _SaveDialog extends State<SaveDialog> {
             backgroundImage: NetworkImage(
               getOrderList(model)[i].img,
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget backOrderCard(BuildContext context, MainModel model, int i) {
+    return Container(
+      height: 47,
+      child: Card(
+        color: Colors.yellowAccent[100],
+        elevation: 5,
+        child: ListTile(
+          leading: Padding(
+            padding: EdgeInsets.only(left: 25),
+            child: Text(
+              getBackOrderList(model)[i].qty.toInt().toString(),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+            ),
+          ),
+          title: Center(
+            child: Text(
+              getBackOrderList(model)[i].itemId,
+              style: TextStyle(color: Colors.blue[800], fontSize: 12),
+            ),
+          ),
+          trailing: Text(
+            'فك حجز',
+            style: TextStyle(fontSize: 12),
           ),
         ),
       ),

@@ -36,25 +36,23 @@ class District {
 class Area {
   String areaId;
   String name;
+  int branch;
 
-  Area({this.areaId, this.name});
+  Area({this.areaId, this.name, this.branch});
 
   Area.fromSnapshot(DataSnapshot snapshot)
       : areaId = snapshot.value['areaId'],
         name = snapshot.value['name'];
 
   factory Area.json(Map<dynamic, dynamic> json) {
-    return Area(areaId: json['areaId'], name: json['name']);
+    return Area(
+        areaId: json['areaId'], name: json['name'], branch: json['branch']);
   }
   factory Area.fromJson(Map<String, dynamic> json) {
     return Area(areaId: json['AREA_ID'], name: json['ANAME']);
   }
   toJson() {
-    return {
-      "areaId": areaId,
-      "name": name,
-      "id": areaId,
-    };
+    return {"areaId": areaId, "name": name, "id": areaId, "branch": branch};
   }
 }
 
@@ -98,13 +96,20 @@ class Region {
 }
 
 class Store {
+  int id;
   String storeId;
   String name;
   String docType;
   int region;
   bool enabled;
 
-  Store({this.storeId, this.name, this.docType, this.region, this.enabled});
+  Store(
+      {this.id,
+      this.storeId,
+      this.name,
+      this.docType,
+      this.region,
+      this.enabled});
   Store.fromSnapshot(DataSnapshot snapshot)
       : storeId = snapshot.value['storeId'] ?? '',
         name = snapshot.value['name'] ?? '',
@@ -114,6 +119,7 @@ class Store {
 
   factory Store.json(Map<dynamic, dynamic> json) {
     return Store(
+      id: json['id'],
       storeId: json['storeId'] ?? '',
       name: json['name'] ?? '',
       docType: json['docType'] ?? 'CR',

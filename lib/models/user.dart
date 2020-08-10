@@ -143,7 +143,7 @@ class NewMember {
       String docType,
       String storeId) async {
     final response = await http.put(
-        'http://mywayegypt-api.azurewebsites.net/api/memregister_ds_8k/$user/$shipmentPlace/$areaId/$shipmentPlaceName/$docType/$storeId',
+        'https://mywaytest.mywayapienviroment.p.azurewebsites.net/api/memregister_ds_8k/$user/$shipmentPlace/$areaId/$shipmentPlaceName/$docType/$storeId',
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           //HttpHeaders.authorizationHeader: ''
@@ -208,7 +208,7 @@ class DistrBonus {
 
   DistrBonus({this.distrId, this.name, this.bonus});
   toJson() {
-    return {"id": distrId, "": bonus};
+    return {"DISTR_ID": distrId};
   }
 
   String distrBonusToJson(DistrBonus distrBonus) {

@@ -230,7 +230,7 @@ class _CourierOrder extends State<CourierOrder> {
                                         : Container(),
                                     stateValue != null &&
                                             courierFee != null &&
-                                            model.orderBp() > 0 &&
+                                            // model.orderBp() > 0 &&
                                             model.giftPacks.length == 0 &&
                                             model.promoPacks.length == 0
                                         ? OrderSave(

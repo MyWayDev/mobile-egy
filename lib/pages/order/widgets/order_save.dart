@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mor_release/bottom_nav.dart';
+import 'package:mor_release/models/item.order.dart';
+import 'package:mor_release/widgets/save_backOrder_dialog.dart';
 import 'package:mor_release/widgets/save_bulk_dialog.dart';
 import 'package:mor_release/widgets/save_dialog.dart';
 import 'package:mor_release/scoped/connected.dart';
@@ -40,7 +43,7 @@ class OrderSave extends StatelessWidget {
   }
 
   Widget saveButton(BuildContext context, MainModel model) {
-    return !model.isBulk
+    return !model.isBulk && model.itemorderlist.isNotEmpty
         ? Column(
             children: <Widget>[
               Padding(
@@ -102,50 +105,110 @@ class OrderSave extends StatelessWidget {
                       })),
             ],
           )
-        : Column(
-            children: <Widget>[
-              Padding(
-                  padding: EdgeInsets.only(top: 1),
-                  child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(40.0)),
-                      splashColor: Theme.of(context).primaryColor,
-                      color: Colors.tealAccent[400],
-                      child: Transform.translate(
-                        offset: Offset(2.0, 0.0),
-                        child: Container(
-                            padding: const EdgeInsets.only(right: 2.0),
-                            child: ListTile(
-                              trailing: Text(
-                                'اجمالى الطلبيه',
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                                textAlign: TextAlign.right,
-                                //  textDirection: TextDirection.rtl,
-                              ),
-                              leading: Text(
-                                formatter.format((bulkOrderTotal(model)) +
-                                        bulkOrderCourierFee(model)) +
+        : model.backOrdersList.isNotEmpty && model.itemorderlist.isEmpty
+            ? Column(
+                children: <Widget>[
+                  Padding(
+                      padding: EdgeInsets.only(top: 1),
+                      child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(40.0)),
+                          splashColor: Theme.of(context).primaryColor,
+                          color: Colors.tealAccent[400],
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Text(
+                                formatter.format(model.settings.backOrderFee) +
+                                    " " +
                                     ' EGP',
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold),
                               ),
-                            )),
-                      ),
-                      /*   awaitExpanded(
+                              Expanded(
+                                child: Container(),
+                              ),
+                              Transform.translate(
+                                offset: Offset(2.0, 0.0),
+                                child: Container(
+                                    padding: const EdgeInsets.only(right: 2.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          'مستند فك حجز',
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white),
+                                          //  textDirection: TextDirection.rtl,
+                                          //   textAlign: TextAlign.right,
+                                        ),
+                                      ],
+                                    )),
+                              ),
+                            ],
+                          ),
+                          onPressed: () async {
+                            model.isBalanceChecked = true;
+                            showDialog(
+                                context: context,
+                                builder: (_) => BackOrderSaveDialog(
+                                    courierId,
+                                    (courierFee - courierDiscount),
+                                    distrId,
+                                    note,
+                                    areaId,
+                                    userId));
+                          })),
+                ],
+              )
+            : Column(
+                children: <Widget>[
+                  Padding(
+                      padding: EdgeInsets.only(top: 1),
+                      child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(40.0)),
+                          splashColor: Theme.of(context).primaryColor,
+                          color: Colors.tealAccent[400],
+                          child: Transform.translate(
+                            offset: Offset(2.0, 0.0),
+                            child: Container(
+                                padding: const EdgeInsets.only(right: 2.0),
+                                child: ListTile(
+                                  trailing: Text(
+                                    'اجمالى الطلبيه',
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                    textAlign: TextAlign.right,
+                                    //  textDirection: TextDirection.rtl,
+                                  ),
+                                  leading: Text(
+                                    formatter.format((bulkOrderTotal(model)) +
+                                            bulkOrderCourierFee(model)) +
+                                        ' EGP',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                )),
+                          ),
+                          /*   awaitExpanded(
                             child: Container(),
                           ),*/
 
-                      onPressed: () async {
-                        model.isBalanceChecked = true;
+                          onPressed: () async {
+                            model.isBalanceChecked = true;
 
-                        // model.promoOrderList.forEach(
-                        //   (f) => print('bp?:${model.orderBp() / f.bp} qty:${f.qty}'));
-                        model.isTypeing = false;
-                        /*   await model.saveBulkOrders(model.bulkOrder,
+                            // model.promoOrderList.forEach(
+                            //   (f) => print('bp?:${model.orderBp() / f.bp} qty:${f.qty}'));
+                            model.isTypeing = false;
+                            /*   await model.saveBulkOrders(model.bulkOrder,
                             (courierFee - courierDiscount), note, courierId);
                         Navigator.push(
                           context,
@@ -155,18 +218,18 @@ class OrderSave extends StatelessWidget {
                           ),
                         );*/
 
-                        showDialog(
-                            context: context,
-                            builder: (_) => SaveBulkDialog(
-                                courierId,
-                                (courierFee - courierDiscount),
-                                distrId,
-                                note,
-                                areaId,
-                                userId));
-                      })),
-            ],
-          );
+                            showDialog(
+                                context: context,
+                                builder: (_) => SaveBulkDialog(
+                                    courierId,
+                                    (courierFee - courierDiscount),
+                                    distrId,
+                                    note,
+                                    areaId,
+                                    userId));
+                          })),
+                ],
+              );
   }
 }
 

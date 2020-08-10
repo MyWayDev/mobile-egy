@@ -128,7 +128,7 @@ class ShipmentArea {
 
   Future<http.Response> createPost(ShipmentArea address, storeId) async {
     final response = await http.put(
-        'http://mywayegypt-api.azurewebsites.net/api/add_new_distr_shipment_place/$storeId',
+        'https://mywaytest.mywayapienviroment.p.azurewebsites.net/api/add_new_distr_shipment_place/$storeId',
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           //HttpHeaders.authorizationHeader: ''

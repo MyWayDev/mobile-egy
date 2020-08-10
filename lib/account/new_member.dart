@@ -105,7 +105,7 @@ class _NewMemberPage extends State<NewMemberPage> {
   void getPlaces() async {
     areaPlace = [];
     final response = await http.get(
-        'http://mywayegypt-api.azurewebsites.net/api/get_all_shipment_places/');
+        'https://mywaytest.mywayapienviroment.p.azurewebsites.net/api/get_all_shipment_places/');
     if (response.statusCode == 200) {
       final _shipmentArea = json.decode(response.body) as List;
       areaPlace = _shipmentArea.map((s) => AreaPlace.json(s)).toList();
@@ -994,7 +994,7 @@ class _NewMemberPage extends State<NewMemberPage> {
   void getPlaces() async {
     areaPlace = [];
     final response = await http.get(
-        'http://mywayegypt-api.azurewebsites.net/api/get_all_shipment_places/');
+        'https://mywaytest.mywayapienviroment.p.azurewebsites.net/api/get_all_shipment_places/');
     if (response.statusCode == 200) {
       final _shipmentArea = json.decode(response.body) as List;
       areaPlace = _shipmentArea.map((s) => AreaPlace.json(s)).toList();

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:groovin_material_icons/groovin_material_icons.dart';
 import 'package:mor_release/models/lock.dart';
-
 import 'package:mor_release/scoped/connected.dart';
 
 class StoreFloat extends StatefulWidget {
@@ -41,12 +40,27 @@ class _StoreFloatState extends State<StoreFloat>
         context: context,
         barrierDismissible: true,
         builder: (BuildContext context) {
-          return Dialog(
+          return AlertDialog(
+            actions: <Widget>[
+              Align(
+                  alignment: Alignment.topCenter,
+                  child: ButtonBar(
+                    children: <Widget>[
+                      OutlineButton(
+                          child: Icon(Icons.search),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+
+                            dialogAreas(context, widget.model);
+                          }),
+                    ],
+                  )),
+            ],
             backgroundColor: Color(0xFF303030),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),
-            child: Container(
+            content: Container(
               width: 100,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20.0),
@@ -58,6 +72,62 @@ class _StoreFloatState extends State<StoreFloat>
                 child: storesDialog(),
               ),
             ),
+          );
+        });
+  }
+
+  TextEditingController controller = new TextEditingController();
+  dialogAreas(BuildContext context, MainModel model) {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            actions: <Widget>[
+              /*  OutlineButton(
+                  child: Icon(Icons.search),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    dialogAreas(context, widget.model);
+                  }),*/
+              SizedBox(
+                width: 50,
+                height: 50,
+                child: TextField(
+                  controller: controller,
+                  decoration: InputDecoration(
+                    hintText: "",
+                    border: InputBorder.none,
+                  ),
+                  // style: TextStyle(fontSize: 18.0),
+                  //onChanged: onSearchTextChanged,
+                ),
+              ),
+
+              /*    IconButton(
+                alignment: AlignmentDirectional.centerEnd,
+                icon: Icon(Icons.cancel, size: 20.0),
+                onPressed: () {
+                  controller.clear();
+                  // onSearchTextChanged('');
+                },
+              ),*/
+            ],
+            backgroundColor: Color(0xFF303030),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            content: Container(
+                width: 100,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                child: Container(
+                  padding: EdgeInsets.only(left: 10, right: 10),
+                  height: 380,
+                  width: 55,
+                  child: areasDialog(),
+                )),
           );
         });
   }
@@ -108,9 +178,53 @@ class _StoreFloatState extends State<StoreFloat>
                 Navigator.of(context).pop();
               },
             ),
-            widget.model.stores.length == index + 1
-                ? Icon(Icons.arrow_downward)
-                : Container()
+          ],
+        );
+      },
+    ));
+  }
+
+  Widget areasDialog() {
+    return Scrollbar(
+        child: ListView.builder(
+      itemCount: widget.model.areaList.length,
+      itemBuilder: (context, index) {
+        return Column(
+          children: <Widget>[
+            RaisedButton(
+              color: Colors.lightBlueAccent,
+              elevation: 8,
+              child: widget.model.areaList.length > 0
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          widget.model.areaList[index].name,
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ],
+                    )
+                  : Text('Data Loading error'),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
+                side: BorderSide(color: Colors.black),
+              ),
+              onPressed: () async {
+                setState(() {
+                  var _branch = widget.model.stores.firstWhere(
+                      (s) => s.id == widget.model.areaList[index].branch);
+                  widget.model.setStoreId = _branch.storeId;
+                  widget.model.distrPoint = _branch.region;
+                  widget.model.distrPointName = _branch.name;
+                  widget.model.docType = _branch.docType;
+                });
+
+                //  await widget.model.getPoints(widget.model.stores[index].region);
+                Navigator.of(context).pop();
+              },
+            ),
           ],
         );
       },

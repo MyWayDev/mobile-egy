@@ -1,3 +1,4 @@
+import 'package:draggable_floating_button/draggable_floating_button.dart';
 import 'package:intl/intl.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
@@ -70,6 +71,26 @@ class _OrderPage extends State<OrderPage> {
     super.dispose();
   }
 
+  bool isOnlyBackOrder(MainModel model) {
+    bool isOBO = false;
+
+    if (model.backOrdersList.isNotEmpty &&
+        model.itemorderlist.isEmpty &&
+        !model.isBulk) {
+      isOBO = true;
+    } else if (model.backOrdersList.isNotEmpty &&
+        model.itemorderlist.isNotEmpty &&
+        !model.isBulk) {
+      isOBO = true;
+    } else if (model.backOrdersList.isEmpty &&
+        model.itemorderlist.isNotEmpty &&
+        !model.isBulk) {
+      isOBO = true;
+    }
+    return isOBO;
+  }
+
+  AppBar appBar;
   void _settingModalBottomSheet(context) {
     showModalBottomSheet(
         elevation: 21,
@@ -396,307 +417,249 @@ class _OrderPage extends State<OrderPage> {
                         ),
                       )
                     : Container(),
-                model.itemorderlist.length != 0
-                    ? Container(
-                        height: 58,
-                        child: Card(
-                            color: Colors.purple[50],
-                            elevation: 21,
-                            child: ListTile(
-                              leading: Container(
-                                child: Column(
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 20),
-                                    ),
-                                    Text(
-                                      'EGP ${formatter.format(model.orderSum())}',
-                                      style: TextStyle(
-                                        color: Colors.green[700],
-                                        fontSize: 13.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    Text(
-                                      ' Bp ${formatter.format(model.orderBp())}',
-                                      style: TextStyle(
-                                        color: Colors.pink[800],
-                                        fontSize: 13.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    Text(
-                                      ' Kg ${formatWeight.format(model.orderWeight())}',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 13.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
+                Container(
+                    height: 58,
+                    child: Card(
+                        color: Colors.purple[50],
+                        elevation: 21,
+                        child: ListTile(
+                          leading: Container(
+                            child: Column(
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.only(left: 20),
+                                ),
+                                Text(
+                                  'EGP ${formatter.format(model.orderSum())}',
+                                  style: TextStyle(
+                                    color: Colors.green[700],
+                                    fontSize: 13.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  ' Bp ${formatter.format(model.orderBp())}',
+                                  style: TextStyle(
+                                    color: Colors.pink[800],
+                                    fontSize: 13.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  ' Kg ${formatWeight.format(model.orderWeight())}',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 13.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          title: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 2),
+                                child: RawMaterialButton(
+                                  child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: <Widget>[
+                                        Stack(
+                                          fit: StackFit.loose,
+                                          overflow: Overflow.clip,
+                                          children: <Widget>[
+                                            BadgeIconButton(
+                                              itemCount:
+                                                  model.backOrdersList.length,
+                                              icon: Icon(
+                                                GroovinMaterialIcons
+                                                    .arrow_down_bold,
+                                                size: 25.0,
+                                                color: Colors.blue,
+                                              ),
+                                              badgeTextColor: Colors.red[700],
+                                              badgeColor: Colors.grey[100],
+                                            ),
+                                            Text(' فك الحجز',
+                                                style: TextStyle(
+                                                    fontSize: 11,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.grey[700])),
+                                          ],
+                                        ),
+                                      ]),
+                                  constraints: const BoxConstraints(
+                                      maxHeight: 48, maxWidth: 45),
+                                  shape: CircleBorder(),
+                                  highlightColor: Colors.pink[900],
+                                  elevation: 21,
+                                  fillColor: Colors.amber[400],
+                                  onPressed: () async {
+                                    if (!model.userInfo.isleader) {
+                                      isloading(true);
+                                      _backOrders = await widget.model
+                                          .getBackOrderItems(
+                                              widget.model.userInfo.distrId,
+                                              widget.model.setStoreId);
+                                    }
+
+                                    showDialog(
+                                        context: context,
+                                        builder: (_) => model.userInfo.isleader
+                                            ? NodeBODialoge(model)
+                                            : model.backOrdersList.isEmpty
+                                                ? BackOrderDialog(
+                                                    _backOrders,
+                                                    widget
+                                                        .model.userInfo.distrId,
+                                                    widget.model.userInfo.name)
+                                                : BackOrderList());
+                                    isloading(false);
+                                  },
+                                  splashColor: Colors.pink[900],
                                 ),
                               ),
-                              title: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: EdgeInsets.only(bottom: 2),
-                                    child: RawMaterialButton(
-                                      child: Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: <Widget>[
-                                            Stack(
-                                              fit: StackFit.loose,
-                                              overflow: Overflow.clip,
-                                              children: <Widget>[
-                                                BadgeIconButton(
-                                                  itemCount: model
-                                                      .backOrdersList.length,
-                                                  icon: Icon(
-                                                    GroovinMaterialIcons
-                                                        .arrow_down_bold,
-                                                    size: 25.0,
-                                                    color: Colors.blue,
-                                                  ),
-                                                  badgeTextColor:
-                                                      Colors.red[700],
-                                                  badgeColor: Colors.grey[100],
-                                                ),
-                                                Text('فك الحجز',
-                                                    style: TextStyle(
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color:
-                                                            Colors.grey[700])),
-                                              ],
-                                            ),
-                                          ]),
-                                      constraints: const BoxConstraints(
-                                          maxHeight: 48, maxWidth: 45),
-                                      shape: CircleBorder(),
-                                      highlightColor: Colors.pink[900],
-                                      elevation: 21,
-                                      fillColor: Colors.amber[400],
-                                      onPressed: () async {
-                                        if (!model.userInfo.isleader) {
-                                          isloading(true);
-                                          _backOrders = await widget.model
-                                              .getBackOrderItems(
-                                                  widget.model.userInfo.distrId,
-                                                  widget.model.setStoreId);
-                                        }
-
-                                        showDialog(
-                                            context: context,
-                                            builder: (_) => model
-                                                    .userInfo.isleader
-                                                ? NodeBODialoge(model)
-                                                : model.backOrdersList.isEmpty
-                                                    ? BackOrderDialog(
-                                                        _backOrders,
-                                                        widget.model.userInfo
-                                                            .distrId,
-                                                        widget.model.userInfo
-                                                            .name)
-                                                    : BackOrderList());
-                                        isloading(false);
-                                      },
-                                      splashColor: Colors.pink[900],
+                              model.bulkOrder.length == 0 &&
+                                      model.userInfo.isleader &&
+                                      model.docType == 'CR' &&
+                                      model.itemorderlist.isNotEmpty
+                                  ? Transform.scale(
+                                      scale: 1.55,
+                                      child: Switch(
+                                        inactiveTrackColor: Colors.white70,
+                                        activeTrackColor: Colors.grey,
+                                        activeColor: Colors.black12,
+                                        value: model.isBulk,
+                                        onChanged: (bool value) {
+                                          setState(() {
+                                            model.isBulk = value;
+                                            model.shipmentAddress = '';
+                                            model.shipmentArea = '';
+                                          });
+                                        },
+                                        activeThumbImage: AssetImage(
+                                            'assets/images/bulk.png'),
+                                        inactiveThumbImage:
+                                            AssetImage('assets/images/box.png'),
+                                      ),
+                                    )
+                                  : Icon(
+                                      GroovinMaterialIcons.cart_plus,
+                                      color: Colors.grey,
+                                      size: 31,
                                     ),
-                                  ),
-                                  model.bulkOrder.length == 0 &&
-                                          model.userInfo.isleader &&
-                                          model.docType == 'CR'
-                                      ? Transform.scale(
-                                          scale: 1.55,
-                                          child: Switch(
-                                            inactiveTrackColor: Colors.white70,
-                                            activeTrackColor: Colors.grey,
-                                            activeColor: Colors.black12,
-                                            value: model.isBulk,
-                                            onChanged: (bool value) {
-                                              setState(() {
-                                                model.isBulk = value;
-                                                model.shipmentAddress = '';
-                                                model.shipmentArea = '';
-                                              });
-                                            },
-                                            activeThumbImage: AssetImage(
-                                                'assets/images/bulk.png'),
-                                            inactiveThumbImage: AssetImage(
-                                                'assets/images/box.png'),
+                            ],
+                          ),
+                          trailing: Padding(
+                            padding: EdgeInsets.only(right: 0.1, left: 6),
+                            child: Container(
+                                width: 54,
+                                child: isOnlyBackOrder(model)
+                                    ? Padding(
+                                        padding: EdgeInsets.only(bottom: 8),
+                                        child: RawMaterialButton(
+                                          child: Icon(
+                                            Icons.send,
+                                            size: 24.0,
+                                            color: Colors.white,
                                           ),
-                                        )
-                                      : Icon(
-                                          GroovinMaterialIcons.cart_plus,
-                                          color: Colors.grey,
-                                          size: 31,
-                                        ),
-                                ],
-                              ),
-                              trailing: Padding(
-                                padding: EdgeInsets.only(right: 0.1, left: 6),
-                                child: Container(
-                                    width: 54,
-                                    child: !model.isBulk
-                                        ? Padding(
-                                            padding: EdgeInsets.only(bottom: 8),
-                                            child: RawMaterialButton(
-                                              child: Icon(
-                                                Icons.send,
-                                                size: 24.0,
-                                                color: Colors.white,
-                                              ),
-                                              shape: CircleBorder(),
-                                              highlightColor: Colors.pink[900],
-                                              elevation: 21,
-                                              fillColor: Colors.green,
-                                              onPressed: () async {
-                                                model.loading = false;
-                                                String validMsg = await model
-                                                    .getOrderInvalidPerc(model);
-                                                model
+                                          shape: CircleBorder(),
+                                          highlightColor: Colors.pink[900],
+                                          elevation: 21,
+                                          fillColor: Colors.green,
+                                          onPressed: () async {
+                                            model.loading = false;
+                                            String validMsg = await model
+                                                .getOrderInvalidPerc(model);
+                                            model
+                                                .flush(context, validMsg)
+                                                .dismiss(context);
+                                            validMsg != ''
+                                                ? model
                                                     .flush(context, validMsg)
-                                                    .dismiss(context);
-                                                validMsg != ''
-                                                    ? model
-                                                        .flush(
-                                                            context, validMsg)
-                                                        .show(context)
-                                                    : Navigator.push(context,
-                                                        MaterialPageRoute(
-                                                            builder: (_) {
-                                                        return EndOrder(model);
-                                                      }));
-                                              },
-                                              splashColor: Colors.pink[900],
-                                            ),
-                                          )
-                                        : Padding(
-                                            padding: EdgeInsets.only(bottom: 8),
-                                            child: model.giftPacks.length ==
-                                                        0 &&
-                                                    model.promoPacks.length == 0
-                                                ? RawMaterialButton(
-                                                    child: Icon(
-                                                      Icons.add,
-                                                      size: 24.0,
-                                                      color: Colors.white,
-                                                    ),
-                                                    shape: CircleBorder(),
-                                                    highlightColor:
-                                                        Colors.pink[900],
-                                                    elevation: 21,
-                                                    fillColor:
-                                                        Colors.purple[800],
-                                                    onPressed: () async {
-                                                      //model.giftorderList.clear();
-                                                      String validMsg = await model
-                                                          .getOrderInvalidPerc(
-                                                              model);
-                                                      model
+                                                    .show(context)
+                                                : Navigator.push(context,
+                                                    MaterialPageRoute(
+                                                        builder: (_) {
+                                                    return EndOrder(model);
+                                                  }));
+                                          },
+                                          splashColor: Colors.pink[900],
+                                        ),
+                                      )
+                                    : Padding(
+                                        padding: EdgeInsets.only(bottom: 8),
+                                        child: model.giftPacks.length == 0 &&
+                                                model.promoPacks.length == 0 &&
+                                                model.backOrdersList.isNotEmpty
+                                            ? RawMaterialButton(
+                                                child: Icon(
+                                                  Icons.add,
+                                                  size: 24.0,
+                                                  color: Colors.white,
+                                                ),
+                                                shape: CircleBorder(),
+                                                highlightColor:
+                                                    Colors.pink[900],
+                                                elevation: 21,
+                                                fillColor: Colors.purple[800],
+                                                onPressed: () async {
+                                                  //model.giftorderList.clear();
+                                                  String validMsg = await model
+                                                      .getOrderInvalidPerc(
+                                                          model);
+                                                  model
+                                                      .flush(context, validMsg)
+                                                      .dismiss(context);
+                                                  validMsg != ''
+                                                      ? model
                                                           .flush(
                                                               context, validMsg)
-                                                          .dismiss(context);
-                                                      validMsg != ''
-                                                          ? model
-                                                              .flush(context,
-                                                                  validMsg)
-                                                              .show(context)
-                                                          : showDialog(
-                                                              context: context,
-                                                              builder: (_) =>
-                                                                  NodeDialoge(
-                                                                      model));
-                                                    },
-                                                    splashColor:
-                                                        Colors.pink[900],
-                                                  )
-                                                : RawMaterialButton(
-                                                    child: Icon(
-                                                      Icons.block,
-                                                      size: 24.0,
-                                                      color: Colors.white,
-                                                    ),
-                                                    shape: CircleBorder(),
-                                                    highlightColor:
-                                                        Colors.pink[900],
-                                                    elevation: 21,
-                                                    fillColor: Colors.red[800],
-                                                    onPressed: () {},
-                                                    splashColor:
-                                                        Colors.pink[900],
-                                                  ))),
-                              ),
-                            )))
-                    : Container(),
-                /* Container(
-                        child: RawMaterialButton(
-                          child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              children: <Widget>[
-                                Stack(
-                                  fit: StackFit.loose,
-                                  overflow: Overflow.clip,
-                                  children: <Widget>[
-                                    BadgeIconButton(
-                                      itemCount: model.backOrdersList.length,
-                                      icon: Icon(
-                                        GroovinMaterialIcons.arrow_down_bold,
-                                        size: 25.0,
-                                        color: Colors.blue,
-                                      ),
-                                      badgeTextColor: Colors.red[700],
-                                      badgeColor: Colors.grey[100],
-                                    ),
-                                    Text('فك الحجز',
-                                        style: TextStyle(
-                                            fontSize: 11,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.grey[700])),
-                                  ],
-                                ),
-                              ]),
-                          constraints:
-                              const BoxConstraints(maxHeight: 48, maxWidth: 45),
-                          shape: CircleBorder(),
-                          highlightColor: Colors.pink[900],
-                          elevation: 21,
-                          fillColor: Colors.amber[400],
-                          onPressed: () async {
-                            if (!model.userInfo.isleader) {
-                              isloading(true);
-                              _backOrders = await widget.model
-                                  .getBackOrderItems(
-                                      widget.model.userInfo.distrId,
-                                      widget.model.setStoreId);
-                            }
+                                                          .show(context)
+                                                      : showDialog(
+                                                          context: context,
+                                                          builder: (_) =>
+                                                              NodeDialoge(
+                                                                  model));
+                                                },
+                                                splashColor: Colors.pink[900],
+                                              )
+                                            : RawMaterialButton(
+                                                child: Icon(
+                                                  Icons.block,
+                                                  size: 24.0,
+                                                  color: Colors.white,
+                                                ),
+                                                shape: CircleBorder(),
+                                                highlightColor:
+                                                    Colors.pink[900],
+                                                elevation: 21,
+                                                fillColor: Colors.red[800],
+                                                onPressed: () {},
+                                                splashColor: Colors.pink[900],
+                                              ))),
+                          ),
+                        ))),
 
-                            showDialog(
-                                context: context,
-                                builder: (_) => model.userInfo.isleader
-                                    ? NodeBODialoge(model)
-                                    : model.backOrdersList.isEmpty
-                                        ? BackOrderDialog(
-                                            _backOrders,
-                                            widget.model.userInfo.distrId,
-                                            widget.model.userInfo.name)
-                                        : BackOrderList());
-                            isloading(false);
-                          },
-                          splashColor: Colors.pink[900],
-                        ),
-                      ),*/
                 model.itemorderlist.isNotEmpty
                     ? BonusDeduct(model)
                     : Container(),
 
                 //  model.isBulk ? BulkGiftsAndPromos(model) : Container(),
-                _orderExp(context, model, formatter, formatWeight)
+                _orderExp(context, model, formatter, formatWeight),
               ]),
+              /* DraggableFloatingActionButton(
+                  data: 'dfab_demo',
+                  offset: Offset(100, 205),
+                  backgroundColor: Theme.of(context).accentColor,
+                  child: Text(
+                    'PerBP',
+                  ),
+                  onPressed: () => print('pressed'),
+                  appContext: context,
+                  appBar: appBar),*/
             ],
           ),
         ),

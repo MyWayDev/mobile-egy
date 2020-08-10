@@ -131,6 +131,7 @@ class SalesOrder {
   String courierFee;
   String bonusDeduc;
   String backOrder;
+  List<BackOrder> bckOrdrs;
   List<BackOrderRelease> backOrders;
   List<DistrBonus> distrBonues;
   List<ItemOrder> order;
@@ -144,6 +145,7 @@ class SalesOrder {
       this.totalBp,
       this.order,
       this.backOrders,
+      this.bckOrdrs,
       this.distrBonues,
       this.weight,
       this.courierId,
@@ -163,6 +165,8 @@ class SalesOrder {
       this.promos});
 
   Map<String, dynamic> toJson() => {
+        "ap3": distrBonues,
+        "backorder": bckOrdrs,
         "a9master": {
           "STORE_ID": storeId, //!new
           "BRANCH_ID": branchId, //!new
@@ -179,7 +183,7 @@ class SalesOrder {
           "DS_SHIPMENT_PLACE": areaId,
           "AREMARKS": note, //!egyupdate AREMARKS FROM LREMARKS
           "SHIPMTHD_L": bonusDeduc,
-          "SHIPMTHD_A": backOrder,
+          // "SHIPMTHD_A": backOrder,
           //"LREMARKS": courierFee ?? '0',
           "DISC_NOTES": address,
         },
@@ -193,13 +197,13 @@ class SalesOrder {
   }
 
   Future<http.Response> createPost(SalesOrder salesOrder) async {
-    final response =
-        await http.put('http://mywayegypt-api.azurewebsites.net/api/invoice',
-            headers: {
-              HttpHeaders.contentTypeHeader: 'application/json',
-              //HttpHeaders.authorizationHeader: ''
-            },
-            body: postOrderToJson(salesOrder));
+    final response = await http.put(
+        'https://mywaytest.mywayapienviroment.p.azurewebsites.net/api/invoice',
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          //HttpHeaders.authorizationHeader: ''
+        },
+        body: postOrderToJson(salesOrder));
     return response;
   }
 }
@@ -220,7 +224,7 @@ class BulkSalesOrder {
 
   Future<http.Response> createBulkPost(BulkSalesOrder batch) async {
     final response = await http.put(
-        'http://mywayegypt-api.azurewebsites.net/api/insert_batch_sales_orders',
+        'https://mywaytest.mywayapienviroment.p.azurewebsites.net/api/insert_batch_sales_orders',
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           //HttpHeaders.authorizationHeader: ''

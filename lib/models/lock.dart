@@ -9,32 +9,37 @@ class Lock {
   int safetyStock;
   int maxOrder;
   int adminFee;
+  int backOrderFee;
+  int memberBPLimit;
   String bannerUrl;
   int maxLimited;
   String pdfUrl;
   List limitedItem;
   List exItems;
-  String bankInfo;
 
-  Lock(
-      {this.id,
-      this.lockApp = false,
-      this.catCode,
-      this.version,
-      this.adminFee,
-      this.safetyStock,
-      this.maxOrder,
-      this.pdfUrl,
-      this.maxLimited,
-      this.limitedItem,
-      this.exItems,
-      this.bankInfo});
+  Lock({
+    this.id,
+    this.lockApp = false,
+    this.catCode,
+    this.version,
+    this.adminFee,
+    this.memberBPLimit,
+    this.backOrderFee,
+    this.safetyStock,
+    this.maxOrder,
+    this.pdfUrl,
+    this.maxLimited,
+    this.limitedItem,
+    this.exItems,
+  });
 
   Lock.fromSnapshot(DataSnapshot snapshot)
       : id = snapshot.value['id'],
         lockApp = snapshot.value['lockApp'],
         lockCart = snapshot.value['lockCart'],
         adminFee = snapshot.value['adminFee'],
+        memberBPLimit = snapshot.value['memberBPLimit'] ?? 0,
+        backOrderFee = snapshot.value['backOrderFee'] ?? 0,
         bannerUrl = snapshot.value['bannerUrl'],
         catCode = snapshot.value['catCode'] ?? '',
         version = snapshot.value['version'],
@@ -43,6 +48,5 @@ class Lock {
         maxLimited = snapshot.value['maxLimited'],
         pdfUrl = snapshot.value['pdfUrl'] ?? '',
         limitedItem = snapshot.value['limtedItem'] ?? [],
-        exItems = snapshot.value['exclusiveList'] ?? [],
-        bankInfo = snapshot.value['bankInfo'] ?? '';
+        exItems = snapshot.value['exclusiveList'] ?? [];
 }
