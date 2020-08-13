@@ -73,7 +73,6 @@ class _OrderPage extends State<OrderPage> {
 
   bool isOnlyBackOrder(MainModel model) {
     bool isOBO = false;
-
     if (model.backOrdersList.isNotEmpty &&
         model.itemorderlist.isEmpty &&
         !model.isBulk) {
@@ -88,6 +87,21 @@ class _OrderPage extends State<OrderPage> {
       isOBO = true;
     }
     return isOBO;
+  }
+
+  bool isBackOrderButtonVisable(MainModel model) {
+    bool isBOBV;
+    if (model.bulkOrder
+            .isNotEmpty && //? here find the list name of bulk order summary floatbutton
+        model.itemorderlist.isEmpty) {
+      isBOBV = false;
+    } else {
+      isBOBV = true;
+    }
+    /*print(isBOBV);
+    print(model.bulkOrder.length);
+    print(model.itemorderlist.length);*/
+    return isBOBV;
   }
 
   AppBar appBar;
@@ -386,6 +400,7 @@ class _OrderPage extends State<OrderPage> {
                                           elevation: 21,
                                           fillColor: Colors.green,
                                           onPressed: () {
+                                            print('bulck send');
                                             model.loading = false;
                                             Navigator.push(
                                               context,
@@ -461,67 +476,68 @@ class _OrderPage extends State<OrderPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
                               Padding(
-                                padding: EdgeInsets.only(bottom: 2),
-                                child: RawMaterialButton(
-                                  child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: <Widget>[
-                                        Stack(
-                                          fit: StackFit.loose,
-                                          overflow: Overflow.clip,
-                                          children: <Widget>[
-                                            BadgeIconButton(
-                                              itemCount:
-                                                  model.backOrdersList.length,
-                                              icon: Icon(
-                                                GroovinMaterialIcons
-                                                    .arrow_down_bold,
-                                                size: 25.0,
-                                                color: Colors.blue,
+                                  padding: EdgeInsets.only(bottom: 2),
+                                  child: RawMaterialButton(
+                                    child: Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: <Widget>[
+                                          Stack(
+                                            fit: StackFit.loose,
+                                            overflow: Overflow.clip,
+                                            children: <Widget>[
+                                              BadgeIconButton(
+                                                itemCount:
+                                                    model.backOrdersList.length,
+                                                icon: Icon(
+                                                  GroovinMaterialIcons
+                                                      .arrow_down_bold,
+                                                  size: 25.0,
+                                                  color: Colors.blue,
+                                                ),
+                                                badgeTextColor: Colors.red[700],
+                                                badgeColor: Colors.grey[100],
                                               ),
-                                              badgeTextColor: Colors.red[700],
-                                              badgeColor: Colors.grey[100],
-                                            ),
-                                            Text(' فك الحجز',
-                                                style: TextStyle(
-                                                    fontSize: 11,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.grey[700])),
-                                          ],
-                                        ),
-                                      ]),
-                                  constraints: const BoxConstraints(
-                                      maxHeight: 48, maxWidth: 45),
-                                  shape: CircleBorder(),
-                                  highlightColor: Colors.pink[900],
-                                  elevation: 21,
-                                  fillColor: Colors.amber[400],
-                                  onPressed: () async {
-                                    if (!model.userInfo.isleader) {
-                                      isloading(true);
-                                      _backOrders = await widget.model
-                                          .getBackOrderItems(
-                                              widget.model.userInfo.distrId,
-                                              widget.model.setStoreId);
-                                    }
-
-                                    showDialog(
-                                        context: context,
-                                        builder: (_) => model.userInfo.isleader
-                                            ? NodeBODialoge(model)
-                                            : model.backOrdersList.isEmpty
-                                                ? BackOrderDialog(
-                                                    _backOrders,
-                                                    widget
-                                                        .model.userInfo.distrId,
-                                                    widget.model.userInfo.name)
-                                                : BackOrderList());
-                                    isloading(false);
-                                  },
-                                  splashColor: Colors.pink[900],
-                                ),
-                              ),
-                              model.bulkOrder.length == 0 &&
+                                              Text(' فك الحجز',
+                                                  style: TextStyle(
+                                                      fontSize: 11,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.grey[700])),
+                                            ],
+                                          )
+                                        ]),
+                                    constraints: const BoxConstraints(
+                                        maxHeight: 48, maxWidth: 45),
+                                    shape: CircleBorder(),
+                                    highlightColor: Colors.pink[900],
+                                    elevation: 21,
+                                    fillColor: Colors.amber[400],
+                                    onPressed: () async {
+                                      if (!model.userInfo.isleader) {
+                                        isloading(true);
+                                        _backOrders = await widget.model
+                                            .getBackOrderItems(
+                                                widget.model.userInfo.distrId,
+                                                widget.model.setStoreId);
+                                      }
+                                      showDialog(
+                                          context: context,
+                                          builder: (_) =>
+                                              model.userInfo.isleader
+                                                  ? NodeBODialoge(model)
+                                                  : model.backOrdersList.isEmpty
+                                                      ? BackOrderDialog(
+                                                          _backOrders,
+                                                          widget.model.userInfo
+                                                              .distrId,
+                                                          widget.model.userInfo
+                                                              .name)
+                                                      : BackOrderList());
+                                      isloading(false);
+                                    },
+                                    splashColor: Colors.pink[900],
+                                  )),
+                              /*  model.bulkOrder.length == 0 &&
                                       model.userInfo.isleader &&
                                       model.docType == 'CR' &&
                                       model.itemorderlist.isNotEmpty
@@ -549,7 +565,7 @@ class _OrderPage extends State<OrderPage> {
                                       GroovinMaterialIcons.cart_plus,
                                       color: Colors.grey,
                                       size: 31,
-                                    ),
+                                    ),*/
                             ],
                           ),
                           trailing: Padding(
@@ -570,21 +586,29 @@ class _OrderPage extends State<OrderPage> {
                                           elevation: 21,
                                           fillColor: Colors.green,
                                           onPressed: () async {
+                                            print('single send');
                                             model.loading = false;
-                                            String validMsg = await model
-                                                .getOrderInvalidPerc(model);
-                                            model
-                                                .flush(context, validMsg)
-                                                .dismiss(context);
-                                            validMsg != ''
-                                                ? model
-                                                    .flush(context, validMsg)
-                                                    .show(context)
-                                                : Navigator.push(context,
-                                                    MaterialPageRoute(
-                                                        builder: (_) {
-                                                    return EndOrder(model);
-                                                  }));
+                                            if (model.bonusDeductValidation()) {
+                                              model
+                                                  .flush(context,
+                                                      'قيمة الخصم من المكافأة اكبر من قيمة الطلبيه')
+                                                  .show(context);
+                                            } else {
+                                              String validMsg = await model
+                                                  .getOrderInvalidPerc(model);
+                                              model
+                                                  .flush(context, validMsg)
+                                                  .dismiss(context);
+                                              validMsg != ''
+                                                  ? model
+                                                      .flush(context, validMsg)
+                                                      .show(context)
+                                                  : Navigator.push(context,
+                                                      MaterialPageRoute(
+                                                          builder: (_) {
+                                                      return EndOrder(model);
+                                                    }));
+                                            }
                                           },
                                           splashColor: Colors.pink[900],
                                         ),
@@ -593,7 +617,7 @@ class _OrderPage extends State<OrderPage> {
                                         padding: EdgeInsets.only(bottom: 8),
                                         child: model.giftPacks.length == 0 &&
                                                 model.promoPacks.length == 0 &&
-                                                model.backOrdersList.isNotEmpty
+                                                model.itemorderlist.isNotEmpty
                                             ? RawMaterialButton(
                                                 child: Icon(
                                                   Icons.add,

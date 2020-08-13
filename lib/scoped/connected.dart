@@ -26,7 +26,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 class MainModel extends Model {
   // ** items //** */
-  static String _version = '3.34r'; //!Modify for every release version./.
+  static String _version = '4.0r'; //!Modify for every release version./.
   static String firebaseDb = "egyProduction";
   static String stage = "egyProduction";
   static String updateDb = "egyProduction";
@@ -1352,9 +1352,9 @@ class MainModel extends Model {
   }
 
   Flushbar flush(BuildContext context, String _msg,
-      {String subMsg = 'تم تخطي الحد الاقصي لنقاط'}) {
+      {String subMsg = 'تم تخطي الحد الاقصي '}) {
     Flushbar _flush = Flushbar(
-      duration: Duration(seconds: 4),
+      duration: Duration(seconds: 6),
       messageText: Center(
           child: Text(_msg,
               textAlign: TextAlign.right,
@@ -1390,6 +1390,15 @@ class MainModel extends Model {
       ],
     );
     return _flush;
+  }
+
+  bool bonusDeductValidation() {
+    bool val = false;
+    if (distrBonusList.isNotEmpty) {
+      distrBonusDeductTotal() <= orderSum() ? val = false : val = true;
+    }
+    print(val);
+    return val;
   }
 
   Future<String> getOrderInvalidPerc(MainModel model) async {
@@ -2590,17 +2599,49 @@ for( var i = 0 ; i < _list.length; i++){
     return user.email;
   }
 
+  Future<double> validatePointsLimit(String distrId) async {
+    bool validPointsLimit = false;
+    double _perPoints = await getPersonalPoints(distrId);
+    double _pendPoints = await getPendingPoints(distrId);
+    double _totalPoints = _perPoints + _pendPoints + orderBp();
+
+    _totalPoints > settings.memberBPLimit
+        ? validPointsLimit = false
+        : validPointsLimit = true;
+    print('valid BPLIMIT:=>$validPointsLimit');
+    print(_totalPoints);
+    return _totalPoints;
+  }
+
   Future<double> getPersonalPoints(String distrId) async {
-    String perPoints;
+    double perPoints;
     double vReturn;
-    final Response response = await http.get(
-        'https://mywaytest.mywayapienviroment.p.azurewebsites.net/api/getPersonalPoints/$distrId');
+    final http.Response response = await http.get(
+        'http://mywayegypt-api.azurewebsites.net/api/getPersonalPoints/$distrId');
     if (response.statusCode == 200) {
-      perPoints = response.body.toString();
+      perPoints =
+          double.tryParse(response.body.substring(1, response.body.length - 1));
+      perPoints == null ? vReturn = 0.0 : vReturn = perPoints;
     } else {
-      perPoints = '0';
+      vReturn = 0.0;
     }
-    vReturn = double.tryParse(perPoints);
+
+    return vReturn;
+  }
+
+  Future<double> getPendingPoints(String distrId) async {
+    double penPoints;
+    double vReturn;
+    final http.Response response = await http.get(
+        'http://mywayegypt-api.azurewebsites.net/api/getPendingPoints/$distrId');
+    if (response.statusCode == 200) {
+      penPoints =
+          double.tryParse(response.body.substring(1, response.body.length - 1));
+      penPoints == null ? vReturn = 0.0 : vReturn = penPoints;
+    } else {
+      vReturn = 0.0;
+    }
+
     return vReturn;
   }
 }

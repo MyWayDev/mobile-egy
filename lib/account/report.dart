@@ -100,7 +100,7 @@ class _Report extends State<Report> {
   Future<Member> memberReportSummary(String distrid) async {
     isloading(true);
     http.Response response = await http.get(
-        'https://mywaytest.mywayapienviroment.p.azurewebsites.net/api/distrrepsummary/$distrid');
+        'http://mywayegypt-api.azurewebsites.net/api/distrrepsummary/$distrid');
     if (response.statusCode == 200) {
       List _summary = json.decode(response.body);
       member = Member.formJson(_summary[0]);

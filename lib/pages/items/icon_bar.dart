@@ -110,7 +110,9 @@ class _IconBar extends State<IconBar> {
                       badgeTextColor: Colors.white,
                       onPressed: () {}),
               Padding(
-                padding: EdgeInsets.only(left: 6.0, right: 6.0),
+                padding: EdgeInsets.only(
+                    left: 6.0,
+                    right: 6.0), //?make after  removing print icon right:6
               ),
               IconButton(
                   icon: Icon(Icons.info_outline),

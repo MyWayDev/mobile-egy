@@ -38,7 +38,7 @@ class Lock {
         lockApp = snapshot.value['lockApp'],
         lockCart = snapshot.value['lockCart'],
         adminFee = snapshot.value['adminFee'],
-        memberBPLimit = snapshot.value['memberBPLimit'] ?? 0,
+        memberBPLimit = snapshot.value['memberBpLimit'] ?? 0,
         backOrderFee = snapshot.value['backOrderFee'] ?? 0,
         bannerUrl = snapshot.value['bannerUrl'],
         catCode = snapshot.value['catCode'] ?? '',

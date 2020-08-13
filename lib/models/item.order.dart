@@ -197,13 +197,13 @@ class SalesOrder {
   }
 
   Future<http.Response> createPost(SalesOrder salesOrder) async {
-    final response = await http.put(
-        'https://mywaytest.mywayapienviroment.p.azurewebsites.net/api/invoice',
-        headers: {
-          HttpHeaders.contentTypeHeader: 'application/json',
-          //HttpHeaders.authorizationHeader: ''
-        },
-        body: postOrderToJson(salesOrder));
+    final response =
+        await http.put('http://mywayegypt-api.azurewebsites.net/api/invoice',
+            headers: {
+              HttpHeaders.contentTypeHeader: 'application/json',
+              //HttpHeaders.authorizationHeader: ''
+            },
+            body: postOrderToJson(salesOrder));
     return response;
   }
 }
@@ -224,7 +224,7 @@ class BulkSalesOrder {
 
   Future<http.Response> createBulkPost(BulkSalesOrder batch) async {
     final response = await http.put(
-        'https://mywaytest.mywayapienviroment.p.azurewebsites.net/api/insert_batch_sales_orders',
+        'http://mywayegypt-api.azurewebsites.net/api/insert_batch_sales_orders',
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           //HttpHeaders.authorizationHeader: ''

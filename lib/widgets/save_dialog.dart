@@ -59,6 +59,24 @@ class _SaveDialog extends State<SaveDialog> {
     return bOs;
   }
 
+  bool vbpSum = false;
+  double exbpSum = 0;
+
+  Future<bool> pointsLimit(MainModel model) async {
+    bool _vbpSum = true;
+
+    if (widget.distrId != '00000001') {
+      double pointsSum = await model.validatePointsLimit(widget.distrId);
+      if (pointsSum > model.settings.memberBPLimit) {
+        print(pointsSum);
+        exbpSum = pointsSum - model.settings.memberBPLimit;
+        _vbpSum = false;
+      }
+    }
+
+    return _vbpSum;
+  }
+
   @override
   Widget build(BuildContext context) {
     return _saveDialog(context);
@@ -73,7 +91,7 @@ class _SaveDialog extends State<SaveDialog> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0)),
                 child: Container(
-                  height: 480.0,
+                  height: 495.0,
                   width: 310.0,
                   decoration:
                       BoxDecoration(borderRadius: BorderRadius.circular(20.0)),
@@ -115,8 +133,12 @@ class _SaveDialog extends State<SaveDialog> {
                               ),
                             ]),
                       ),
+                      Text(
+                        widget.distrId,
+                        style: TextStyle(fontSize: 12),
+                      ),
                       Container(
-                        height: 220,
+                        height: getBackOrderList(model).isEmpty ? 380 : 200,
                         width: 275,
                         child: ListView.builder(
                           itemCount: getOrderList(model).length,
@@ -125,21 +147,24 @@ class _SaveDialog extends State<SaveDialog> {
                           },
                         ),
                       ),
-                      Container(
-                        height: 17,
-                        child: Text('اصناف مستند فك الحجز'),
-                      ),
-                      Container(
-                        height: 120,
-                        width: 275,
-                        child: ListView.builder(
-                          itemCount: getBackOrderList(model).length,
-                          itemBuilder: (context, i) {
-                            return backOrderCard(context, model, i);
-                          },
-                        ),
-                      ),
-                      SizedBox(height: 20.0),
+                      getBackOrderList(model).isNotEmpty
+                          ? Container(
+                              height: 17,
+                              child: Text('اصناف مستند فك الحجز'),
+                            )
+                          : Container(),
+                      getBackOrderList(model).isNotEmpty
+                          ? Container(
+                              height: 150,
+                              width: 275,
+                              child: ListView.builder(
+                                itemCount: getBackOrderList(model).length,
+                                itemBuilder: (context, i) {
+                                  return backOrderCard(context, model, i);
+                                },
+                              ),
+                            )
+                          : Container(),
                       Container(
                           height: 50.0,
                           width: MediaQuery.of(context).size.width,
@@ -166,6 +191,29 @@ class _SaveDialog extends State<SaveDialog> {
                                     },
                                     splashColor: Colors.pink[900],
                                   ),
+                                  model.distrBonusList.isNotEmpty
+                                      ? Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: <Widget>[
+                                              Text(
+                                                'خصم من المكافأة',
+                                                style: TextStyle(
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              Text(
+                                                  '${model.distrBonusDeductTotal()}',
+                                                  style: TextStyle(
+                                                      color: Colors.green[900],
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                            ])
+                                      : Container(),
                                   !model.loading
                                       ? RawMaterialButton(
                                           child: Icon(
@@ -179,29 +227,41 @@ class _SaveDialog extends State<SaveDialog> {
                                           fillColor: Colors.green,
                                           onPressed: () async {
                                             isLoading(true, model);
-
-                                            OrderMsg msg =
-                                                await model.orderBalanceCheck(
-                                                    widget.courierId,
-                                                    widget.courierFee,
-                                                    widget.distrId,
-                                                    widget.note +
-                                                        model.shipmentAddress,
-                                                    widget.areaId);
-                                            if (model.orderBp() == 0 &&
-                                                getOrderList(model).length ==
-                                                    0) {
-                                              model.isTypeing = false;
-                                              Navigator.pop(context);
-                                              isLoading(false, model);
-                                              showReview(context, msg.soid,
-                                                  msg.amt, msg.error);
-                                              model.isTypeing = false;
-                                              // PaymentInfo(model)
-                                              //     .flushAction(context)
-                                              //     .show(context);
+                                            vbpSum = await pointsLimit(model);
+                                            if (vbpSum) {
+                                              OrderMsg msg =
+                                                  await model.orderBalanceCheck(
+                                                      widget.courierId,
+                                                      widget.courierFee,
+                                                      widget.distrId,
+                                                      widget.note +
+                                                          model.shipmentAddress,
+                                                      widget.areaId);
+                                              if (model.orderBp() == 0 &&
+                                                  getOrderList(model).length ==
+                                                      0) {
+                                                model.isTypeing = false;
+                                                Navigator.pop(context);
+                                                isLoading(false, model);
+                                                showReview(context, msg.soid,
+                                                    msg.amt, msg.error);
+                                                model.isTypeing = false;
+                                                // PaymentInfo(model)
+                                                //     .flushAction(context)
+                                                //     .show(context);
+                                              } else {
+                                                isLoading(false, model);
+                                              }
                                             } else {
                                               isLoading(false, model);
+                                              model
+                                                  .flush(
+                                                      context,
+                                                      " ${exbpSum.toInt()}" +
+                                                          " ب " +
+                                                          " Bp ${model.settings.memberBPLimit} " +
+                                                          "الشخصى")
+                                                  .show(context);
                                             }
                                           },
                                           splashColor: Colors.pink[900],

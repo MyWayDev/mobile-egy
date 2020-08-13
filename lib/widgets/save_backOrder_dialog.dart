@@ -4,6 +4,7 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:mor_release/bottom_nav.dart';
 import 'package:mor_release/models/backOrder.dart';
 import 'package:mor_release/models/item.order.dart';
+import 'package:mor_release/pages/order/widgets/distrBonusList.dart';
 import 'package:mor_release/scoped/connected.dart';
 import 'package:mor_release/widgets/color_loader_2.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -161,6 +162,9 @@ class _BackOrderSaveDialog extends State<BackOrderSaveDialog> {
                                     fillColor: Colors.green,
                                     onPressed: () async {
                                       isLoading(true, model);
+                                      if (model.distrBonusList.isNotEmpty) {
+                                        model.distrBonusList = null;
+                                      }
                                       OrderMsg msg = await model.saveOrder(
                                           widget.courierId,
                                           model.settings.backOrderFee

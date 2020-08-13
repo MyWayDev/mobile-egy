@@ -1,6 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:mor_release/models/gift.dart';
@@ -12,7 +11,6 @@ import 'package:scoped_model/scoped_model.dart';
 import '../../models/item.dart';
 import '../items/item.card.dart';
 import 'package:mor_release/scoped/connected.dart';
-import 'package:draggable_floating_button/draggable_floating_button.dart';
 
 class ItemsPage extends StatefulWidget {
   final MainModel model;
@@ -65,21 +63,6 @@ class _ItemsPage extends State<ItemsPage> with SingleTickerProviderStateMixin {
   Future<String> getgiftImageUrl(MainModel model) async {
     List<Gift> gift = await model.giftList();
     return gift[0].imageUrl;
-  }
-
-  Future<double> getPersonalPoints(String distrId) async {
-    String perPoints;
-    double vReturn;
-    final http.Response response = await http.get(
-        'https://mywaytest.mywayapienviroment.p.azurewebsites.net/api/getpersonalpoints/$distrId');
-    if (response.statusCode == 200) {
-      perPoints = response.body.toString();
-    } else {
-      perPoints = '0';
-    }
-    vReturn = double.tryParse(perPoints);
-    print(vReturn);
-    return vReturn;
   }
 
   @override
