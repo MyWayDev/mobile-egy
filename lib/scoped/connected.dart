@@ -26,7 +26,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 class MainModel extends Model {
   // ** items //** */
-  static String _version = '4.0r'; //!Modify for every release version./.
+  static String _version = '4.1r'; //!Modify for every release version./.
   static String firebaseDb = "egyProduction";
   static String stage = "egyProduction";
   static String updateDb = "egyProduction";
@@ -35,8 +35,7 @@ class MainModel extends Model {
   final String pathDB = "egyDb/";
   final String path = 'flamelink/environments/$firebaseDb/content';
   final String httpath = 'http://mywayegypt-api.azurewebsites.net/api';
-  final String testPath =
-      'https://mywaytest.mywayapienviroment.p.azurewebsites.net/api';
+  final String testPath = 'http://mywayegypt-api.azurewebsites.net/api';
   final List<Item> _recoImage = List();
 
   String shipmentName = '';
